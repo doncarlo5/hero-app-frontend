@@ -47,4 +47,8 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  define: {
+    "process.env": process.env,
+    ENV_KEY: process.env.ENV_KEY,
+  },
 })
