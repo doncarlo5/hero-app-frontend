@@ -6,7 +6,6 @@ import DoExercisePage from "./pages/do-exercise-page"
 import ErrorBoundary from "./pages/error-boundary"
 import { HistoryPage } from "./pages/history-page"
 import HomePage from "./pages/home-page"
-import LoginPage from "./pages/login-page"
 import NewType from "./pages/new-type"
 import NotFoundPage from "./pages/no-found-page"
 import OneExercise from "./pages/one-exercise"
@@ -22,6 +21,7 @@ import TypesList from "./pages/types-list"
 import WelcomePage from "./pages/welcome-page"
 import IsAuthenticated from "./routing/is-authenticated"
 import IsNotAuthenticated from "./routing/is-not-authenticated"
+import ProgramPage from "./pages/program-page"
 
 function App() {
   return (
@@ -31,7 +31,6 @@ function App() {
         <Routes>
           <Route element={<IsNotAuthenticated />}>
             <Route path="/signup" element={<SignupPage />} />
-            <Route path="/login" element={<LoginPage />} />
           </Route>
           <Route element={<IsAuthenticated redirect={"/welcome"} />}>
             <Route path="/" element={<HomePage />} />
@@ -50,6 +49,7 @@ function App() {
             <Route path="/profile/trophy" element={<TrophyPage />} />
             <Route path="/profile/timer" element={<TimerPage />} />
             <Route path="/profile/settings" element={<SettingsPage />} />
+            <Route path="/program" element={<ProgramPage />} />
           </Route>
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
