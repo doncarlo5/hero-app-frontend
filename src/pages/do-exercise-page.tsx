@@ -158,7 +158,7 @@ const DoExercisePage = () => {
       })
 
       const updatedSession = {
-        exercise_user_list: [...session.exercise_user_list, response._id],
+        exercise_user_list: [...session.exercise_user_list, response.id],
       }
 
       await fetchApi(`/api/sessions/${sessionId}`, {
