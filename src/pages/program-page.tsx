@@ -1,4 +1,4 @@
-import { ChevronLeft, LucideTrophy } from "lucide-react"
+import { ChevronLeft } from "lucide-react"
 import { Link } from "react-router-dom"
 
 import { Button } from "@/components/ui/button"
@@ -14,7 +14,7 @@ function WorkoutPage() {
         <Navbar />
         <main className="container mx-auto my-0 flex h-dvh max-w-lg flex-col">
           <div className="flex items-center pt-5">
-            <Link to="/profile">
+            <Link to="/">
               <Button variant="outline" size="icon">
                 <ChevronLeft className="h-4 w-4" />
               </Button>
