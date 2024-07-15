@@ -20,12 +20,11 @@ export function HomePage() {
           </div>
 
           <div className="flex w-full justify-center pb-10">
-            <div className="h-[0.05rem] w-1/4 rounded-lg bg-gray-900 dark:bg-gray-800"></div>
+            <div className="h-[0.05rem] mt-2 w-1/4 rounded-lg bg-gray-900 dark:bg-gray-800"></div>
           </div>
 
           <Link to="/signup">
             <BorderRotateButton />
-            {/* <Button className="mt-5">Commencer</Button> */}
           </Link>
         </div>
 

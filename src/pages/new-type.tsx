@@ -70,7 +70,7 @@ const NewType = () => {
       navigate(`/profile/type`)
       toast({
         title: "Type d'exercice créé.",
-        description: "Vous pouvez maintenant l'ajouter à vos séances.",
+        description: "Vous pouvez maintenant faire votre séance!",
       })
     } catch (error: any) {
       setIsLoading(false)

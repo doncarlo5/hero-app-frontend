@@ -19,6 +19,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Textarea } from "@/components/ui/textarea"
+import { toast } from "@/components/ui/use-toast"
 import { Navbar } from "@/components/navbar"
 
 import fetchApi from "../lib/api-handler"
@@ -71,9 +72,10 @@ const OneType = () => {
         type_session: response.type_session,
       })
       setType(response)
-      setIsLoading(false)
     } catch (error: any) {
       console.error(error.message)
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -97,7 +99,7 @@ const OneType = () => {
     try {
       const timerValue = parseInt(formState.timer)
       await fetchApi(`/api/exercise-type/${typeId}`, {
-        method: 'PUT',
+        method: "PUT",
         body: JSON.stringify({
           name: formState.name,
           advice: formState.advice,
@@ -110,6 +112,9 @@ const OneType = () => {
       })
       fetchOneType()
       setIsEditable(false)
+      toast({
+        title: "Exercice mis à jour!",
+      })
     } catch (error: any) {
       console.error(error.message)
     }
@@ -118,10 +123,11 @@ const OneType = () => {
   const handleDelete = async (id: string) => {
     try {
       await fetchApi(`/api/exercise-type/${id}`, {
-        method: 'DELETE',
+        method: "DELETE",
       })
       fetchOneType()
-      navigate("/type/")
+      navigate("/profile/type")
+    
     } catch (error) {
       console.error("Fetch error: ", error)
     }
@@ -133,7 +139,7 @@ const OneType = () => {
       {!isLoading ? (
         <main className="container mx-auto my-0 flex h-dvh max-w-lg flex-col">
           <div className="flex items-center py-5 text-left">
-            <Link to="/profile">
+            <Link to="/profile/type">
               <Button variant="outline" size="icon">
                 <ChevronLeft className="h-4 w-4" />
               </Button>
@@ -256,11 +262,6 @@ const OneType = () => {
                 />
               </div>
 
-              <Button variant="outline" onClick={toggleIsEditable} className="col-span-2 w-full">
-                <Edit className="mr-2 h-4 w-4 " />
-                Modifier
-              </Button>
-
               <div className="col-span-2 flex gap-2 pb-5 ">
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
@@ -283,10 +284,22 @@ const OneType = () => {
                     </AlertDialogFooter>
                   </AlertDialogContent>
                 </AlertDialog>
-                <Button disabled={!isEditable} className="col-span-2 w-full" type="submit">
-                  <UpdateIcon className="mr-2 h-4 w-4 " />
-                  Mettre à jour
-                </Button>
+                {!isEditable ? (
+                  <Button variant="outline" onClick={toggleIsEditable} className="col-span-2 w-full">
+                    <Edit className="mr-2 h-4 w-4" />
+                    Modifier
+                  </Button>
+                ) : isLoading ? (
+                  <Button disabled className="col-span-2 w-full">
+                    <UpdateIcon className="mr-2 h-4 w-4 animate-spin" />
+                    Chargement
+                  </Button>
+                ) : (
+                  <Button className="col-span-2 w-full" type="submit">
+                    <UpdateIcon className="mr-2 h-4 w-4" />
+                    Mettre à jour
+                  </Button>
+                )}
               </div>
             </form>
           </div>

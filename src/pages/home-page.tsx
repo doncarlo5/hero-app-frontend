@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { format } from "date-fns"
 import { fr } from "date-fns/locale/fr"
-import { LucideCircleUser, Plus } from "lucide-react"
+import {  Flag, LucideCircleUser, Plus } from "lucide-react"
 import { FaDumbbell, FaWeightScale } from "react-icons/fa6"
 import { Link } from "react-router-dom"
 
@@ -152,6 +152,29 @@ export function HomePage() {
                     </p>
                     <p className="text-xs tracking-tighter text-slate-600">
                       Voir tes statistiques et tes derniers trophées obtenus.
+                    </p>
+                  </div>
+                </div>
+              </Link>
+            )}
+            {isLoading ? (
+              <div className="col-span-2 flex h-24 w-full animate-pulse flex-row items-center justify-center gap-3 rounded-lg bg-slate-100 px-3 py-3 shadow-lg">
+                <div className=" h-10 w-10 rounded-full bg-gray-200 "></div>
+                <div className="h-5 w-32 rounded-full bg-gray-200 "></div>
+              </div>
+            ) : (
+              <Link
+                className="group col-span-2 flex h-24 w-full items-center justify-center rounded-lg bg-slate-100 px-2 py-3 shadow-lg  active:translate-y-0.5 active:shadow-inner dark:bg-slate-900 dark:bg-opacity-80"
+                to="/program"
+              >
+                <div className="flex items-center gap-4 pl-4">
+                  <Flag color="rgb(107 114 128)" className="" height={35} width={35} strokeWidth={1.5} />
+                  <div>
+                    <p className="tab tab-whishlist block  text-slate-800">
+                      Rappel du <span className="font-bold">programme</span>
+                    </p>
+                    <p className="text-xs tracking-tighter text-slate-600">
+                        Regarde les variantes possibles selon ta séance.
                     </p>
                   </div>
                 </div>
