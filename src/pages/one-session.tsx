@@ -32,6 +32,7 @@ import { Calendar } from "@/components/ui/calendar"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { Skeleton } from "@/components/ui/skeleton"
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/components/ui/use-toast"
 import ExerciseCard from "@/components/exercise-card"
@@ -80,9 +81,10 @@ const OneSession = () => {
         comment: response.comment,
       })
       setSession(response)
-      setIsLoading(false)
     } catch (error: any) {
       console.error(error.message)
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -95,7 +97,7 @@ const OneSession = () => {
     try {
       setIsLoadingSubmit(true)
       await fetchApi(`/api/sessions/${sessionId}`, {
-        method: 'PUT',
+        method: "PUT",
         body: JSON.stringify({
           date_session: formState.date_session,
           type_session: formState.type_session,
@@ -118,7 +120,7 @@ const OneSession = () => {
     setFormState({ ...formState, date_session: date?.toString() || "" })
     try {
       await fetchApi(`/api/sessions/${sessionId}`, {
-        method: 'PUT',
+        method: "PUT",
         body: JSON.stringify({ date_session: date }),
       })
     } catch (error: any) {
@@ -130,9 +132,8 @@ const OneSession = () => {
   const handleDelete = async (id: string) => {
     try {
       await fetchApi(`/api/sessions/${id}`, {
-        method: 'DELETE',
+        method: "DELETE",
       })
-      fetchOneSession()
       navigate("/history/")
     } catch (error) {
       console.error("Fetch error: ", error)
@@ -156,7 +157,7 @@ const OneSession = () => {
     e.preventDefault()
     try {
       await fetchApi(`/api/sessions/${sessionId}`, {
-        method: 'PUT',
+        method: "PUT",
         body: JSON.stringify({ comment: formState.comment }),
       })
       toast({
@@ -170,6 +171,8 @@ const OneSession = () => {
       })
     }
   }
+
+  const skeletonLoaders = Array(2).fill(0)
 
   return (
     <>
@@ -192,7 +195,7 @@ const OneSession = () => {
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-48 p-4" align="start">
-              <p className="text-sm text-gray-500">
+              <div className="text-sm text-gray-500">
                 {formState.type_session === "Upper A" && (
                   <ol className="list-inside list-disc">
                     <li>Développé Incliné</li>
@@ -220,7 +223,7 @@ const OneSession = () => {
                     <li>Upright Row</li>
                   </ol>
                 )}
-              </p>
+              </div>
             </PopoverContent>
           </Popover>
         </div>
@@ -281,12 +284,12 @@ const OneSession = () => {
               </div>
             </div>
 
-            <div className=" flex flex-col items-center justify-center ">
+            <div className="flex flex-col items-center justify-center">
               {isLoading ? (
-                <div className="container flex flex-col items-center justify-center p-20 md:grid md:grid-cols-2">
-                  <div className="">
-                    <LucideLoader2 className=" animate-spin" size={32} />
-                  </div>
+                <div className="flex w-full flex-col items-center space-y-2">
+                  {skeletonLoaders.map((_, index) => (
+                    <Skeleton key={index} className=" h-40 w-11/12 rounded-xl" />
+                  ))}
                 </div>
               ) : (
                 formState.exercise_user_list.map((exercise: any) => (
@@ -295,11 +298,10 @@ const OneSession = () => {
               )}
               <Link
                 to={`/history/session/${sessionId}/do-exercise`}
-                className="relative my-2 w-11/12 flex h-14 items-center justify-center gap-2 rounded-2xl border-dotted border-2  bg-slate-100/20 px-3 py-2 shadow-md active:translate-y-0.5 active:shadow-none dark:bg-slate-900 dark:bg-opacity-40 md:text-lg"
+                className="relative my-2 flex h-14 w-11/12 items-center justify-center gap-2 rounded-2xl border-2 border-dotted bg-slate-100/20 px-3 py-2 shadow-md active:translate-y-0.5 active:shadow-none dark:bg-slate-900 dark:bg-opacity-40 md:text-lg"
               >
-                <Plus className=" text-gray-600 size-5" />
-                <p className=" text-gray-600">Ajouter un exercice</p>
-                
+                <Plus className="size-5 text-gray-600" />
+                <p className="text-gray-600">Ajouter un exercice</p>
               </Link>
             </div>
             <div className="col-span-2 mb-2 resize space-y-2">
