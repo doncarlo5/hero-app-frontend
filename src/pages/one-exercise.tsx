@@ -117,7 +117,7 @@ const OneExercise = () => {
     setIsLoading(true)
     try {
       await fetchApi(`/api/exercise-user/${exerciseId}`, {
-        method: 'PUT',
+        method: "PUT",
         body: JSON.stringify({
           type: oneExerciseType,
           rep: [formState.rep1, formState.rep2, formState.rep3],
@@ -140,9 +140,8 @@ const OneExercise = () => {
   const handleDelete = async (id: string) => {
     try {
       await fetchApi(`/api/exercise-user/${id}`, {
-        method: 'DELETE',
-      })
-      fetchOneExercise()
+        method: "DELETE",
+      })  
       navigate(`/history/session/${session._id}`)
       toast({
         title: "Exercice supprimé.",
