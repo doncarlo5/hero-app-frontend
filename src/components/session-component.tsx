@@ -2,10 +2,11 @@ import { useEffect, useState } from "react"
 import { LucideArrowRight, LucideMessageSquareText } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 
+import fetchApi from "@/lib/api-handler"
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 
+import { Badge } from "./ui/badge"
 import { Skeleton } from "./ui/skeleton"
-import fetchApi from "@/lib/api-handler"
 
 export function SessionComponent() {
   const [session, setSession] = useState([] as any[])
@@ -47,8 +48,8 @@ export function SessionComponent() {
                 <TableHead></TableHead>
                 <TableHead></TableHead>
                 <TableHead>Date</TableHead>
-                <TableHead>Type</TableHead>
-                <TableHead>Nbr</TableHead>
+                <TableHead className=" text-center">Type</TableHead>
+                <TableHead className=" text-center">Exos</TableHead>
                 <TableHead></TableHead>
               </TableRow>
             </TableHeader>
@@ -84,7 +85,7 @@ export function SessionComponent() {
                     >
                       <TableCell>
                         <div
-                          className={`me-2 h-2.5 w-2.5 rounded-full ${oneSession.is_done ? "bg-green-500" : "bg-red-500"}`}
+                          className={`me-2 h-2.5 w-2.5 rounded-full ${oneSession.is_done ? "bg-green-500" : "bg-orange-500"}`}
                         ></div>
                       </TableCell>
                       <TableCell>
@@ -97,7 +98,26 @@ export function SessionComponent() {
                         </div>
                       </TableCell>
                       <TableCell>{formatDate(oneSession.date_session)}</TableCell>
-                      <TableCell>{oneSession.type_session}</TableCell>
+                      <TableCell className=" text-center">
+                        <Badge
+                          variant={
+                            oneSession.type_session === "Upper A"
+                              ? "upperA"
+                              : oneSession.type_session === "Upper B"
+                                ? "upperB"
+                                : oneSession.type_session === "Lower"
+                                  ? "lower"
+                                  : oneSession.type_session === "Séance A"
+                                    ? "seanceA"
+                                    : oneSession.type_session === "Séance B"
+                                      ? "seanceB"
+                                      : "default" // Fallback variant in case none of the conditions match
+                          }
+                        >
+                          {oneSession.type_session}
+                        </Badge>
+                      </TableCell>
+
                       <TableCell className="text-center ">{oneSession.exercise_user_list.length}</TableCell>
                       <TableCell className="w-10 items-center justify-center">
                         <LucideArrowRight className="text-slate-300 group-hover:text-slate-900" size={18} />
