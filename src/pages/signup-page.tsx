@@ -121,7 +121,7 @@ const SignupPage = () => {
                       <Label htmlFor="password">Mot de passe</Label>
                       <Input
                         id="password"
-                        placeholder="*********"
+                        placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;"
                         value={loginState.password}
                         onChange={handleLoginChange}
                         required
