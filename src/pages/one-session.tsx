@@ -185,7 +185,6 @@ const OneSession = () => {
             </Button>
           </Link>
           <div>
-            <h1 className="ml-5 text-2xl font-medium md:text-4xl">Ta séance </h1>
             <h1 className="ml-5 text-2xl font-bold md:text-4xl">{session?.type_session}</h1>
           </div>
           <Popover>
@@ -221,6 +220,24 @@ const OneSession = () => {
                     <li>Tractions Neutres</li>
                     <li>Oiseau Assis Prise Neutre</li>
                     <li>Upright Row</li>
+                  </ol>
+                )}
+                {formState.type_session === "Séance A" && (
+                  <ol className="list-inside list-disc">
+                    <li>Développé incliné</li>
+                    <li>Traction prise neutre</li>
+                    <li>ATG Split Squat</li>
+                    <li>Upright Row</li>
+                    <li>Curl incliné</li>
+                  </ol>
+                )}
+                {formState.type_session === "Séance B" && (
+                  <ol className="list-inside list-disc">
+                    <li>Dips lestés</li>
+                    <li>Rowing bucheron</li>
+                    <li>Romanian deadlift</li>
+                    <li>Upright Row</li>
+                    <li>Extension Triceps Nuque</li>
                   </ol>
                 )}
               </div>

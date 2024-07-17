@@ -23,6 +23,7 @@ import { toast } from "@/components/ui/use-toast"
 import { Navbar } from "@/components/navbar"
 
 import fetchApi from "../lib/api-handler"
+import { Separator } from "@/components/ui/separator"
 
 interface FormState {
   id: string
@@ -164,7 +165,7 @@ const OneType = () => {
                 />
               </div>
 
-              <div className="space-y-2">
+              <div className="space-y-2 col-span-2">
                 <Label htmlFor="">Type de séance</Label>
                 <RadioGroup
                   required
@@ -173,22 +174,37 @@ const OneType = () => {
                   defaultValue={formState.type_session}
                   value={formState.type_session}
                 >
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="Upper A" id="Upper A" />
-                    <Label htmlFor="Upper A">Upper A</Label>
+                  <div className="flex items-center justify-evenly">
+                  <div className=" flex flex-col space-y-3">
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="Upper A" id="Upper A" />
+                      <Label htmlFor="Upper A">Upper A</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="Lower" id="Lower" />
+                      <Label htmlFor="Lower">Lower</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="Upper B" id="Upper B" />
+                      <Label htmlFor="Upper B">Upper B</Label>
+                    </div>
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="Lower" id="Lower" />
-                    <Label htmlFor="Lower">Lower</Label>
+                  <Separator orientation="vertical" />
+                  <div className=" flex flex-col space-y-4">
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="Séance A" id="Séance A" />
+                      <Label htmlFor="Séance A">Séance A</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="Séance B" id="Séance B" />
+                      <Label htmlFor="Séance B">Séance B</Label>
+                    </div>
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="Upper B" id="Upper B" />
-                    <Label htmlFor="Upper B">Upper B</Label>
-                  </div>
+                </div>
+
                 </RadioGroup>
               </div>
 
-              <div className="space-y-2"></div>
 
               <div className="space-y-2">
                 <Label htmlFor="timer">Temps de repos {`(en secondes)`}</Label>

@@ -69,8 +69,8 @@ export function TypesList() {
         <div className="pb-10">
           <div className="rounded-lg border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-950 dark:shadow-sm">
             <div className="mb-4 grid grid-cols-1 gap-4">
-              <div className="mt-5 mb-4 flex justify-center gap-3">
-                {["Tous", "Upper A", "Lower", "Upper B"].map((filter) => (
+              <div className="mt-5 mb-4 flex flex-wrap justify-center gap-3">
+                {["Tous", "Upper A", "Lower", "Upper B", "Séance A", "Séance B"].map((filter) => (
                   <Button
                     key={filter}
                     variant="secondary"

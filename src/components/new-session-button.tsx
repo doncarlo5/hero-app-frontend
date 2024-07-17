@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { LucideWeight } from "lucide-react"
+import { LucideWeight, Repeat2 } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 
 import fetchApi from "../lib/api-handler"
@@ -7,12 +7,13 @@ import IconChest from "./chest-icon"
 import IconLegs from "./legs-icon"
 import { Button } from "./ui/button"
 import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "./ui/dialog"
-import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from "./ui/drawer"
+import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger } from "./ui/drawer"
 import { Input } from "./ui/input"
 
 function NewSessionButton({ Children }: { Children: any }) {
   const [weight, setWeight] = React.useState("")
   const [showDialog, setShowDialog] = useState(false)
+  const [showMinimaliste, setShowMinimaliste] = useState(false)
 
   const navigate = useNavigate()
 
@@ -62,41 +63,78 @@ function NewSessionButton({ Children }: { Children: any }) {
       </DrawerTrigger>
       <DrawerContent className="select-none ">
         <div className="mx-auto w-full max-w-sm">
-          <DrawerHeader className="text-left ">
-            <DrawerTitle>Nouvelle séance</DrawerTitle>
+          <DrawerHeader className=" ">
+            <div className="flex justify-between">
+              <div>
+                <DrawerTitle>Nouvelle séance</DrawerTitle>
+                <DrawerDescription className="text-gray-500 dark:text-gray-400">
+                  {showMinimaliste ? "Entrainement minimaliste (2x/semaine)" : "Entrainement complet (3x/semaine)"}
+                </DrawerDescription>
+              </div>
+              <button className=" px-5 hover:scale-110 active:opacity-60" onClick={() => setShowMinimaliste(!showMinimaliste)}>
+                <Repeat2 className=" " size={18} />
+              </button>
+            </div>
           </DrawerHeader>
           <div className="p-4 pb-0">
-            <div className="flex items-center justify-between space-x-2">
-              <Button
-                onClick={(e) => handleCreateSession(e, "Upper A")}
-                variant="outline"
-                size="icon"
-                className="flex h-24 w-24 flex-col rounded-md drop-shadow active:translate-y-0.5 active:drop-shadow-none"
-              >
-                <p className="mb-1 mt-4 text-lg">Upper A</p>
-                <IconChest className="mt-3" />
-                <span className="sr-only">Upper A</span>
-              </Button>
-              <Button
-                onClick={(e) => handleCreateSession(e, "Lower")}
-                variant="outline"
-                size="icon"
-                className="flex h-24 w-24 flex-col rounded-md drop-shadow active:translate-y-0.5 active:drop-shadow-none"
-              >
-                <p className="mb-1 mt-4 text-lg">Lower</p>
-                <IconLegs className="mt-3" />
-                <span className="sr-only">Lower</span>
-              </Button>
-              <Button
-                onClick={(e) => handleCreateSession(e, "Upper B")}
-                variant="outline"
-                size="icon"
-                className="flex h-24 w-24 flex-col rounded-md drop-shadow active:translate-y-0.5 active:drop-shadow-none"
-              >
-                <p className="mb-1 mt-4 text-lg">Upper B</p>
-                <IconChest className="mt-3" />
-                <span className="sr-only">Upper B</span>
-              </Button>
+            <div className="flex items-center justify-evenly space-x-2">
+              {showMinimaliste ? (
+                <>
+                  <Button
+                    onClick={(e) => handleCreateSession(e, "Séance A")}
+                    variant="outline"
+                    size="icon"
+                    className="flex h-24 w-24 flex-col rounded-md drop-shadow active:translate-y-0.5 active:drop-shadow-none"
+                  >
+                    <p className="mb-1 mt-4 text-lg">Séance A</p>
+                    <IconChest className="mt-3" />
+                    <span className="sr-only">Séance A</span>
+                  </Button>
+                  <Button
+                    onClick={(e) => handleCreateSession(e, "Séance B")}
+                    variant="outline"
+                    size="icon"
+                    className="flex h-24 w-24 flex-col rounded-md drop-shadow active:translate-y-0.5 active:drop-shadow-none"
+                  >
+                    <p className="mb-1 mt-4 text-lg">Séance B</p>
+                    <IconChest className="mt-3" />
+                    <span className="sr-only">Séance B</span>
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button
+                    onClick={(e) => handleCreateSession(e, "Upper A")}
+                    variant="outline"
+                    size="icon"
+                    className="flex h-24 w-24 flex-col rounded-md drop-shadow active:translate-y-0.5 active:drop-shadow-none"
+                  >
+                    <p className="mb-1 mt-4 text-lg">Upper A</p>
+                    <IconChest className="mt-3" />
+                    <span className="sr-only">Upper A</span>
+                  </Button>
+                  <Button
+                    onClick={(e) => handleCreateSession(e, "Lower")}
+                    variant="outline"
+                    size="icon"
+                    className="flex h-24 w-24 flex-col rounded-md drop-shadow active:translate-y-0.5 active:drop-shadow-none"
+                  >
+                    <p className="mb-1 mt-4 text-lg">Lower</p>
+                    <IconLegs className="mt-3" />
+                    <span className="sr-only">Lower</span>
+                  </Button>
+                  <Button
+                    onClick={(e) => handleCreateSession(e, "Upper B")}
+                    variant="outline"
+                    size="icon"
+                    className="flex h-24 w-24 flex-col rounded-md drop-shadow active:translate-y-0.5 active:drop-shadow-none"
+                  >
+                    <p className="mb-1 mt-4 text-lg">Upper B</p>
+                    <IconChest className="mt-3" />
+                    <span className="sr-only">Upper B</span>
+                  </Button>
+                </>
+              )}
             </div>
             <div className="mt-3 h-2"></div>
           </div>
