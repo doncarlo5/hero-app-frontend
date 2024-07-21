@@ -65,7 +65,7 @@ function NewSessionButton({ Children }: { Children: any }) {
         <div className="mx-auto w-full max-w-sm">
           <DrawerHeader className=" ">
             <div className="flex justify-between">
-              <div>
+              <div className=" text-left">
                 <DrawerTitle>Nouvelle séance</DrawerTitle>
                 <DrawerDescription className="text-gray-500 dark:text-gray-400">
                   {showMinimaliste ? "Entrainement minimaliste (2x/semaine)" : "Entrainement complet (3x/semaine)"}
