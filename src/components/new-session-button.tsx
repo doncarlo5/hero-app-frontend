@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { LucideWeight, Repeat2 } from "lucide-react"
+import { LucideWeight } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 
 import fetchApi from "../lib/api-handler"
@@ -9,6 +9,8 @@ import { Button } from "./ui/button"
 import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "./ui/dialog"
 import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger } from "./ui/drawer"
 import { Input } from "./ui/input"
+import { Label } from "./ui/label"
+import { Switch } from "./ui/switch"
 
 function NewSessionButton({ Children }: { Children: any }) {
   const [weight, setWeight] = React.useState("")
@@ -63,22 +65,18 @@ function NewSessionButton({ Children }: { Children: any }) {
       </DrawerTrigger>
       <DrawerContent className="select-none ">
         <div className="mx-auto w-full max-w-sm">
-          <DrawerHeader className=" ">
-            <div className="flex justify-between">
-              <div className=" text-left">
-                <DrawerTitle>Nouvelle séance</DrawerTitle>
-                <DrawerDescription className="text-gray-500 dark:text-gray-400">
-                  {showMinimaliste ? "Entrainement minimaliste (2x/semaine)" : "Entrainement complet (3x/semaine)"}
-                </DrawerDescription>
-              </div>
-              <button className=" px-5 hover:scale-110 active:opacity-60" onClick={() => setShowMinimaliste(!showMinimaliste)}>
-                <Repeat2 className=" " size={18} />
-              </button>
-            </div>
+          <DrawerHeader>
+            <DrawerTitle className="text-left">Nouvelle séance</DrawerTitle>
+            <DrawerDescription className="flex items-center justify-between text-gray-500 dark:text-gray-400">
+              <Label htmlFor="session-type-switch">
+                {showMinimaliste ? "Entrainement minimaliste (2x/semaine)" : "Entrainement complet (3x/semaine)"}
+              </Label>
+              <Switch id="session-type-switch" checked={showMinimaliste} onCheckedChange={setShowMinimaliste} />
+            </DrawerDescription>
           </DrawerHeader>
           <div className="p-4 pb-0">
             <div className="flex items-center justify-evenly space-x-2">
-              {showMinimaliste ? (
+              {showMinimaliste ? ( 
                 <>
                   <Button
                     onClick={(e) => handleCreateSession(e, "Séance A")}
