@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { format } from "date-fns"
 import { fr } from "date-fns/locale/fr"
-import {  Flag, LucideCircleUser, Plus } from "lucide-react"
+import { Flag, LucideCircleUser, Plus } from "lucide-react"
 import { FaDumbbell, FaWeightScale } from "react-icons/fa6"
 import { Link } from "react-router-dom"
 
@@ -164,17 +164,17 @@ export function HomePage() {
               </div>
             ) : (
               <Link
-                className="group col-span-2 flex h-24 w-full items-center justify-center rounded-lg bg-slate-100 px-2 py-3 shadow-lg  active:translate-y-0.5 active:shadow-inner dark:bg-slate-900 dark:bg-opacity-80"
+                className="group mb-16 col-span-2 flex h-24 w-full items-center justify-center rounded-lg bg-slate-100 px-2 py-3 shadow-lg  active:translate-y-0.5 active:shadow-inner dark:bg-slate-900 dark:bg-opacity-80"
                 to="/program"
               >
-                <div className="flex items-center gap-4 pl-4">
+                <div className="flex items-center gap-4 pl-4 ">
                   <Flag color="rgb(107 114 128)" className="" height={35} width={35} strokeWidth={1.5} />
                   <div>
                     <p className="tab tab-whishlist block  text-slate-800">
                       Rappel du <span className="font-bold">programme</span>
                     </p>
                     <p className="text-xs tracking-tighter text-slate-600">
-                        Regarde les variantes possibles selon ta séance.
+                      Regarde les variantes possibles selon ta séance.
                     </p>
                   </div>
                 </div>
@@ -183,7 +183,7 @@ export function HomePage() {
             <NewSessionButton
               Children={
                 <div className="fixed bottom-20 right-10 cursor-pointer  ">
-                  <div className="flex h-16 w-16 items-center justify-center rounded-full text-white shadow-lg focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-opacity-75 active:scale-95 active:shadow-inner">
+                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white/5 text-white shadow-lg backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-opacity-75 active:scale-95 active:shadow-inner">
                     <Plus color="rgb(107 114 128)" className="inline-block " height={40} width={40} strokeWidth={1.5} />
                   </div>
                 </div>
