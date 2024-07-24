@@ -55,6 +55,7 @@ const OneSession = () => {
   const [isLoadingSubmit, setIsLoadingSubmit] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [session, setSession] = useState<any>({})
+  const [lastSession, setLastSession] = useState<any>({})
   const [formState, setFormState] = useState<FormState>({
     id: "",
     date_session: "",
@@ -67,6 +68,20 @@ const OneSession = () => {
 
   const { sessionId } = useParams()
   const navigate = useNavigate()
+
+  const fetchLastSessionUser = async () => {
+    try {
+      const response = await fetchApi(`/api/sessions?limit=2&sort=-createdAt`)
+      if (response && response.length > 0) {
+        setLastSession(response[1])
+        console.log("Last session found", response[1])
+      } else {
+        console.log("No last session found")
+      }
+    } catch (error) {
+      console.error("Error fetching last session:", error)
+    }
+  }
 
   const fetchOneSession = async () => {
     try {
@@ -90,6 +105,7 @@ const OneSession = () => {
 
   useEffect(() => {
     fetchOneSession()
+    fetchLastSessionUser()
   }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -326,7 +342,9 @@ const OneSession = () => {
               <div className="flex items-center gap-5 ">
                 <Textarea
                   id="comment"
-                  placeholder=""
+                  placeholder={
+                    lastSession?.comment ? `Note précédente: ${lastSession?.comment}` : "Note précédente : Aucune."
+                  }
                   value={formState.comment}
                   onChange={handleCommentChange}
                   maxLength={200}
