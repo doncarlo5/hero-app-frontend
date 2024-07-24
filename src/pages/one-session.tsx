@@ -71,7 +71,7 @@ const OneSession = () => {
 
   const fetchLastSessionUser = async () => {
     try {
-      const response = await fetchApi(`/api/sessions?limit=2&sort=-createdAt`)
+      const response = await fetchApi(`/api/sessions?limit=2&sortBy=date_session:desc`)
       if (response && response.length > 0) {
         setLastSession(response[1])
         console.log("Last session found", response[1])

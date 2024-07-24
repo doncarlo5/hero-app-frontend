@@ -11,7 +11,7 @@ function BodyWeightChart() {
 
   const fetchUserSessions = async () => {
     try {
-      const response = await fetchApi("/api/sessions?limit=1000&sort=date_session");
+      const response = await fetchApi("/api/sessions?limit=1000&sortBy=date_session:asc");
       setSession(response);
     } catch (error) {
       console.error("Fetch error: ", error);

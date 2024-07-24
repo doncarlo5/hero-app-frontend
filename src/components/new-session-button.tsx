@@ -28,7 +28,7 @@ function NewSessionButton({ Children }: { Children: any }) {
 
   const fetchLastSessionUser = async () => {
     try {
-      const response = await fetchApi(`/api/sessions?limit=1&sort=-createdAt`)
+      const response = await fetchApi(`/api/sessions?limit=1&sortBy=createdAt:desc`);
       if (response && response.length > 0) {
         setWeight(response[0].body_weight)
       } else {

@@ -22,7 +22,7 @@ export function HomePage() {
   const fetchLastSession = async () => {
     try {
       setIsLoading(true)
-      const response = await fetchApi("/api/sessions?limit=1&sort=-date_session")
+      const response = await fetchApi(`/api/sessions?limit=1&sortBy=date_session:desc`)
       setLastSession(response[0])
     } catch (error: any) {
       console.error(error)
@@ -37,7 +37,7 @@ export function HomePage() {
 
   const fetchAllSessions = async () => {
     try {
-      const response = await fetchApi("/api/sessions?limit=1000&sort=-date_session")
+      const response = await fetchApi(`/api/sessions?limit=1000&sortBy=date_session:desc`)
       setAllSessions(response)
     } catch (error: any) {
       console.error("Fetch error: ", error)
@@ -164,7 +164,7 @@ export function HomePage() {
               </div>
             ) : (
               <Link
-                className="group mb-16 col-span-2 flex h-24 w-full items-center justify-center rounded-lg bg-slate-100 px-2 py-3 shadow-lg  active:translate-y-0.5 active:shadow-inner dark:bg-slate-900 dark:bg-opacity-80"
+                className="group col-span-2 mb-16 flex h-24 w-full items-center justify-center rounded-lg bg-slate-100 px-2 py-3 shadow-lg  active:translate-y-0.5 active:shadow-inner dark:bg-slate-900 dark:bg-opacity-80"
                 to="/program"
               >
                 <div className="flex items-center gap-4 pl-4 ">
