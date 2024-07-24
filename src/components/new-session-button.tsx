@@ -2,9 +2,12 @@ import React, { useEffect, useState } from "react"
 import { LucideWeight } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 
+import bodyBack from "../../public/body-back.png"
+import bodyFront from "../../public/body-front.png"
+import lower from "../../public/lower.png"
+import upperBack from "../../public/upper-back.png"
+import upperFront from "../../public/upper-front.png"
 import fetchApi from "../lib/api-handler"
-import IconChest from "./chest-icon"
-import IconLegs from "./legs-icon"
 import { Button } from "./ui/button"
 import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "./ui/dialog"
 import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger } from "./ui/drawer"
@@ -76,7 +79,7 @@ function NewSessionButton({ Children }: { Children: any }) {
           </DrawerHeader>
           <div className="p-4 pb-0">
             <div className="flex items-center justify-evenly space-x-2">
-              {showMinimaliste ? ( 
+              {showMinimaliste ? (
                 <>
                   <Button
                     onClick={(e) => handleCreateSession(e, "Séance A")}
@@ -84,8 +87,8 @@ function NewSessionButton({ Children }: { Children: any }) {
                     size="icon"
                     className="flex h-24 w-24 flex-col rounded-md drop-shadow active:translate-y-0.5 active:drop-shadow-none"
                   >
-                    <p className="mb-1 mt-4 text-lg">Séance A</p>
-                    <IconChest className="mt-3" />
+                    <p className="text-lg mt-2 leading-5">Séance A</p>
+                    <img src={bodyFront} alt="bodyFront" className="h-16 w-9" />
                     <span className="sr-only">Séance A</span>
                   </Button>
                   <Button
@@ -94,8 +97,8 @@ function NewSessionButton({ Children }: { Children: any }) {
                     size="icon"
                     className="flex h-24 w-24 flex-col rounded-md drop-shadow active:translate-y-0.5 active:drop-shadow-none"
                   >
-                    <p className="mb-1 mt-4 text-lg">Séance B</p>
-                    <IconChest className="mt-3" />
+                    <p className="text-lg mt-2 leading-5">Séance B</p>
+                    <img src={bodyBack} alt="bodyBack" className="h-16 w-9" />
                     <span className="sr-only">Séance B</span>
                   </Button>
                 </>
@@ -107,8 +110,8 @@ function NewSessionButton({ Children }: { Children: any }) {
                     size="icon"
                     className="flex h-24 w-24 flex-col rounded-md drop-shadow active:translate-y-0.5 active:drop-shadow-none"
                   >
-                    <p className="mb-1 mt-4 text-lg">Upper A</p>
-                    <IconChest className="mt-3" />
+                    <p className="mb-1 mt-2 text-lg">Upper A</p>
+                    <img src={upperFront} alt="upper-front" className="mb-1 size-14" />
                     <span className="sr-only">Upper A</span>
                   </Button>
                   <Button
@@ -117,8 +120,8 @@ function NewSessionButton({ Children }: { Children: any }) {
                     size="icon"
                     className="flex h-24 w-24 flex-col rounded-md drop-shadow active:translate-y-0.5 active:drop-shadow-none"
                   >
-                    <p className="mb-1 mt-4 text-lg">Lower</p>
-                    <IconLegs className="mt-3" />
+                    <p className="mb-1 mt-2 text-lg">Lower</p>
+                    <img src={lower} alt="lower" className="mb-1 h-14 w-12" />
                     <span className="sr-only">Lower</span>
                   </Button>
                   <Button
@@ -127,8 +130,8 @@ function NewSessionButton({ Children }: { Children: any }) {
                     size="icon"
                     className="flex h-24 w-24 flex-col rounded-md drop-shadow active:translate-y-0.5 active:drop-shadow-none"
                   >
-                    <p className="mb-1 mt-4 text-lg">Upper B</p>
-                    <IconChest className="mt-3" />
+                    <p className="mb-1 mt-2 text-lg">Upper B</p>
+                    <img src={upperBack} alt="upper-back" className="mb-1 size-14" />
                     <span className="sr-only">Upper B</span>
                   </Button>
                 </>
