@@ -147,7 +147,9 @@ function NewSessionButton({ Children }: { Children: any }) {
             <DialogHeader>
               <DialogTitle className="flex items-end text-left ">
                 <LucideWeight className="mr-2 " size={20} />
+                <div>
                 Combien pèses-tu ?
+                </div>
               </DialogTitle>
               <DialogDescription>
                 <div className="text-left text-gray-500 dark:text-gray-400">Renseigne ton poids pour continuer.</div>
