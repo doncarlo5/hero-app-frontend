@@ -87,7 +87,7 @@ function NewSessionButton({ Children }: { Children: any }) {
                     size="icon"
                     className="flex h-24 w-24 flex-col rounded-md drop-shadow active:translate-y-0.5 active:drop-shadow-none"
                   >
-                    <p className="text-lg mt-2 leading-5">Séance A</p>
+                    <div className="text-lg mt-2 leading-5">Séance A</div>
                     <img src={bodyFront} alt="bodyFront" className="h-16 w-9" />
                     <span className="sr-only">Séance A</span>
                   </Button>
@@ -97,7 +97,7 @@ function NewSessionButton({ Children }: { Children: any }) {
                     size="icon"
                     className="flex h-24 w-24 flex-col rounded-md drop-shadow active:translate-y-0.5 active:drop-shadow-none"
                   >
-                    <p className="text-lg mt-2 leading-5">Séance B</p>
+                    <div className="text-lg mt-2 leading-5">Séance B</div>
                     <img src={bodyBack} alt="bodyBack" className="h-16 w-9" />
                     <span className="sr-only">Séance B</span>
                   </Button>
@@ -110,7 +110,7 @@ function NewSessionButton({ Children }: { Children: any }) {
                     size="icon"
                     className="flex h-24 w-24 flex-col rounded-md drop-shadow active:translate-y-0.5 active:drop-shadow-none"
                   >
-                    <p className="mb-1 mt-2 text-lg">Upper A</p>
+                    <div className="mb-1 mt-2 text-lg">Upper A</div>
                     <img src={upperFront} alt="upper-front" className="mb-1 size-14" />
                     <span className="sr-only">Upper A</span>
                   </Button>
@@ -120,7 +120,7 @@ function NewSessionButton({ Children }: { Children: any }) {
                     size="icon"
                     className="flex h-24 w-24 flex-col rounded-md drop-shadow active:translate-y-0.5 active:drop-shadow-none"
                   >
-                    <p className="mb-1 mt-2 text-lg">Lower</p>
+                    <div className="mb-1 mt-2 text-lg">Lower</div>
                     <img src={lower} alt="lower" className="mb-1 h-14 w-12" />
                     <span className="sr-only">Lower</span>
                   </Button>
@@ -130,7 +130,7 @@ function NewSessionButton({ Children }: { Children: any }) {
                     size="icon"
                     className="flex h-24 w-24 flex-col rounded-md drop-shadow active:translate-y-0.5 active:drop-shadow-none"
                   >
-                    <p className="mb-1 mt-2 text-lg">Upper B</p>
+                    <div className="mb-1 mt-2 text-lg">Upper B</div>
                     <img src={upperBack} alt="upper-back" className="mb-1 size-14" />
                     <span className="sr-only">Upper B</span>
                   </Button>
@@ -150,7 +150,7 @@ function NewSessionButton({ Children }: { Children: any }) {
                 Combien pèses-tu ?
               </DialogTitle>
               <DialogDescription>
-                <p className="text-left text-gray-500 dark:text-gray-400">Renseigne ton poids pour continuer.</p>
+                <div className="text-left text-gray-500 dark:text-gray-400">Renseigne ton poids pour continuer.</div>
               </DialogDescription>
               <DialogDescription className="flex justify-center py-2 ">
                 <div className="flex w-3/5 items-end justify-center gap-2 text-xl font-light ">
