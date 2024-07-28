@@ -42,7 +42,7 @@ function BodyWeightChart() {
       )}
       {session.length === 0 && !isLoading && (
         <div className="mt-5 text-center">
-          <p>En attente de nouvelles séances...</p>
+          <div>En attente de nouvelles séances...</div>
         </div>
       )}
       {session.length > 0 && (

@@ -178,7 +178,7 @@ function ExerciseChart() {
       )}
       {exercise.length === 0 && !isLoading && (
         <div className="mt-4 text-center text-gray-500">
-          <p>Il n'y a pas de données pour cet exercice.</p>
+          <div>Il n'y a pas de données pour cet exercice.</div>
         </div>
       )}
     </>

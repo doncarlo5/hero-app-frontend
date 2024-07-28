@@ -435,7 +435,7 @@ const DoExercisePage = () => {
                 <AccordionItem value="comment">
                   <AccordionTrigger className="flex h-10 gap-2 px-5 text-left text-gray-500 dark:text-gray-400">
                     <div className="flex items-center gap-2">
-                      <Edit className="size-4" /> <p>Notes</p>
+                      <Edit className="size-4" /> <div>Notes</div>
                       {lastExercise?.comment && (
                         <span className="relative flex h-2 w-2">
                           <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-teal-400 opacity-75"></span>

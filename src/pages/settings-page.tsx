@@ -141,7 +141,7 @@ function SettingsPage() {
             </div>
           </form>
 
-          {error && <p>{error}</p>}
+          {error && <div>{error}</div>}
         </div>
       </main>
     </div>

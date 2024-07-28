@@ -155,7 +155,7 @@ function NewSessionButton({ Children }: { Children: any }) {
               <DialogDescription className="flex justify-center py-2 ">
                 <div className="flex w-3/5 items-end justify-center gap-2 text-xl font-light ">
                   <Input
-                    className="w-1/4 "
+                    className="w-2/5 text-lg font-bold text-black"
                     type="number"
                     id="body_weight"
                     value={weight}

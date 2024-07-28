@@ -46,7 +46,7 @@ export function TypesList() {
             <div className="container flex flex-col items-center justify-center gap-4 px-4 md:px-6">
               <div className="text-center">
                 <div className="flex flex-col items-center gap-5 text-sm text-gray-500 dark:text-gray-400">
-                  <p>Aucun exercice.</p>
+                  <div>Aucun exercice.</div>
                   <Link to="/profile/type/new-type">
                     <Button className="w-full">Créer un exercice</Button>
                   </Link>
@@ -87,7 +87,7 @@ export function TypesList() {
                   className="my-2 flex h-14 w-full items-center justify-center gap-1 rounded-lg border-2 border-dotted bg-slate-50 text-gray-600 active:translate-y-0.5"
                 >
                   <PlusIcon className="size-5" />
-                  <p>Créer un exercice</p>
+                  <div>Créer un exercice</div>
                 </Link>
               </div>
               {isLoading ? (
