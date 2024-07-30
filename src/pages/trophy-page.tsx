@@ -1,153 +1,199 @@
-import { ChevronLeft, LucideTrophy } from "lucide-react"
+import { useEffect, useState } from "react"
+import TrophySvg from "@/assets/trophy"
+import { ChevronLeft, TrophyIcon } from "lucide-react"
 import { Link } from "react-router-dom"
 
+import fetchApi from "@/lib/api-handler"
+import { cn } from "@/lib/utils"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
+import { Dialog, DialogContent, DialogDescription, DialogOverlay, DialogTitle } from "@/components/ui/dialog"
 import { Navbar } from "@/components/navbar"
 
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../components/ui/accordion"
+interface ExerciseType {
+  _id: string
+  name: string
+  advice: string
+  timer: number
+  repRange1: string
+  repRange2: string
+  repRange3: string
+  type_session: string
+  owner: string
+  createdAt: string
+  updatedAt: string
+  __v: number
+}
+
+interface ExerciseUser {
+  _id: string
+  type: string
+  weight: number[]
+  rep: number[]
+  session: string
+  owner: string
+  comment: string
+  createdAt: string
+  updatedAt: string
+  __v: number
+}
+
+interface Trophy {
+  _id: string
+  name: string
+  exerciseType: ExerciseType
+  exerciseUser: ExerciseUser
+  repsGoal: number
+  weightMultiplier: number
+  awardedAt: string | null
+  achieved: boolean
+  description: string
+  repsUser: number
+  weightUser: number
+  owner: string
+  createdAt: string
+  updatedAt: string
+  __v: number
+}
 
 function TrophyPage() {
-  return (
-    <div className="">
-      <div className="">
-        <Navbar />
-        <main className="container mx-auto my-0 flex h-dvh max-w-lg flex-col">
-          <div className="flex items-center pt-5">
-            <Link to="/profile">
-              <Button variant="outline" size="icon">
-                <ChevronLeft className="h-4 w-4" />
-              </Button>
-            </Link>
-            <div>
-              <h1 className="ml-5 text-3xl font-medium">Trophées</h1>
-            </div>
-          </div>
+  const [trophies, setTrophies] = useState<Trophy[]>([])
+  const [selectedTrophy, setSelectedTrophy] = useState<Trophy | null>(null)
 
-          <div className="pt-5">
-            <Accordion type="single" collapsible className="">
-              <AccordionItem value="item-1">
-                <AccordionTrigger>Overhead Press - 10 reps</AccordionTrigger>
-                <AccordionContent>
-                  <ul className="flex list-inside list-disc flex-col gap-2">
-                    <li>
-                      <span className="">Silver: 50% du poids de corps</span>
-                    </li>
-                    <li>
-                      <span className="">Gold: 60% du poids de corps</span>
-                    </li>
-                    <li>
-                      <span className="">Platinum: 70% du poids de corps</span>
-                    </li>
-                    <li>
-                      <span className="">Diamant: 80% du poids de corps</span>
-                    </li>
-                    <li>
-                      <span className="">Master: 90% du poids de corps</span>
-                    </li>
-                    <li>
-                      <span className="">Challenger: 100% du poids de corps</span>
-                    </li>
-                  </ul>
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="item-2">
-                <AccordionTrigger>Tractions - 5 reps</AccordionTrigger>
-                <AccordionContent>
-                  <ul className="flex list-inside list-disc flex-col gap-2">
-                    <li>
-                      <span className="">Silver: Poids du corps</span>
-                    </li>
-                    <li>
-                      <span className="">Gold: 10% du poids de corps</span>
-                    </li>
-                    <li>
-                      <span className="">Platinum: 20% du poids de corps</span>
-                    </li>
-                    <li>
-                      <span className="">Diamant: 30% du poids de corps</span>
-                    </li>
-                    <li>
-                      <span className="">Master: 40% du poids de corps</span>
-                    </li>
-                    <li>
-                      <span className="">Grand Master: 50% du poids de corps</span>
-                    </li>
-                    <li>
-                      <span className="">Challenger: 60% du poids de corps</span>
-                    </li>
-                  </ul>{" "}
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="item-3">
-                <AccordionTrigger>Développé incliné - 5 reps</AccordionTrigger>
-                <AccordionContent>
-                  {" "}
-                  <ul className="flex list-inside list-disc flex-col gap-2">
-                    <li>
-                      <span className="">Silver: 60% du poids du corps</span>
-                    </li>
-                    <li>
-                      <span className="">Gold: 75% du poids de corps</span>
-                    </li>
-                    <li>
-                      <span className="">Platinum: 90% du poids de corps</span>
-                    </li>
-                    <li>
-                      <span className="">Diamant: 105% du poids de corps</span>
-                    </li>
-                    <li>
-                      <span className="">Master: 120% du poids de corps</span>
-                    </li>
-                    <li>
-                      <span className="">Grand Master: 135% du poids de corps</span>
-                    </li>
-                    <li>
-                      <span className="">Challenger: 150% du poids de corps</span>
-                    </li>
-                  </ul>{" "}
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="item-4">
-                <AccordionTrigger>Développé couché - 5 reps</AccordionTrigger>
-                <AccordionContent>
-                  {" "}
-                  <ul className="flex list-inside list-disc flex-col gap-2">
-                    <li>
-                      <span className="">Silver: 60% du poids du corps</span>
-                    </li>
-                    <li>
-                      <span className="">Gold: 80% du poids de corps</span>
-                    </li>
-                    <li>
-                      <span className="">Platinum: 100% du poids de corps</span>
-                    </li>
-                    <li>
-                      <span className="">Diamant: 120% du poids de corps</span>
-                    </li>
-                    <li>
-                      <span className="">Master: 140% du poids de corps</span>
-                    </li>
-                    <li>
-                      <span className="">Grand Master: 160% du poids de corps</span>
-                    </li>
-                    <li>
-                      <span className="">Challenger: 180% du poids de corps</span>
-                    </li>
-                  </ul>{" "}
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-            <div>
-              <div className="mt-10 flex items-center justify-center ">
-                <div className="flex h-20 w-20 flex-col items-center justify-center gap-1 rounded-3xl border-2 border-dotted border-gray-200 dark:border-gray-800">
-                  <LucideTrophy strokeWidth={1} size={25} className="text-gray-300 dark:text-gray-400" />
-                  <span className="text-xs italic text-gray-300 dark:text-gray-400">À venir...</span>
+  useEffect(() => {
+    const fetchTrophies = async () => {
+      try {
+        const response: Trophy[] = await fetchApi("/api/trophies")
+        setTrophies(response)
+        console.log("response", response)
+      } catch (error) {
+        console.error("Error fetching trophies:", error)
+      }
+    }
+
+    fetchTrophies()
+  }, [])
+
+  const groupedTrophies = trophies.reduce(
+    (acc, trophy) => {
+      if (!acc[trophy.exerciseType.name]) {
+        acc[trophy.exerciseType.name] = []
+      }
+      acc[trophy.exerciseType.name].push(trophy)
+      return acc
+    },
+    {} as Record<string, Trophy[]>
+  )
+
+  const getTrophyColors = (name: string) => {
+    switch (name.toLowerCase()) {
+      case "silver":
+        return ["#C0C0C0", "#E0E0E0"]
+      case "gold":
+        return ["#FFD700", "#FFA500"]
+      case "platinum":
+        return ["#E5E4E2", "#BCC6CC"]
+      case "diamond":
+        return ["#B9F2FF", "#00C78C"]
+      case "master":
+        return ["#FF69B4", "#FF1493"]
+      case "grand_master":
+        return ["#800080", "#DA70D6"]
+      case "challenger":
+        return ["#DC143C", "#FF4500"]
+      default:
+        return ["#FFFFFF", "#000000"]
+    }
+  }
+
+  return (
+    <div>
+      <Navbar />
+      <main className="container mx-auto my-0 flex h-dvh max-w-lg flex-col">
+        <div className="flex items-center pt-5">
+          <Link to="/profile">
+            <Button variant="outline" size="icon">
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+          </Link>
+          <div>
+            <h1 className="ml-5 text-3xl font-medium">Trophées</h1>
+          </div>
+        </div>
+
+        <Accordion type="multiple" className="pt-5">
+          {Object.keys(groupedTrophies).map((exerciseTypeName) => (
+            <AccordionItem key={exerciseTypeName} value={exerciseTypeName}>
+              <AccordionTrigger className="flex w-full justify-between py-2">
+                <span className="text-xl font-semibold">{exerciseTypeName}</span>
+              </AccordionTrigger>
+              <AccordionContent>
+                {groupedTrophies[exerciseTypeName].map((trophy) => {
+                  const [fromColor, toColor] = getTrophyColors(trophy.name)
+                  return (
+                    <Card className="my-2 w-full max-w-sm" key={trophy._id} onClick={() => setSelectedTrophy(trophy)}>
+                      <CardContent className="grid gap-6 p-6">
+                        <div className="flex items-center gap-4">
+                          <div
+                            className={cn(
+                              !trophy.achieved && "opacity-20",
+                              "flex aspect-square w-12 items-center justify-center rounded-md bg-gradient-to-r p-3"
+                            )}
+                            style={{
+                              backgroundImage: `linear-gradient(to right, ${fromColor}, ${toColor})`,
+                            }}
+                          >
+                            <TrophySvg className="size-7 text-white" />
+                          </div>
+                          <div className="space-y-1">
+                            <h3 className="text-xl font-semibold capitalize">{trophy.name}</h3>
+                            {trophy.achieved ? (
+                              <p className="text-sm">
+                                Obtenu le: {trophy.awardedAt ? new Date(trophy.awardedAt).toLocaleDateString() : ""}
+                              </p>
+                            ) : (
+                              <p className="text-sm">Conditions: {trophy.description}</p>
+                            )}
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )
+                })}
+              </AccordionContent>
+            </AccordionItem>
+          ))}
+        </Accordion>
+
+        {selectedTrophy && (
+          <Dialog open={!!selectedTrophy} onOpenChange={() => setSelectedTrophy(null)}>
+            <DialogOverlay className="" />
+            <DialogContent className="">
+              <div className="w-full max-w-md rounded-lg bg-white p-6">
+                <DialogTitle className="text-2xl font-bold">{selectedTrophy.name}</DialogTitle>
+                <DialogDescription className="mt-2 text-sm text-gray-500">
+                  Conditions: {selectedTrophy.description}
+                </DialogDescription>
+                <div className="mt-4 space-y-2">
+                  <div>Exercise: {selectedTrophy.exerciseType.name}</div>
+                  <div>Reps: {selectedTrophy.repsUser}</div>
+                  <div>Weight: {selectedTrophy.weightUser}kg</div>
+                  <div>
+                    Awarded At:{" "}
+                    {selectedTrophy.awardedAt ? new Date(selectedTrophy.awardedAt).toLocaleDateString() : ""}
+                  </div>
+                </div>
+                <div className="mt-6 flex justify-end">
+                  <Button variant="outline" onClick={() => setSelectedTrophy(null)}>
+                    Close
+                  </Button>
                 </div>
               </div>
-            </div>
-          </div>
-        </main>
-      </div>
+            </DialogContent>
+          </Dialog>
+        )}
+      </main>
     </div>
   )
 }

@@ -158,13 +158,23 @@ const DoExercisePage = () => {
       })
 
       const updatedSession = {
-        exercise_user_list: [...session.exercise_user_list, response.id],
+        exercise_user_list: [...session.exercise_user_list, response._id],
       }
 
       await fetchApi(`/api/sessions/${sessionId}`, {
         method: "PUT",
         body: JSON.stringify(updatedSession),
       })
+
+      if (response.newTrophies) {
+        response.newTrophies.forEach((trophy: any) => {
+          toast({
+            title: "Nouveau trophée débloqué",
+            description: trophy.description,
+            variant: "success",
+          })
+        })
+      }
 
       navigate(`/history/session/${sessionId}`)
     } catch (error: any) {
