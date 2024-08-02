@@ -59,6 +59,13 @@ const NewType = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      if (formState.type_session.length === 0) {
+        toast({
+          title: "⚠️ Tu dois choisir au moins un type de séance.",
+          variant: "destructive",
+        });
+        return;
+      }
       setIsLoading(true);
       const timerValue = parseInt(formState.timer);
       await fetchApi(`/api/exercise-type`, {
