@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
-import TrophySvg from "@/assets/trophy"
-import { ChevronLeft } from "lucide-react"
+import { format } from "date-fns"
+import { ChevronLeft, ChevronRight, LucideInfo, User, User2Icon } from "lucide-react"
 import { Link } from "react-router-dom"
 
 import fetchApi from "@/lib/api-handler"
@@ -9,6 +9,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogOverlay, DialogTitle } from "@/components/ui/dialog"
 import { Navbar } from "@/components/navbar"
+import TrophyIcon from "@/components/TrophyIcon"
 
 interface ExerciseType {
   _id: string
@@ -55,6 +56,9 @@ interface Trophy {
   updatedAt: string
   __v: number
   trophyType: string
+  level: number
+  rewardText: string
+  bodyWeight: number
 }
 
 function TrophyPage() {
@@ -86,27 +90,6 @@ function TrophyPage() {
     {} as Record<string, Trophy[]>
   )
 
-  const getTrophyColors = (trophyType: string) => {
-    switch (trophyType) {
-      case "silver":
-        return ["#C0C0C0", "#E0E0E0"]
-      case "gold":
-        return ["#FFD700", "#FFA500"]
-      case "platinum":
-        return ["#E5E4E2", "#BCC6CC"]
-      case "diamond":
-        return ["#B9F2FF", "#00C78C"]
-      case "master":
-        return ["#FF69B4", "#FF1493"]
-      case "grand_master":
-        return ["#800080", "#DA70D6"]
-      case "challenger":
-        return ["#DC143C", "#FF4500"]
-      default:
-        return ["#FFFFFF", "#000000"]
-    }
-  }
-
   return (
     <div>
       <Navbar />
@@ -130,40 +113,33 @@ function TrophyPage() {
               </AccordionTrigger>
               <AccordionContent>
                 {groupedTrophies[exerciseTypeName].map((trophy, i) => {
-                  const [fromColor, toColor] = getTrophyColors(trophy.trophyType)
                   return (
                     <div className=" w-full max-w-sm" key={trophy._id} onClick={() => setSelectedTrophy(trophy)}>
                       <div className="grid">
                         <div
                           className={cn(
-                            "my-1 ml-5 h-10 w-[0.15rem] translate-x-0.5 rounded-full",
-                            trophy.achieved ? "bg-teal-500" : "bg-gray-300",
+                            " ml-9 mt-1 h-10 w-[0.15rem] translate-x-0.5 rounded-full",
+                            trophy.achieved ? "bg-teal-700/80" : "bg-gray-200",
                             i === 0 && "hidden"
                           )}
                         ></div>
 
                         <div className="flex items-center gap-4">
-                          <div
-                            className={cn(
-                              !trophy.achieved && "opacity-30 grayscale",
-                              "flex aspect-square w-12 items-center justify-center rounded-md bg-gradient-to-r p-3 "
-                            )}
-                            style={{
-                              backgroundImage: `linear-gradient(to right, ${fromColor}, ${toColor})`,
-                            }}
-                          >
-                            <TrophySvg className="size-7 text-white" />
-                          </div>
+                          <TrophyIcon
+                            level={trophy.level}
+                            achieved={trophy.achieved}
+                            className={`size-20 ${trophy.achieved ? "" : "grayscale"}`}
+                          />
                           <div className="space-y-1">
                             {trophy.achieved ? (
-                              <h3 className="text-xl font-semibold capitalize">Trohée {trophy.trophyType}</h3>
+                              <div className="text-xl font-semibold capitalize">Trohée {trophy.trophyType}</div>
                             ) : (
-                              <h3 className="text-xl font-semibold capitalize">Trohée {trophy.trophyType}</h3>
+                              <div className="mt-1 italic text-gray-500">???</div>
                             )}
                             {trophy.achieved ? (
-                              <p className="text-sm">
+                              <div className="text-sm">
                                 Obtenu le: {trophy.awardedAt ? new Date(trophy.awardedAt).toLocaleDateString() : ""}
-                              </p>
+                              </div>
                             ) : (
                               ""
                             )}
@@ -180,36 +156,56 @@ function TrophyPage() {
 
         {selectedTrophy && (
           <Dialog open={!!selectedTrophy} onOpenChange={() => setSelectedTrophy(null)}>
-            <DialogOverlay className="" />
-            <DialogContent className="">
-              <div className="w-full max-w-md rounded-lg bg-white p-6">
-                <DialogTitle className="text-2xl font-bold">{selectedTrophy.name}</DialogTitle>
-                <DialogDescription className="mt-2 text-sm text-gray-500">
-                  Conditions: {selectedTrophy.description}
-                </DialogDescription>
+            <DialogTitle>{""}</DialogTitle>
+            <DialogContent className="h-3/5 w-11/12 rounded-3xl sm:max-w-md">
+              <DialogDescription>
                 {selectedTrophy.achieved ? (
-                  <div className="mt-4 space-y-2">
-                    <div>Exercise: {selectedTrophy.exerciseType.name}</div>
-                    <div>Reps: {selectedTrophy.repsUser}</div>
-                    <div>Weight: {selectedTrophy.weightUser}kg</div>
-                    <div>
-                      Awarded At:{" "}
-                      {selectedTrophy.awardedAt ? new Date(selectedTrophy.awardedAt).toLocaleDateString() : ""}
+                  <div className=" relative">
+                    <TrophyIcon
+                      level={selectedTrophy.level}
+                      achieved={selectedTrophy.achieved}
+                      className="absolute -top-16  left-0 right-0 m-auto size-44"
+                    />
+                    <div className=" flex h-full flex-col justify-between">
+                      <div className="mt-28 flex flex-col items-center">
+                        <div className=" text-4xl font-semibold capitalize text-gray-900 mb-2 ">
+                          {selectedTrophy.rewardText}
+                        </div>
+                        <div className=" px-3 text-center text-gray-600 mb-2">
+                          Tu as obtenu le trophée{" "}
+                          <span className=" font-medium capitalize ">{selectedTrophy.trophyType} </span> pour l'exercice{" "}
+                          <span className=" font-medium capitalize ">{selectedTrophy.exerciseType.name}</span> avec{" "}
+                          {selectedTrophy.repsUser} reps.
+                        </div>
+                        <div className="flex items-center gap-2 rounded-lg border-2 border-double pl-4 pr-2 py-1 text-xs text-gray-700 mb-2 ">
+                          <div>
+                            <Link to={`/history/exercise/${selectedTrophy.exerciseUser._id}`} className=" flex items-center gap-2">
+                              <div> Lien vers l'exercice </div>
+                              <ChevronRight className="h-4 w-4 mx-0 text-gray-700" />
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className=" py-1 text-gray-500 text-center border mt-1 flex flex-col justify-evenly rounded-lg bg-slate-50 items-center gap-2 italic ">
+                        <div>Objectif: {selectedTrophy.description}</div>
+                        <div>Rep min requises: {selectedTrophy.repsGoal}</div>
+                      </div>
                     </div>
                   </div>
                 ) : (
-                  <div className="mt-4 space-y-2">
+                  <div className="space-y-2">
                     <div>Exercise: {selectedTrophy.exerciseType.name}</div>
                     <div>Rep minimum: {selectedTrophy.repsGoal}</div>
                     <div>Weight: {selectedTrophy.weightMultiplier}kg</div>
                   </div>
                 )}
-                <div className="mt-4 flex justify-end">
-                  <Button variant="outline" onClick={() => setSelectedTrophy(null)}>
+                <div className="absolute bottom-2 right-2 justify-end">
+                  <Button variant="secondary" onClick={() => setSelectedTrophy(null)}>
                     Close
                   </Button>
                 </div>
-              </div>
+              </DialogDescription>
             </DialogContent>
           </Dialog>
         )}
