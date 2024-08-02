@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react"
 import TrophySvg from "@/assets/trophy"
-import { ChevronLeft, TrophyIcon } from "lucide-react"
+import { ChevronLeft } from "lucide-react"
 import { Link } from "react-router-dom"
 
 import fetchApi from "@/lib/api-handler"
 import { cn } from "@/lib/utils"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
 import { Dialog, DialogContent, DialogDescription, DialogOverlay, DialogTitle } from "@/components/ui/dialog"
 import { Navbar } from "@/components/navbar"
 
@@ -55,6 +54,7 @@ interface Trophy {
   createdAt: string
   updatedAt: string
   __v: number
+  trophyType: string
 }
 
 function TrophyPage() {
@@ -86,8 +86,8 @@ function TrophyPage() {
     {} as Record<string, Trophy[]>
   )
 
-  const getTrophyColors = (name: string) => {
-    switch (name.toLowerCase()) {
+  const getTrophyColors = (trophyType: string) => {
+    switch (trophyType) {
       case "silver":
         return ["#C0C0C0", "#E0E0E0"]
       case "gold":
@@ -122,23 +122,31 @@ function TrophyPage() {
           </div>
         </div>
 
-        <Accordion type="multiple" className="pt-5">
+        <Accordion type="multiple" className=" pt-5">
           {Object.keys(groupedTrophies).map((exerciseTypeName) => (
             <AccordionItem key={exerciseTypeName} value={exerciseTypeName}>
-              <AccordionTrigger className="flex w-full justify-between py-2">
-                <span className="text-xl font-semibold">{exerciseTypeName}</span>
+              <AccordionTrigger className="">
+                <span className="">{exerciseTypeName}</span>
               </AccordionTrigger>
               <AccordionContent>
-                {groupedTrophies[exerciseTypeName].map((trophy) => {
-                  const [fromColor, toColor] = getTrophyColors(trophy.name)
+                {groupedTrophies[exerciseTypeName].map((trophy, i) => {
+                  const [fromColor, toColor] = getTrophyColors(trophy.trophyType)
                   return (
-                    <Card className="my-2 w-full max-w-sm" key={trophy._id} onClick={() => setSelectedTrophy(trophy)}>
-                      <CardContent className="grid gap-6 p-6">
+                    <div className=" w-full max-w-sm" key={trophy._id} onClick={() => setSelectedTrophy(trophy)}>
+                      <div className="grid">
+                        <div
+                          className={cn(
+                            "my-1 ml-5 h-10 w-[0.15rem] translate-x-0.5 rounded-full",
+                            trophy.achieved ? "bg-teal-500" : "bg-gray-300",
+                            i === 0 && "hidden"
+                          )}
+                        ></div>
+
                         <div className="flex items-center gap-4">
                           <div
                             className={cn(
-                              !trophy.achieved && "opacity-20",
-                              "flex aspect-square w-12 items-center justify-center rounded-md bg-gradient-to-r p-3"
+                              !trophy.achieved && "opacity-30 grayscale",
+                              "flex aspect-square w-12 items-center justify-center rounded-md bg-gradient-to-r p-3 "
                             )}
                             style={{
                               backgroundImage: `linear-gradient(to right, ${fromColor}, ${toColor})`,
@@ -147,18 +155,22 @@ function TrophyPage() {
                             <TrophySvg className="size-7 text-white" />
                           </div>
                           <div className="space-y-1">
-                            <h3 className="text-xl font-semibold capitalize">{trophy.name}</h3>
+                            {trophy.achieved ? (
+                              <h3 className="text-xl font-semibold capitalize">Trohée {trophy.trophyType}</h3>
+                            ) : (
+                              <h3 className="text-xl font-semibold capitalize">Trohée {trophy.trophyType}</h3>
+                            )}
                             {trophy.achieved ? (
                               <p className="text-sm">
                                 Obtenu le: {trophy.awardedAt ? new Date(trophy.awardedAt).toLocaleDateString() : ""}
                               </p>
                             ) : (
-                              <p className="text-sm">Conditions: {trophy.description}</p>
+                              ""
                             )}
                           </div>
                         </div>
-                      </CardContent>
-                    </Card>
+                      </div>
+                    </div>
                   )
                 })}
               </AccordionContent>
@@ -175,16 +187,24 @@ function TrophyPage() {
                 <DialogDescription className="mt-2 text-sm text-gray-500">
                   Conditions: {selectedTrophy.description}
                 </DialogDescription>
-                <div className="mt-4 space-y-2">
-                  <div>Exercise: {selectedTrophy.exerciseType.name}</div>
-                  <div>Reps: {selectedTrophy.repsUser}</div>
-                  <div>Weight: {selectedTrophy.weightUser}kg</div>
-                  <div>
-                    Awarded At:{" "}
-                    {selectedTrophy.awardedAt ? new Date(selectedTrophy.awardedAt).toLocaleDateString() : ""}
+                {selectedTrophy.achieved ? (
+                  <div className="mt-4 space-y-2">
+                    <div>Exercise: {selectedTrophy.exerciseType.name}</div>
+                    <div>Reps: {selectedTrophy.repsUser}</div>
+                    <div>Weight: {selectedTrophy.weightUser}kg</div>
+                    <div>
+                      Awarded At:{" "}
+                      {selectedTrophy.awardedAt ? new Date(selectedTrophy.awardedAt).toLocaleDateString() : ""}
+                    </div>
                   </div>
-                </div>
-                <div className="mt-6 flex justify-end">
+                ) : (
+                  <div className="mt-4 space-y-2">
+                    <div>Exercise: {selectedTrophy.exerciseType.name}</div>
+                    <div>Rep minimum: {selectedTrophy.repsGoal}</div>
+                    <div>Weight: {selectedTrophy.weightMultiplier}kg</div>
+                  </div>
+                )}
+                <div className="mt-4 flex justify-end">
                   <Button variant="outline" onClick={() => setSelectedTrophy(null)}>
                     Close
                   </Button>

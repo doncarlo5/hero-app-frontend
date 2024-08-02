@@ -1,41 +1,43 @@
-import { useEffect, useState } from "react"
-import { PlusIcon } from "lucide-react"
-import { Link } from "react-router-dom"
+import { useEffect, useState } from "react";
+import { PlusIcon } from "lucide-react";
+import { Link } from "react-router-dom";
 
-import fetchApi from "@/lib/api-handler"
-import { Button } from "@/components/ui/button"
-import { Skeleton } from "@/components/ui/skeleton"
-import ExerciseTypeCard from "@/components/exercise-type-card"
-import { Navbar } from "@/components/navbar"
+import fetchApi from "@/lib/api-handler";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
+import ExerciseTypeCard from "@/components/exercise-type-card";
+import { Navbar } from "@/components/navbar";
 
 export function TypesList() {
-  const [exerciseType, setExerciseType] = useState([] as any[])
-  const [filteredExerciseType, setFilteredExerciseType] = useState([] as any[])
-  const [currentFilter, setCurrentFilter] = useState<string | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
+  const [exerciseType, setExerciseType] = useState([] as any[]);
+  const [filteredExerciseType, setFilteredExerciseType] = useState([] as any[]);
+  const [currentFilter, setCurrentFilter] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const skeletonLoaders = Array(5).fill(0)
+  const skeletonLoaders = Array(5).fill(0);
 
   const fetchTypes = async () => {
     try {
-      const response = await fetchApi("/api/exercise-type?limit=1000&sort=-updatedAt")
-      setExerciseType(response)
-      setFilteredExerciseType(response)
+      const response = await fetchApi("/api/exercise-type?limit=1000&sort=-updatedAt");
+      setExerciseType(response);
+      setFilteredExerciseType(response);
     } catch (error: any) {
-      console.error("Fetch error: ", error)
+      console.error("Fetch error: ", error);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
-    fetchTypes()
-  }, [])
+    fetchTypes();
+  }, []);
 
   const handleFilter = (typeSession: string | null) => {
-    setCurrentFilter(typeSession)
-    setFilteredExerciseType(typeSession ? exerciseType.filter((type) => type.type_session === typeSession) : exerciseType)
-  }
+    setCurrentFilter(typeSession);
+    setFilteredExerciseType(
+      typeSession ? exerciseType.filter((type) => type.type_session.includes(typeSession)) : exerciseType
+    );
+  };
 
   if (!isLoading && exerciseType.length === 0) {
     return (
@@ -56,7 +58,7 @@ export function TypesList() {
           </div>
         </main>
       </div>
-    )
+    );
   }
 
   return (
@@ -74,7 +76,9 @@ export function TypesList() {
                   <Button
                     key={filter}
                     variant="secondary"
-                    className={`w-1/4 border-2 border-transparent ${currentFilter === filter ? "border-slate-400" : ""} ${filter === "Tous" ? "" : ""}`}
+                    className={`w-1/4 border-2 border-transparent ${
+                      currentFilter === filter ? "border-slate-400" : ""
+                    } ${filter === "Tous" ? "" : ""}`}
                     onClick={() => handleFilter(filter === "Tous" ? null : filter)}
                   >
                     {filter}
@@ -108,7 +112,7 @@ export function TypesList() {
         </div>
       </main>
     </div>
-  )
+  );
 }
 
-export default TypesList
+export default TypesList;

@@ -1,6 +1,7 @@
 import { LucideClock4, LucideInfo, LucideTag } from "lucide-react"
 import { Link } from "react-router-dom"
 
+import { Badge } from "./ui/badge"
 import { Card } from "./ui/card"
 
 function ExerciseTypeCard({ exerciseType }: { exerciseType: any }) {
@@ -8,12 +9,32 @@ function ExerciseTypeCard({ exerciseType }: { exerciseType: any }) {
     <Link to={`/profile/type/${exerciseType._id}`}>
       <Card className="flex h-full flex-col border-2 border-double active:translate-y-0.5">
         <div className=" flex justify-between">
-          <div className="ml-1 mt-1 flex items-center gap-1 rounded-sm rounded-tl-lg border px-2">
-            <LucideTag fill="#cbd5e1" size={13} className="text-gray-500 dark:text-gray-400" />
-            <span className=" text-sm font-medium ">{exerciseType.type_session}</span>
+          <div className="ml-1 mt-1 flex items-center gap-1">
+            {/* <LucideTag fill="#cbd5e1" size={13} className="text-gray-500 dark:text-gray-400" /> */}
+            {exerciseType.type_session.map((session: string) => (
+              <Badge
+                key={session}
+                variant={
+                  session === "Upper A"
+                    ? "upperA"
+                    : session === "Upper B"
+                      ? "upperB"
+                      : session === "Lower"
+                        ? "lower"
+                        : session === "Séance A"
+                          ? "seanceA"
+                          : session === "Séance B"
+                            ? "seanceB"
+                            : "default"
+                }
+              >
+                {session}
+              </Badge>
+            ))}
+            {/* <span className=" text-sm font-medium ">{exerciseType.type_session.join(" & ")}</span> */}
           </div>
           <div className="mr-1 mt-1 flex items-center gap-1 rounded-sm rounded-tr-lg border px-2">
-            <LucideClock4 fill="#cbd5e1" size={13} className="text-gray-500 dark:text-gray-400" />
+            <LucideClock4 fill="#e8ecf2" size={13} className="text-gray-500 dark:text-gray-400" />
             <span className=" text-sm font-medium ">{exerciseType.timer}</span>
           </div>
         </div>

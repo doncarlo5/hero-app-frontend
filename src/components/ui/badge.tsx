@@ -15,11 +15,11 @@ const badgeVariants = cva(
         destructive:
           "border-transparent bg-destructive text-destructive-foreground shadow hover:bg-destructive/80",
         outline: "text-foreground",
-        upperA: "border-transparent bg-sky-100 text-sky-600 font-medium hover:bg-sky-100/70",
-        upperB: "border-transparent bg-purple-100 text-purple-600 font-medium hover:bg-purple-100/70",
-        lower: "border-transparent bg-emerald-100 text-emerald-600 font-medium hover:bg-emerald-100/70",
-        seanceA: "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        seanceB: "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        upperA: "border-transparent bg-sky-100/60 text-sky-700/80 font-medium hover:bg-sky-100/70",
+        upperB: "border-transparent bg-purple-100/60 text-purple-700/80 font-medium hover:bg-purple-100/70",
+        lower: "border-transparent bg-emerald-100/60 text-emerald-700/80 font-medium hover:bg-emerald-100/70",
+        seanceA: "border-transparent bg-secondary text-secondary-foreground/80 hover:bg-secondary/80",
+        seanceB: "border-transparent bg-secondary text-secondary-foreground/80 hover:bg-secondary/80",
       },
     },
     defaultVariants: {
