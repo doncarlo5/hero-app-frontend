@@ -1,4 +1,4 @@
-import { LucideClock4, LucideInfo, LucideTag } from "lucide-react"
+import { LucideClock4, LucideInfo } from "lucide-react"
 import { Link } from "react-router-dom"
 
 import { Badge } from "./ui/badge"

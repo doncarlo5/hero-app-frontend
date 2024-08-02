@@ -165,14 +165,14 @@ const OneType = () => {
                   value={formState.name}
                   onChange={handleChange}
                   required
-                  disabled={!isEditable}
+                  disabled={!isEditable || type?.trophyLocked}
                 />
               </div>
 
               <div className="space-y-2 col-span-2">
                 <Label>Type de séance</Label>
                 <div className="flex items-center justify-evenly">
-                  <div className=" flex flex-col space-y-3">
+                  <div className="flex flex-col space-y-3">
                     <div className="flex items-center space-x-2">
                       <Checkbox
                         id="Upper A"
@@ -201,8 +201,8 @@ const OneType = () => {
                       <Label htmlFor="Upper B">Upper B</Label>
                     </div>
                   </div>
-                  <Separator orientation="vertical" className=" h-14" />
-                  <div className=" flex flex-col space-y-4">
+                  <Separator orientation="vertical" className="h-14" />
+                  <div className="flex flex-col space-y-4">
                     <div className="flex items-center space-x-2">
                       <Checkbox
                         id="Séance A"
