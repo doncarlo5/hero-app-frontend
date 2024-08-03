@@ -1,28 +1,29 @@
-import React, { useState } from "react";
-import { ReloadIcon } from "@radix-ui/react-icons";
-import { ChevronLeft } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState } from "react"
+import { ReloadIcon } from "@radix-ui/react-icons"
+import { ChevronLeft, MinusCircle, PlusCircle } from "lucide-react"
+import { Link, useNavigate } from "react-router-dom"
 
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
-import { Textarea } from "@/components/ui/textarea";
-import { toast } from "@/components/ui/use-toast";
-import { Navbar } from "@/components/navbar";
+import { Button } from "@/components/ui/button"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Separator } from "@/components/ui/separator"
+import { Textarea } from "@/components/ui/textarea"
+import { toast } from "@/components/ui/use-toast"
+import { Navbar } from "@/components/navbar"
 
-import fetchApi from "../lib/api-handler";
+import fetchApi from "../lib/api-handler"
 
 interface FormState {
-  id: string;
-  name: string;
-  advice: string;
-  timer: string;
-  repRange1: string;
-  repRange2: string;
-  repRange3: string;
-  type_session: string[];
+  id: string
+  name: string
+  advice: string
+  timer: string
+  repRange1: string
+  repRange2: string
+  repRange3: string
+  repRange4: string
+  type_session: string[]
 }
 
 const NewType = () => {
@@ -34,40 +35,42 @@ const NewType = () => {
     repRange1: "",
     repRange2: "",
     repRange3: "",
+    repRange4: "",
     type_session: [],
-  });
-  const [isLoading, setIsLoading] = useState(false);
+  })
+  const [isLoading, setIsLoading] = useState(false)
+  const [addRepRange4, setAddRepRange4] = useState(false)
 
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { target } = event;
-    const key = target.id;
-    const value = target.value;
-    setFormState({ ...formState, [key]: value });
-  };
+    const { target } = event
+    const key = target.id
+    const value = target.value
+    setFormState({ ...formState, [key]: value })
+  }
 
   const handleCheckboxChange = (checked: boolean, id: string) => {
     setFormState((prevState) => {
       const updatedTypeSession = checked
         ? [...prevState.type_session, id]
-        : prevState.type_session.filter((session) => session !== id);
-      return { ...prevState, type_session: updatedTypeSession };
-    });
-  };
+        : prevState.type_session.filter((session) => session !== id)
+      return { ...prevState, type_session: updatedTypeSession }
+    })
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
     try {
       if (formState.type_session.length === 0) {
         toast({
           title: "⚠️ Tu dois choisir au moins un type de séance.",
           variant: "destructive",
-        });
-        return;
+        })
+        return
       }
-      setIsLoading(true);
-      const timerValue = parseInt(formState.timer);
+      setIsLoading(true)
+      const timerValue = parseInt(formState.timer)
       await fetchApi(`/api/exercise-type`, {
         method: "POST",
         body: JSON.stringify({
@@ -77,19 +80,20 @@ const NewType = () => {
           repRange1: formState.repRange1,
           repRange2: formState.repRange2,
           repRange3: formState.repRange3,
+          repRange4: formState.repRange4,
           advice: formState.advice,
         }),
-      });
-      navigate(`/profile/type`);
+      })
+      navigate(`/profile/type`)
       toast({
         title: "Type d'exercice créé.",
         description: "Vous pouvez maintenant faire votre séance!",
-      });
+      })
     } catch (error: any) {
-      setIsLoading(false);
-      console.error(error.message);
+      setIsLoading(false)
+      console.error(error.message)
     }
-  };
+  }
 
   return (
     <>
@@ -186,8 +190,12 @@ const NewType = () => {
               />
             </div>
             <div className="col-span-2 space-y-2 rounded-md bg-gray-50 p-5 dark:bg-slate-900 dark:bg-opacity-40">
-              <h2 className="col-span-2 text-lg font-medium">{`Objectif Répétitions [Range]`}</h2>
-
+              <div className=" flex items-center gap-2 ">
+                <h2 className="col-span-2 text-lg font-medium">{`Objectif Répétitions [Range]`}</h2>
+                <button type="button" onClick={() => setAddRepRange4(!addRepRange4)} className=" mt-1">
+                  {addRepRange4 ? <MinusCircle className="h-4 w-4" /> : <PlusCircle className="h-4 w-4" />}
+                </button>
+              </div>
               <div className="space-y-2">
                 <Label htmlFor="repRange1">
                   Série 1 <span className="text-red-800 ">*</span>
@@ -201,7 +209,6 @@ const NewType = () => {
                   type="text"
                 />
               </div>
-              <div className="space-y-2"></div>
               <div className="space-y-2">
                 <Label htmlFor="repRange2">
                   Série 2 <span className="text-red-800 ">*</span>
@@ -215,8 +222,6 @@ const NewType = () => {
                   type="text"
                 />
               </div>
-              <div className="space-y-2"></div>
-
               <div className="space-y-2">
                 <Label htmlFor="repRange3">
                   Série 3 <span className="text-red-800 ">*</span>
@@ -230,6 +235,21 @@ const NewType = () => {
                   type="text"
                 />
               </div>
+              {addRepRange4 && (
+                <div className="space-y-2">
+                  <Label htmlFor="repRange4">
+                    Série 4 <span className="text-red-800 ">*</span>
+                  </Label>
+                  <Input
+                    required
+                    id="repRange4"
+                    placeholder="Ex: 10-12"
+                    value={formState.repRange4}
+                    onChange={handleChange}
+                    type="text"
+                  />
+                </div>
+              )}
             </div>
             <div className="col-span-2 resize space-y-2">
               <Label htmlFor="advice">Conseil / Note</Label>
@@ -257,7 +277,7 @@ const NewType = () => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default NewType;
+export default NewType

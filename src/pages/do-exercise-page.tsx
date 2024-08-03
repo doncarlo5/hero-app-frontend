@@ -34,14 +34,17 @@ const DoExercisePage = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [isLoadingTypes, setIsLoadingTypes] = useState(true)
   const [showPrefillButton, setShowPrefillButton] = useState(false)
+  const [addRep4, setAddRep4] = useState(false)
 
   const [formState, setFormState] = useState({
     rep1: lastExercise?.rep[0] || "",
     rep2: lastExercise?.rep[1] || "",
     rep3: lastExercise?.rep[2] || "",
+    rep4: lastExercise?.rep[3] || "",
     weight1: lastExercise?.weight[0] || "",
     weight2: lastExercise?.weight[1] || "",
     weight3: lastExercise?.weight[2] || "",
+    weight4: lastExercise?.weight[3] || "",
     comment: lastExercise?.comment || "",
   })
 
@@ -75,8 +78,15 @@ const DoExercisePage = () => {
       weight2: lastExercise?.weight[1] || "",
       rep3: lastExercise?.rep[2] || "",
       weight3: lastExercise?.weight[2] || "",
+      rep4: lastExercise?.rep[3] || "",
+      weight4: lastExercise?.weight[3] || "",
       comment: "",
     })
+    if (lastExercise?.rep[3]) {
+      setAddRep4(true)
+    } else {
+      setAddRep4(false)
+    }
   }, [lastExercise])
 
   const onExerciseTypeChange = async (value: any) => {
@@ -136,6 +146,12 @@ const DoExercisePage = () => {
       weight2: formState.weight1,
       weight3: formState.weight1,
     })
+    if (oneExerciseType.repRange4) {
+      setFormState({
+        ...formState,
+        weight4: formState.weight1,
+      })
+    }
     setShowPrefillButton(false)
   }
 
@@ -150,12 +166,14 @@ const DoExercisePage = () => {
         method: "POST",
         body: JSON.stringify({
           type: oneExerciseType._id,
-          rep: [formState.rep1, formState.rep2, formState.rep3],
-          weight: [formState.weight1, formState.weight2, formState.weight3],
+          rep: [formState.rep1, formState.rep2, formState.rep3, formState?.rep4],
+          weight: [formState.weight1, formState.weight2, formState.weight3, formState?.weight4],
           comment: formState.comment,
           session: sessionId,
         }),
       })
+
+      console.log("response", response)
 
       const updatedSession = {
         exercise_user_list: [...session.exercise_user_list, response._id],
@@ -279,7 +297,7 @@ const DoExercisePage = () => {
                 Toutes les séries à {formState.weight1} KG
               </Button>
             )}
-            <div className="flex justify-center rounded-2xl bg-slate-50 py-4 dark:bg-slate-900 dark:bg-opacity-40 md:text-lg">
+            <div className="flex flex-col items-center justify-center rounded-2xl bg-slate-50 py-4 dark:bg-slate-900 dark:bg-opacity-40 md:text-lg">
               <div className="flex gap-2">
                 <div className="flex flex-col gap-1 text-center">
                   <p className="pb-1 text-sm text-gray-500 ">Série</p>
@@ -359,6 +377,33 @@ const DoExercisePage = () => {
                       </span>
                     </label>
                   </p>
+                  {(addRep4 || oneExerciseType.repRange4) && (
+                    <p className="flex h-9 w-9 items-center justify-center rounded-md bg-slate-200 bg-transparent px-3 py-1 font-mono text-sm text-gray-900 ">
+                      <label className="relative flex cursor-pointer items-center rounded-full " htmlFor="teal">
+                        <input
+                          type="checkbox"
+                          className="before:content[''] border-blue-gray-200 before:bg-blue-gray-500 peer relative h-7 w-7 cursor-pointer appearance-none rounded-sm border transition-all before:absolute before:left-2/4 before:top-2/4 before:block before:h-8 before:w-8 before:-translate-x-2/4 before:-translate-y-2/4 before:rounded-full before:opacity-0 before:transition-opacity checked:border-teal-700 checked:bg-teal-700 checked:before:bg-teal-700 hover:before:opacity-10"
+                          id="teal"
+                        />
+                        <span className="pointer-events-none absolute left-2/4 top-2/4 -translate-x-2/4 -translate-y-2/4 text-white opacity-0 transition-opacity peer-checked:opacity-100">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-6 w-6"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                            stroke="currentColor"
+                            strokeWidth="1"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                              clipRule="evenodd"
+                            ></path>
+                          </svg>
+                        </span>
+                      </label>
+                    </p>
+                  )}
                 </div>
                 <div className="flex flex-col gap-1 text-center">
                   <p className="pb-1 text-sm text-gray-500 ">Reps</p>
@@ -389,6 +434,17 @@ const DoExercisePage = () => {
                     type="number"
                     className="text-md w-12  rounded-xl text-center font-medium [appearance:textfield]  focus:bg-slate-50 focus:shadow-inner [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                   />
+                  {(addRep4 || oneExerciseType.repRange4) && (
+                    <Input
+                      id="rep4"
+                      placeholder={lastExercise?.rep[3]}
+                      value={formState.rep4}
+                      onChange={handleChange}
+                      required
+                      type="number"
+                      className="text-md w-12  rounded-xl text-center font-medium [appearance:textfield]  focus:bg-slate-50 focus:shadow-inner [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                    />
+                  )}
                 </div>
 
                 <div className="flex flex-col gap-1 text-center">
@@ -420,6 +476,17 @@ const DoExercisePage = () => {
                     type="number"
                     className="text-md w-20  rounded-xl text-center font-medium  [appearance:textfield] focus:bg-slate-50 focus:shadow-inner [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                   />
+                  {(addRep4 || oneExerciseType.repRange4) && (
+                    <Input
+                      id="weight4"
+                      placeholder={lastExercise?.weight[3]}
+                      value={formState.weight4}
+                      onChange={handleChange}
+                      required
+                      type="number"
+                      className="text-md w-20  rounded-xl text-center font-medium  [appearance:textfield] focus:bg-slate-50 focus:shadow-inner [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                    />
+                  )}
                 </div>
                 <div className="flex flex-col gap-1 text-center">
                   <p className="pb-1 text-sm text-gray-500 ">{`[Range]`}</p>
@@ -433,9 +500,26 @@ const DoExercisePage = () => {
                   <p className="text-md flex h-9 w-full items-center justify-center rounded-md bg-transparent px-1 py-1 font-light italic text-gray-700 ">
                     {oneExerciseType?.repRange3}
                   </p>
+                  {(addRep4 || oneExerciseType.repRange4) && (
+                    <p className="text-md flex h-9 w-full items-center justify-center rounded-md bg-transparent px-1 py-1 font-light italic text-gray-700 ">
+                      {oneExerciseType?.repRange4}
+                    </p>
+                  )}
                 </div>
               </div>
+              <button
+                type="button"
+                onClick={() => setAddRep4(!addRep4)}
+                className={`mt-4 w-6/12 rounded-xl ${oneExerciseType.repRange4 ? "hidden" : ""}`}
+              >
+                {addRep4 ? (
+                  <div className=" text-xs italic text-gray-400">Réduire d'une série ↑</div>
+                ) : (
+                  <div className=" text-xs italic text-gray-400 ">Ajouter une série ↓</div>
+                )}
+              </button>
             </div>
+
             <div className="pb-14 pt-5 ">
               <Accordion
                 type="single"

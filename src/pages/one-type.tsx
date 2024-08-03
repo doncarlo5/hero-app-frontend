@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { UpdateIcon } from "@radix-ui/react-icons";
-import { ChevronLeft, Edit, LucideLoader2, LucideTrash } from "lucide-react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react"
+import { UpdateIcon } from "@radix-ui/react-icons"
+import { ChevronLeft, Edit, LucideLoader2, LucideTrash, MinusCircle, PlusCircle } from "lucide-react"
+import { Link, useNavigate, useParams } from "react-router-dom"
 
 import {
   AlertDialog,
@@ -13,33 +13,36 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { toast } from "@/components/ui/use-toast";
-import { Navbar } from "@/components/navbar";
+} from "@/components/ui/alert-dialog"
+import { Button } from "@/components/ui/button"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Separator } from "@/components/ui/separator"
+import { Textarea } from "@/components/ui/textarea"
+import { toast } from "@/components/ui/use-toast"
+import { Navbar } from "@/components/navbar"
 
-import fetchApi from "../lib/api-handler";
-import { Separator } from "@/components/ui/separator";
+import fetchApi from "../lib/api-handler"
 
 interface FormState {
-  id: string;
-  name: string;
-  advice: string;
-  timer: string;
-  repRange1: string;
-  repRange2: string;
-  repRange3: string;
-  type_session: string[];
+  id: string
+  name: string
+  advice: string
+  timer: string
+  repRange1: string
+  repRange2: string
+  repRange3: string
+  repRange4?: string
+  type_session: string[]
 }
 
 const OneType = () => {
-  const [isEditable, setIsEditable] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [type, setType] = useState<any>({});
+  const [isEditable, setIsEditable] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
+  const [type, setType] = useState<any>({})
+  const [isRepRange4, setIsRepRange4] = useState(false)
+  const [addRepRange4, setAddRepRange4] = useState(false)
   const [formState, setFormState] = useState<FormState>({
     id: "",
     name: "",
@@ -48,20 +51,21 @@ const OneType = () => {
     repRange1: "",
     repRange2: "",
     repRange3: "",
+    repRange4: "",
     type_session: [],
-  });
+  })
 
-  const { typeId } = useParams();
-  const navigate = useNavigate();
+  const { typeId } = useParams()
+  const navigate = useNavigate()
 
   const toggleIsEditable = (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsEditable((current) => !current);
-  };
+    e.preventDefault()
+    setIsEditable((current) => !current)
+  }
 
   const fetchOneType = async () => {
     try {
-      const response = await fetchApi(`/api/exercise-type/${typeId}`);
+      const response = await fetchApi(`/api/exercise-type/${typeId}`)
       setFormState({
         id: response._id,
         name: response.name,
@@ -70,47 +74,52 @@ const OneType = () => {
         repRange1: response.repRange1,
         repRange2: response.repRange2,
         repRange3: response.repRange3,
+        repRange4: response?.repRange4,
         type_session: response.type_session,
-      });
-      setType(response);
+      })
+      if (response.repRange4) {
+        setIsRepRange4(true)
+      }
+      setType(response)
+      console.log("response", response)
     } catch (error: any) {
-      console.error(error.message);
+      console.error(error.message)
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   useEffect(() => {
-    fetchOneType();
-  }, []);
+    fetchOneType()
+  }, [])
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { target } = event;
-    const key = target.id;
-    const value = target.value;
-    setFormState({ ...formState, [key]: value });
-  };
+    const { target } = event
+    const key = target.id
+    const value = target.value
+    setFormState({ ...formState, [key]: value })
+  }
 
   const handleCheckboxChange = (checked: boolean, id: string) => {
     setFormState((prevState) => {
       const updatedTypeSession = checked
         ? [...prevState.type_session, id]
-        : prevState.type_session.filter((session) => session !== id);
-      return { ...prevState, type_session: updatedTypeSession };
-    });
-  };
+        : prevState.type_session.filter((session) => session !== id)
+      return { ...prevState, type_session: updatedTypeSession }
+    })
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
     try {
       if (formState.type_session.length === 0) {
         toast({
           title: "⚠️ Tu dois choisir au moins un type de séance.",
           variant: "destructive",
-        });
-        return;
+        })
+        return
       }
-      const timerValue = parseInt(formState.timer);
+      const timerValue = parseInt(formState.timer)
       await fetchApi(`/api/exercise-type/${typeId}`, {
         method: "PUT",
         body: JSON.stringify({
@@ -120,30 +129,31 @@ const OneType = () => {
           repRange1: formState.repRange1,
           repRange2: formState.repRange2,
           repRange3: formState.repRange3,
+          repRange4: formState.repRange4,
           type_session: formState.type_session,
         }),
-      });
-      fetchOneType();
-      setIsEditable(false);
+      })
+      fetchOneType()
+      setIsEditable(false)
       toast({
         title: "Exercice mis à jour!",
-      });
+      })
     } catch (error: any) {
-      console.error(error.message);
+      console.error(error.message)
     }
-  };
+  }
 
   const handleDelete = async (id: string) => {
     try {
       await fetchApi(`/api/exercise-type/${id}`, {
         method: "DELETE",
-      });
-      fetchOneType();
-      navigate("/profile/type");
+      })
+      fetchOneType()
+      navigate("/profile/type")
     } catch (error) {
-      console.error("Fetch error: ", error);
+      console.error("Fetch error: ", error)
     }
-  };
+  }
 
   return (
     <>
@@ -176,7 +186,7 @@ const OneType = () => {
                 />
               </div>
 
-              <div className="space-y-2 col-span-2">
+              <div className="col-span-2 space-y-2">
                 <Label>Type de séance</Label>
                 <div className="flex items-center justify-evenly">
                   <div className="flex flex-col space-y-3">
@@ -247,7 +257,17 @@ const OneType = () => {
               <div className="space-y-2"></div>
 
               <div className="col-span-2 space-y-2 rounded-md bg-gray-50 p-5 dark:bg-slate-900 dark:bg-opacity-30">
-                <h2 className="col-span-2 text-lg font-medium">{`Objectif Répétitions [Range]`}</h2>
+                <div className=" flex items-center gap-2 ">
+                  <h2 className="col-span-2 text-lg font-medium">{`Objectif Répétitions [Range]`}</h2>
+                  <button
+                    disabled={!isEditable}
+                    type="button"
+                    onClick={() => setAddRepRange4(!addRepRange4)}
+                    className=" mt-1 disabled:text-gray-500"
+                  >
+                    {addRepRange4 ? <MinusCircle className="h-4 w-4" /> : <PlusCircle className="h-4 w-4" />}
+                  </button>
+                </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="repRange1">Série 1</Label>
@@ -288,6 +308,19 @@ const OneType = () => {
                     disabled={!isEditable}
                   />
                 </div>
+                {(isRepRange4 || addRepRange4) && (
+                  <div className="space-y-2">
+                    <Label htmlFor="repRange4">Série 4</Label>
+                    <Input
+                      id="repRange4"
+                      placeholder={formState.repRange4}
+                      value={formState.repRange4 || ""}
+                      onChange={handleChange}
+                      type="text"
+                      disabled={!isEditable}
+                    />
+                  </div>
+                )}
               </div>
 
               <div className="grid grid-flow-col grid-rows-3"></div>
@@ -354,7 +387,7 @@ const OneType = () => {
         </div>
       )}
     </>
-  );
-};
+  )
+}
 
-export default OneType;
+export default OneType
