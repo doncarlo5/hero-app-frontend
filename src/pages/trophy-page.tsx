@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog"
 import { Navbar } from "@/components/navbar"
 import TrophyIcon from "@/components/TrophyIcon"
+import { LockClosedIcon } from "@radix-ui/react-icons"
 
 interface ExerciseType {
   _id: string
@@ -196,7 +197,7 @@ function TrophyPage() {
                           <span className=" font-medium capitalize ">{selectedTrophy.exerciseType.name}</span> avec{" "}
                           {selectedTrophy.repsUser} reps.
                         </div>
-                        <div className="mb-2 flex items-center gap-2 rounded-lg border-2 border-double py-1 pl-4 pr-2 text-xs text-gray-700 ">
+                        {/* <div className="mb-2 flex items-center gap-2 rounded-lg border-2 border-double py-1 pl-4 pr-2 text-xs text-gray-700 ">
                           <div>
                             <Link
                               to={`/history/exercise/${selectedTrophy.exerciseUser._id}`}
@@ -206,7 +207,7 @@ function TrophyPage() {
                               <ChevronRight className="mx-0 h-4 w-4 text-gray-700" />
                             </Link>
                           </div>
-                        </div>
+                        </div> */}
                       </div>
 
                       <div className=" mt-1 flex flex-col items-center justify-evenly gap-2 rounded-lg border bg-slate-50 py-1 text-center italic text-gray-500 ">
@@ -216,10 +217,9 @@ function TrophyPage() {
                     </div>
                   </div>
                 ) : (
-                  <div className="space-y-2">
-                    <div>Exercise: {selectedTrophy.exerciseType.name}</div>
-                    <div>Rep minimum: {selectedTrophy.repsGoal}</div>
-                    <div>Weight: {selectedTrophy.weightMultiplier}kg</div>
+                  <div className="gap-4 flex flex-col items-center justify-center h-full pb-10">
+                    <LockClosedIcon className="mx-auto h-16 w-16 text-gray-500" />
+                    <div className="text-lg  font-semibold ">{selectedTrophy.description}</div>
                   </div>
                 )}
                 <div className="absolute bottom-2 right-2 justify-end">
