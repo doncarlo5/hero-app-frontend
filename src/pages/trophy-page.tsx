@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react"
-import { format } from "date-fns"
-import { ChevronLeft, ChevronRight, LucideInfo, User, User2Icon } from "lucide-react"
+import { ChevronLeft, ChevronRight } from "lucide-react"
 import { Link } from "react-router-dom"
 
 import fetchApi from "@/lib/api-handler"
 import { cn } from "@/lib/utils"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent, DialogDescription, DialogOverlay, DialogTitle } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog"
 import { Navbar } from "@/components/navbar"
 import TrophyIcon from "@/components/TrophyIcon"
 
@@ -79,6 +78,7 @@ function TrophyPage() {
     fetchTrophies()
   }, [])
 
+  // Group trophies by exercise type
   const groupedTrophies = trophies.reduce(
     (acc, trophy) => {
       if (!acc[trophy.exerciseType.name]) {
@@ -88,6 +88,19 @@ function TrophyPage() {
       return acc
     },
     {} as Record<string, Trophy[]>
+  )
+
+  // Calculate the number of achieved trophies per group
+  const groupedTrophiesWithCounts = Object.keys(groupedTrophies).reduce(
+    (acc, exerciseTypeName) => {
+      const trophies = groupedTrophies[exerciseTypeName]
+      const achievedCount = trophies.filter((trophy) => trophy.achieved).length
+      const totalCount = trophies.length
+
+      acc[exerciseTypeName] = { trophies, achievedCount, totalCount }
+      return acc
+    },
+    {} as Record<string, { trophies: Trophy[]; achievedCount: number; totalCount: number }>
   )
 
   return (
@@ -105,15 +118,21 @@ function TrophyPage() {
           </div>
         </div>
 
-        <Accordion type="multiple" className=" pt-5">
-          {Object.keys(groupedTrophies).map((exerciseTypeName) => (
-            <AccordionItem key={exerciseTypeName} value={exerciseTypeName}>
-              <AccordionTrigger className="">
-                <span className="">{exerciseTypeName}</span>
-              </AccordionTrigger>
-              <AccordionContent>
-                {groupedTrophies[exerciseTypeName].map((trophy, i) => {
-                  return (
+        <Accordion type="multiple" className=" pt-5 ">
+          {Object.keys(groupedTrophiesWithCounts).map((exerciseTypeName) => {
+            const { trophies, achievedCount, totalCount } = groupedTrophiesWithCounts[exerciseTypeName]
+            return (
+              <AccordionItem key={exerciseTypeName} value={exerciseTypeName}>
+                <AccordionTrigger className=" ">
+                  <p>
+                    {exerciseTypeName}
+                    <span className=" ml-1 text-gray-700 no-underline">
+                      ({achievedCount}/{totalCount})
+                    </span>
+                  </p>
+                </AccordionTrigger>
+                <AccordionContent>
+                  {trophies.map((trophy, i) => (
                     <div className=" w-full max-w-sm" key={trophy._id} onClick={() => setSelectedTrophy(trophy)}>
                       <div className="grid">
                         <div
@@ -132,7 +151,7 @@ function TrophyPage() {
                           />
                           <div className="space-y-1">
                             {trophy.achieved ? (
-                              <div className="text-xl font-semibold capitalize">Trohée {trophy.trophyType}</div>
+                              <div className="text-xl font-semibold capitalize">Trophée {trophy.trophyType}</div>
                             ) : (
                               <div className="mt-1 italic text-gray-500">???</div>
                             )}
@@ -147,11 +166,11 @@ function TrophyPage() {
                         </div>
                       </div>
                     </div>
-                  )
-                })}
-              </AccordionContent>
-            </AccordionItem>
-          ))}
+                  ))}
+                </AccordionContent>
+              </AccordionItem>
+            )
+          })}
         </Accordion>
 
         {selectedTrophy && (
@@ -168,26 +187,29 @@ function TrophyPage() {
                     />
                     <div className=" flex h-full flex-col justify-between">
                       <div className="mt-28 flex flex-col items-center">
-                        <div className=" text-4xl font-semibold capitalize text-gray-900 mb-2 ">
+                        <div className=" mb-2 text-4xl font-semibold capitalize text-gray-900 ">
                           {selectedTrophy.rewardText}
                         </div>
-                        <div className=" px-3 text-center text-gray-600 mb-2">
+                        <div className=" mb-2 px-3 text-center text-gray-600">
                           Tu as obtenu le trophée{" "}
                           <span className=" font-medium capitalize ">{selectedTrophy.trophyType} </span> pour l'exercice{" "}
                           <span className=" font-medium capitalize ">{selectedTrophy.exerciseType.name}</span> avec{" "}
                           {selectedTrophy.repsUser} reps.
                         </div>
-                        <div className="flex items-center gap-2 rounded-lg border-2 border-double pl-4 pr-2 py-1 text-xs text-gray-700 mb-2 ">
+                        <div className="mb-2 flex items-center gap-2 rounded-lg border-2 border-double py-1 pl-4 pr-2 text-xs text-gray-700 ">
                           <div>
-                            <Link to={`/history/exercise/${selectedTrophy.exerciseUser._id}`} className=" flex items-center gap-2">
+                            <Link
+                              to={`/history/exercise/${selectedTrophy.exerciseUser._id}`}
+                              className=" flex items-center gap-2"
+                            >
                               <div> Lien vers l'exercice </div>
-                              <ChevronRight className="h-4 w-4 mx-0 text-gray-700" />
+                              <ChevronRight className="mx-0 h-4 w-4 text-gray-700" />
                             </Link>
                           </div>
                         </div>
                       </div>
 
-                      <div className=" py-1 text-gray-500 text-center border mt-1 flex flex-col justify-evenly rounded-lg bg-slate-50 items-center gap-2 italic ">
+                      <div className=" mt-1 flex flex-col items-center justify-evenly gap-2 rounded-lg border bg-slate-50 py-1 text-center italic text-gray-500 ">
                         <div>Objectif: {selectedTrophy.description}</div>
                         <div>Rep min requises: {selectedTrophy.repsGoal}</div>
                       </div>
