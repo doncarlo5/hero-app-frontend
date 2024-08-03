@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react"
-import { ChevronLeft, ChevronRight } from "lucide-react"
+import { LockClosedIcon } from "@radix-ui/react-icons"
+import { motion } from "framer-motion"
+import { ChevronLeft } from "lucide-react"
 import { Link } from "react-router-dom"
 
 import fetchApi from "@/lib/api-handler"
@@ -9,7 +11,6 @@ import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog"
 import { Navbar } from "@/components/navbar"
 import TrophyIcon from "@/components/TrophyIcon"
-import { LockClosedIcon } from "@radix-ui/react-icons"
 
 interface ExerciseType {
   _id: string
@@ -148,7 +149,7 @@ function TrophyPage() {
                           <TrophyIcon
                             level={trophy.level}
                             achieved={trophy.achieved}
-                            className={`size-20 ${trophy.achieved ? "" : "grayscale"}`}
+                            className={`size-20 ${trophy.achieved ? "" : "grayscale opacity-30"}`}
                           />
                           <div className="space-y-1">
                             {trophy.achieved ? (
@@ -181,11 +182,24 @@ function TrophyPage() {
               <DialogDescription>
                 {selectedTrophy.achieved ? (
                   <div className=" relative">
-                    <TrophyIcon
-                      level={selectedTrophy.level}
-                      achieved={selectedTrophy.achieved}
-                      className="absolute -top-16  left-0 right-0 m-auto size-44"
-                    />
+                    <motion.div
+                      className="absolute left-0 right-0 m-auto size-44"
+                      animate={{
+                        y: [0, -10, 0], // Move up by 10 units and then back down
+                        transition: {
+                          duration: 2,
+                          ease: "easeInOut",
+                          repeat: Infinity, // Repeat the animation infinitely
+                          repeatType: "loop",
+                        },
+                      }}
+                    >
+                      <TrophyIcon
+                        level={selectedTrophy.level}
+                        achieved={selectedTrophy.achieved}
+                        className="absolute -top-16  left-0 right-0 m-auto size-44"
+                      />
+                    </motion.div>
                     <div className=" flex h-full flex-col justify-between">
                       <div className="mt-28 flex flex-col items-center">
                         <div className=" mb-2 text-4xl font-semibold capitalize text-gray-900 ">
@@ -217,7 +231,7 @@ function TrophyPage() {
                     </div>
                   </div>
                 ) : (
-                  <div className="gap-4 flex flex-col items-center justify-center h-full pb-10">
+                  <div className="flex h-full flex-col items-center justify-center gap-4 pb-10">
                     <LockClosedIcon className="mx-auto h-16 w-16 text-gray-500" />
                     <div className="text-lg  font-semibold ">{selectedTrophy.description}</div>
                   </div>
