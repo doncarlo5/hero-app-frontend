@@ -250,7 +250,11 @@ const DoExercisePage = () => {
             />
           </SelectTrigger>
           <SelectContent>
-            {allExerciseTypes.length === 0 ? (
+            {isLoadingTypes ? (
+              <div role="status" className="flex max-w-sm animate-pulse items-center">
+                <div className="mb-2 ml-3 mt-2 h-4 w-64 rounded-full bg-gray-200 dark:bg-gray-700"></div>
+              </div>
+            ) : allExerciseTypes.length === 0 ? (
               <div className="px-2 py-1 text-sm text-gray-500 dark:text-gray-400">
                 Veuillez créer un exercice pour ce type de séance.
               </div>
@@ -258,13 +262,7 @@ const DoExercisePage = () => {
               <SelectGroup>
                 {allExerciseTypes.map((type) => (
                   <SelectItem key={type._id} value={type}>
-                    {isLoadingTypes ? (
-                      <div role="status" className="flex max-w-sm animate-pulse items-center">
-                        <div className="mb-2 ml-3 mt-1 h-4 w-64 rounded-full bg-gray-200 dark:bg-gray-700"></div>
-                      </div>
-                    ) : (
-                      <p className="dark:text-white">{type.name}</p>
-                    )}
+                    <p className="dark:text-white">{type.name}</p>
                   </SelectItem>
                 ))}
               </SelectGroup>
