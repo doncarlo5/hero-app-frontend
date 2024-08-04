@@ -38,11 +38,14 @@ const OneExercise = () => {
     rep1: "",
     rep2: "",
     rep3: "",
+    rep4: "",
     weight1: "",
     weight2: "",
     weight3: "",
+    weight4: "",
     comment: "",
   })
+  const [isRep4, setIsRep4] = useState(false)
 
   const { exerciseId } = useParams()
   const navigate = useNavigate()
@@ -61,11 +64,16 @@ const OneExercise = () => {
         rep1: response.rep[0],
         rep2: response.rep[1],
         rep3: response.rep[2],
+        rep4: response.rep[3],
         weight1: response.weight[0],
         weight2: response.weight[1],
         weight3: response.weight[2],
+        weight4: response.weight[3],
         comment: response.comment,
       })
+      if (response.rep[3]) {
+        setIsRep4(true)
+      }
 
       const newExercise = response.type
       setExercise(newExercise)
@@ -141,7 +149,7 @@ const OneExercise = () => {
     try {
       await fetchApi(`/api/exercise-user/${id}`, {
         method: "DELETE",
-      })  
+      })
       navigate(`/history/session/${session._id}`)
       toast({
         title: "Exercice supprimé.",
@@ -248,7 +256,7 @@ const OneExercise = () => {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="repRange2">Répétition 3</Label>
+                <Label htmlFor="rep3">Répétition 3</Label>
                 <Input
                   id="rep3"
                   placeholder=""
@@ -271,6 +279,35 @@ const OneExercise = () => {
                   disabled={!isEditable}
                 />
               </div>
+              {isRep4 && (
+                <>
+                  <div className="space-y-2">
+                    <Label htmlFor="rep4">Répétition 4</Label>
+                    <Input
+                      id="rep4"
+                      placeholder=""
+                      value={formState.rep4}
+                      onChange={handleChange}
+                      required
+                      type="number"
+                      disabled={!isEditable}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="weight4">Poids 4</Label>
+                    <Input
+                      id="weight4"
+                      placeholder=""
+                      value={formState.weight4}
+                      onChange={handleChange}
+                      required
+                      type="number"
+                      disabled={!isEditable}
+                    />
+                  </div>
+                </>
+              )}
+
               <div className="col-span-2 space-y-2">
                 <Label htmlFor="comment">Notes</Label>
                 <Textarea

@@ -149,6 +149,8 @@ const DoExercisePage = () => {
     if (oneExerciseType.repRange4) {
       setFormState({
         ...formState,
+        weight2: formState.weight1,
+        weight3: formState.weight1,
         weight4: formState.weight1,
       })
     }
