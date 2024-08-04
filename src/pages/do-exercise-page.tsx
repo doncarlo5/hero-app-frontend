@@ -300,6 +300,106 @@ const DoExercisePage = () => {
             <div className="flex flex-col items-center justify-center rounded-2xl bg-slate-50 py-4 dark:bg-slate-900 dark:bg-opacity-40 md:text-lg">
               <div className="flex gap-2">
                 <div className="flex flex-col gap-1 text-center">
+                  <p className="pb-1 text-sm text-gray-500 ">Reps</p>
+                  <Input
+                    id="rep1"
+                    placeholder={lastExercise?.rep[0]}
+                    value={formState.rep1}
+                    onChange={handleChange}
+                    required
+                    type="number"
+                    className=" text-md w-12 rounded-xl text-center font-medium [appearance:textfield]  focus:bg-slate-50 focus:shadow-inner [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                  />
+                  <Input
+                    id="rep2"
+                    placeholder={lastExercise?.rep[1]}
+                    value={formState.rep2}
+                    onChange={handleChange}
+                    required
+                    type="number"
+                    className="text-md w-12  rounded-xl text-center font-medium [appearance:textfield]  focus:bg-slate-50 focus:shadow-inner [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                  />
+                  <Input
+                    id="rep3"
+                    placeholder={lastExercise?.rep[2]}
+                    value={formState.rep3}
+                    onChange={handleChange}
+                    required
+                    type="number"
+                    className="text-md w-12  rounded-xl text-center font-medium [appearance:textfield]  focus:bg-slate-50 focus:shadow-inner [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                  />
+                  {(addRep4 || oneExerciseType.repRange4) && (
+                    <Input
+                      id="rep4"
+                      placeholder={lastExercise?.rep[3]}
+                      value={formState.rep4}
+                      onChange={handleChange}
+                      required
+                      type="number"
+                      className="text-md w-12  rounded-xl text-center font-medium [appearance:textfield]  focus:bg-slate-50 focus:shadow-inner [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                    />
+                  )}
+                </div>
+                <div className="flex flex-col gap-1 text-center">
+                  <p className="pb-1 text-sm text-gray-500 ">KG</p>
+                  <Input
+                    id="weight1"
+                    placeholder={lastExercise?.weight[0]}
+                    value={formState.weight1}
+                    onChange={handleChange}
+                    required
+                    type="number"
+                    className="text-md w-20 rounded-xl text-center font-medium  [appearance:textfield] focus:bg-slate-50 focus:shadow-inner [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                  />
+                  <Input
+                    id="weight2"
+                    placeholder={lastExercise?.weight[1]}
+                    value={formState.weight2}
+                    onChange={handleChange}
+                    required
+                    type="number"
+                    className="text-md w-20  rounded-xl text-center font-medium  [appearance:textfield] focus:bg-slate-50 focus:shadow-inner [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                  />
+                  <Input
+                    id="weight3"
+                    placeholder={lastExercise?.weight[2]}
+                    value={formState.weight3}
+                    onChange={handleChange}
+                    required
+                    type="number"
+                    className="text-md w-20  rounded-xl text-center font-medium  [appearance:textfield] focus:bg-slate-50 focus:shadow-inner [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                  />
+                  {(addRep4 || oneExerciseType.repRange4) && (
+                    <Input
+                      id="weight4"
+                      placeholder={lastExercise?.weight[3]}
+                      value={formState.weight4}
+                      onChange={handleChange}
+                      required
+                      type="number"
+                      className="text-md w-20  rounded-xl text-center font-medium  [appearance:textfield] focus:bg-slate-50 focus:shadow-inner [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                    />
+                  )}
+                </div>
+                <div className="flex flex-col gap-1 text-center">
+                  <p className="pb-1 text-sm text-gray-500 ">{`[Range]`}</p>
+                  <p className="text-md flex h-9 w-full items-center justify-center rounded-md bg-transparent px-1 py-1 font-light italic text-gray-700 ">
+                    {oneExerciseType?.repRange1}
+                  </p>
+
+                  <p className="text-md flex h-9 w-full items-center justify-center rounded-md bg-transparent px-1 py-1 font-light italic text-gray-700 ">
+                    {oneExerciseType?.repRange2}
+                  </p>
+                  <p className="text-md flex h-9 w-full items-center justify-center rounded-md bg-transparent px-1 py-1 font-light italic text-gray-700 ">
+                    {oneExerciseType?.repRange3}
+                  </p>
+                  {(addRep4 || oneExerciseType.repRange4) && (
+                    <p className="text-md flex h-9 w-full items-center justify-center rounded-md bg-transparent px-1 py-1 font-light italic text-gray-700 ">
+                      {oneExerciseType?.repRange4}
+                    </p>
+                  )}
+                </div>
+                <div className="flex flex-col gap-1 text-center">
                   <p className="pb-1 text-sm text-gray-500 ">Série</p>
                   <p className="flex h-9 w-9 items-center justify-center rounded-md bg-slate-200 bg-transparent px-3 py-1 font-mono text-sm text-gray-900 ">
                     <label className="relative flex cursor-pointer items-center rounded-full " htmlFor="teal">
@@ -402,107 +502,6 @@ const DoExercisePage = () => {
                           </svg>
                         </span>
                       </label>
-                    </p>
-                  )}
-                </div>
-                <div className="flex flex-col gap-1 text-center">
-                  <p className="pb-1 text-sm text-gray-500 ">Reps</p>
-                  <Input
-                    id="rep1"
-                    placeholder={lastExercise?.rep[0]}
-                    value={formState.rep1}
-                    onChange={handleChange}
-                    required
-                    type="number"
-                    className=" text-md w-12 rounded-xl text-center font-medium [appearance:textfield]  focus:bg-slate-50 focus:shadow-inner [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-                  />
-                  <Input
-                    id="rep2"
-                    placeholder={lastExercise?.rep[1]}
-                    value={formState.rep2}
-                    onChange={handleChange}
-                    required
-                    type="number"
-                    className="text-md w-12  rounded-xl text-center font-medium [appearance:textfield]  focus:bg-slate-50 focus:shadow-inner [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-                  />
-                  <Input
-                    id="rep3"
-                    placeholder={lastExercise?.rep[2]}
-                    value={formState.rep3}
-                    onChange={handleChange}
-                    required
-                    type="number"
-                    className="text-md w-12  rounded-xl text-center font-medium [appearance:textfield]  focus:bg-slate-50 focus:shadow-inner [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-                  />
-                  {(addRep4 || oneExerciseType.repRange4) && (
-                    <Input
-                      id="rep4"
-                      placeholder={lastExercise?.rep[3]}
-                      value={formState.rep4}
-                      onChange={handleChange}
-                      required
-                      type="number"
-                      className="text-md w-12  rounded-xl text-center font-medium [appearance:textfield]  focus:bg-slate-50 focus:shadow-inner [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-                    />
-                  )}
-                </div>
-
-                <div className="flex flex-col gap-1 text-center">
-                  <p className="pb-1 text-sm text-gray-500 ">KG</p>
-                  <Input
-                    id="weight1"
-                    placeholder={lastExercise?.weight[0]}
-                    value={formState.weight1}
-                    onChange={handleChange}
-                    required
-                    type="number"
-                    className="text-md w-20 rounded-xl text-center font-medium  [appearance:textfield] focus:bg-slate-50 focus:shadow-inner [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-                  />
-                  <Input
-                    id="weight2"
-                    placeholder={lastExercise?.weight[1]}
-                    value={formState.weight2}
-                    onChange={handleChange}
-                    required
-                    type="number"
-                    className="text-md w-20  rounded-xl text-center font-medium  [appearance:textfield] focus:bg-slate-50 focus:shadow-inner [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-                  />
-                  <Input
-                    id="weight3"
-                    placeholder={lastExercise?.weight[2]}
-                    value={formState.weight3}
-                    onChange={handleChange}
-                    required
-                    type="number"
-                    className="text-md w-20  rounded-xl text-center font-medium  [appearance:textfield] focus:bg-slate-50 focus:shadow-inner [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-                  />
-                  {(addRep4 || oneExerciseType.repRange4) && (
-                    <Input
-                      id="weight4"
-                      placeholder={lastExercise?.weight[3]}
-                      value={formState.weight4}
-                      onChange={handleChange}
-                      required
-                      type="number"
-                      className="text-md w-20  rounded-xl text-center font-medium  [appearance:textfield] focus:bg-slate-50 focus:shadow-inner [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-                    />
-                  )}
-                </div>
-                <div className="flex flex-col gap-1 text-center">
-                  <p className="pb-1 text-sm text-gray-500 ">{`[Range]`}</p>
-                  <p className="text-md flex h-9 w-full items-center justify-center rounded-md bg-transparent px-1 py-1 font-light italic text-gray-700 ">
-                    {oneExerciseType?.repRange1}
-                  </p>
-
-                  <p className="text-md flex h-9 w-full items-center justify-center rounded-md bg-transparent px-1 py-1 font-light italic text-gray-700 ">
-                    {oneExerciseType?.repRange2}
-                  </p>
-                  <p className="text-md flex h-9 w-full items-center justify-center rounded-md bg-transparent px-1 py-1 font-light italic text-gray-700 ">
-                    {oneExerciseType?.repRange3}
-                  </p>
-                  {(addRep4 || oneExerciseType.repRange4) && (
-                    <p className="text-md flex h-9 w-full items-center justify-center rounded-md bg-transparent px-1 py-1 font-light italic text-gray-700 ">
-                      {oneExerciseType?.repRange4}
                     </p>
                   )}
                 </div>
