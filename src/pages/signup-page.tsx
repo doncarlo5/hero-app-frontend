@@ -1,18 +1,17 @@
-import { useContext, useState } from "react"
-import { AuthContext } from "@/context/context-wrapper"
+import { useEffect, useState } from "react"
 import { ReloadIcon } from "@radix-ui/react-icons"
+import { FaGoogle } from "react-icons/fa6"
 import { useNavigate } from "react-router-dom"
 
-import fetchApi from "@/lib/api-handler"
+import { supabase } from "@/lib/supabaseClient"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
-const SignupPage = () => {
-  const [tab, setTab] = useState("login")
+const AuthPage = () => {
+  const [isLogin, setIsLogin] = useState(true)
   const [loginState, setLoginState] = useState({
     email: "",
     password: "",
@@ -23,86 +22,128 @@ const SignupPage = () => {
     email: "",
     password: "",
   })
+  const [emailForReset, setEmailForReset] = useState("")
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("")
-
-  const { authenticateUser } = useContext(AuthContext)
   const navigate = useNavigate()
 
-  const onTabChange = (tab: string) => setTab(tab)
+  useEffect(() => {
+    const checkSession = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession()
+      if (session) {
+        navigate("/")
+      }
+    }
 
-  const handleLoginChange = (event: React.FormEvent<HTMLInputElement>) => {
-    const { id, value } = event.currentTarget
-    setLoginState((prevState) => ({ ...prevState, [id]: value }))
+    checkSession()
+  }, [navigate])
+
+  const handleLoginChange = (e: any) => {
+    setLoginState({ ...loginState, [e.target.id]: e.target.value })
   }
 
-  const handleSignupChange = (event: React.FormEvent<HTMLInputElement>) => {
-    const { id, value } = event.currentTarget
-    setSignupState((prevState) => ({ ...prevState, [id]: value }))
+  const handleSignupChange = (e: any) => {
+    setSignupState({ ...signupState, [e.target.id]: e.target.value })
   }
 
-  const handleLoginSubmit = async (e: React.FormEvent) => {
+  const handleResetChange = (e: any) => {
+    setEmailForReset(e.target.value)
+  }
+
+  const handleLoginSubmit = async (e: any) => {
     e.preventDefault()
+    setIsLoading(true)
+    setError("")
     try {
-      setIsLoading(true)
-      const response = await fetchApi("/api/auth/login", {
-        method: "POST",
-        body: JSON.stringify(loginState),
+      const { error } = await supabase.auth.signInWithPassword({
+        email: loginState.email,
+        password: loginState.password,
       })
-      localStorage.setItem("token", response.token)
-      await authenticateUser()
+      if (error) throw error
       navigate("/")
     } catch (error: any) {
-      console.error(error)
+      setError(error.message)
+    } finally {
       setIsLoading(false)
-      setError(error.message || "An error occurred!")
-      setTimeout(() => setError(""), 3000)
     }
   }
 
-  const handleSignupSubmit = async (e: React.FormEvent) => {
+  const handleSignupSubmit = async (e: any) => {
     e.preventDefault()
+    setIsLoading(true)
+    setError("")
     try {
-      setIsLoading(true)
-      const response = await fetchApi("/api/auth/signup", {
-        method: "POST",
-        body: JSON.stringify(signupState),
+      const { error } = await supabase.auth.signUp({
+        email: signupState.email,
+        password: signupState.password,
+        options: {
+          data: {
+            firstName: signupState.firstName,
+            lastName: signupState.lastName,
+          },
+        },
       })
-      localStorage.setItem("token", response.token)
-      await authenticateUser()
+      if (error) throw error
       navigate("/")
     } catch (error: any) {
-      console.error(error)
+      setError(error.message)
+    } finally {
       setIsLoading(false)
-      setError(error.message || "An error occurred!")
-      setTimeout(() => setError(""), 3000)
+    }
+  }
+
+  const handleResetPassword = async () => {
+    setIsLoading(true)
+    setError("")
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(emailForReset)
+      if (error) throw error
+      alert("Check your email for the password reset link.")
+    } catch (error: any) {
+      setError(error.message)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleOAuthSignIn = async (provider: any) => {
+    setIsLoading(true)
+    setError("")
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider,
+      })
+      if (error) throw error
+    } catch (error: any) {
+      setError(error.message)
+    } finally {
+      setIsLoading(false)
     }
   }
 
   return (
-    <div className="">
+    <div>
       <main className="container mx-auto my-0 flex h-dvh max-w-lg flex-col ">
-        <Tabs value={tab} onValueChange={onTabChange} defaultValue={tab} className="pt-5 md:px-6">
-          <TabsList className="grid w-full max-w-2xl grid-cols-2 rounded-xl ">
-            <TabsTrigger value="login">Connexion</TabsTrigger>
-            <TabsTrigger value="signup">Inscription</TabsTrigger>
-          </TabsList>
-          <TabsContent value="login">
+        <div className="pt-5 md:px-6">
+          {isLogin ? (
             <form onSubmit={handleLoginSubmit}>
               <div className="">
                 <div className="mt-5 text-left">
-                  <h1 className="text-3xl font-bold">Se connecter</h1>
-                  <div className="items mb-5 flex items-baseline gap-1">
-                    <p className="text-gray-500 dark:text-gray-400">Tu n'as pas de compte?</p>
-                    <Button
-                      onClick={() => setTab("signup")}
-                      variant={"link"}
-                      className="m-0 p-0 text-gray-500 underline dark:text-gray-400"
-                    >
-                      Créer un compte
-                    </Button>
-                  </div>
+                  <h1 className="mb-10 text-3xl font-bold">Se connecter</h1>
+                </div>
+                <div className="my-4">
+                  <Button
+                    variant="outline"
+                    type="button"
+                    className="flex w-full items-center justify-center gap-2"
+                    onClick={() => handleOAuthSignIn("google")}
+                  >
+                    <FaGoogle className="ml-2" />
+                    Connexion avec Google
+                  </Button>
                 </div>
                 <div className="space-y-4">
                   <div className="flex flex-col gap-2">
@@ -142,6 +183,13 @@ const SignupPage = () => {
                         Afficher le mot de passe
                       </label>
                     </div>
+                    <Button
+                      onClick={handleResetPassword}
+                      variant={"link"}
+                      className="m-0 p-0 text-gray-500 underline dark:text-gray-400"
+                    >
+                      Forgot your password?
+                    </Button>
                   </div>
 
                   {isLoading ? (
@@ -154,6 +202,13 @@ const SignupPage = () => {
                       Connexion
                     </Button>
                   )}
+                  <Button
+                    onClick={() => setIsLogin(false)}
+                    variant={"link"}
+                    className="m-0 w-full p-0 text-center text-gray-500 underline dark:text-gray-400"
+                  >
+                    Pas encore de compte? S'enregistrer
+                  </Button>
                   {error && (
                     <Alert className="mt-1" variant="destructive">
                       <AlertTitle>Erreur</AlertTitle>
@@ -163,13 +218,18 @@ const SignupPage = () => {
                 </div>
               </div>
             </form>
-          </TabsContent>
-          <TabsContent value="signup">
+          ) : (
             <form onSubmit={handleSignupSubmit}>
               <div className="mx-auto max-w-sm space-y-6 pb-5">
                 <div className="mt-5 space-y-2 text-left">
                   <h1 className="text-3xl font-bold">S'inscrire</h1>
-                  <p className="text-gray-500 dark:text-gray-400">Renseigne tes informations.</p>
+                  <Button
+                    onClick={() => setIsLogin(true)}
+                    variant={"link"}
+                    className="m-0 p-0 text-gray-500 underline dark:text-gray-400"
+                  >
+                    Déjà inscrit? Se connecter
+                  </Button>
                 </div>
                 <div className="space-y-4">
                   <div className="flex flex-col gap-2">
@@ -255,11 +315,11 @@ const SignupPage = () => {
                 </div>
               </div>
             </form>
-          </TabsContent>
-        </Tabs>
+          )}
+        </div>
       </main>
     </div>
   )
 }
 
-export default SignupPage
+export default AuthPage
