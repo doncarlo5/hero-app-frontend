@@ -1,5 +1,5 @@
 import useAuth from "@/context/use-auth"
-import { LucideAlignJustify, LucideCircleUser, LucideHome, LucideRocket } from "lucide-react"
+import { LucideAlignJustify, LucideCircleUser, LucideRocket } from "lucide-react"
 import { FaHouse } from "react-icons/fa6"
 import { NavLink } from "react-router-dom"
 
