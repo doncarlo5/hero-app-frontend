@@ -18,7 +18,6 @@ const IsAuthenticated = ({ redirect }: IsAuthenticatedProps) => {
       </div>
     )
   }
-
   if (!isLoggedIn) {
     return <Navigate to={redirect} />
   }

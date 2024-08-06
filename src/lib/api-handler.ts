@@ -1,8 +1,15 @@
 const baseURL = import.meta.env.VITE_BACKEND_URL;
 
 const getAuthHeaders = () => {
+  let token
+  try {
+    token = JSON.parse(localStorage.getItem('sb-qmhziwpyeqpwllseache-auth-token') ?? '')
+  } catch (error) {
+  }
+
   return {
-    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+    'Authorization': `Bearer ${token?.access_token}`,
+    'RefreshToken': token?.refresh_token,
     'Content-Type': 'application/json'
   };
 };

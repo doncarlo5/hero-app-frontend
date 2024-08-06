@@ -22,7 +22,6 @@ const AuthPage = () => {
     email: "",
     password: "",
   })
-  const [emailForReset, setEmailForReset] = useState("")
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("")
@@ -47,10 +46,6 @@ const AuthPage = () => {
 
   const handleSignupChange = (e: any) => {
     setSignupState({ ...signupState, [e.target.id]: e.target.value })
-  }
-
-  const handleResetChange = (e: any) => {
-    setEmailForReset(e.target.value)
   }
 
   const handleLoginSubmit = async (e: any) => {
@@ -95,11 +90,14 @@ const AuthPage = () => {
     }
   }
 
-  const handleResetPassword = async () => {
+  const handleResetPassword = async (e: any) => {
+    e.preventDefault()
     setIsLoading(true)
     setError("")
     try {
-      const { error } = await supabase.auth.resetPasswordForEmail(emailForReset)
+      const { error } = await supabase.auth.resetPasswordForEmail(loginState.email, {
+        redirectTo: "https://hero-app-workout.vercel.app/profile/settings"
+      })
       if (error) throw error
       alert("Check your email for the password reset link.")
     } catch (error: any) {
@@ -188,7 +186,7 @@ const AuthPage = () => {
                       variant={"link"}
                       className="m-0 p-0 text-gray-500 underline dark:text-gray-400"
                     >
-                      Forgot your password?
+                      Mot de passe oublié?
                     </Button>
                   </div>
 
@@ -207,7 +205,7 @@ const AuthPage = () => {
                     variant={"link"}
                     className="m-0 w-full p-0 text-center text-gray-500 underline dark:text-gray-400"
                   >
-                    Pas encore de compte? S'enregistrer
+                    Aucun compte? S'enregistrer
                   </Button>
                   {error && (
                     <Alert className="mt-1" variant="destructive">

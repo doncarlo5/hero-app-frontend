@@ -12,8 +12,9 @@ import OneExercise from "./pages/one-exercise"
 import OneSession from "./pages/one-session"
 import OneType from "./pages/one-type"
 import ProfilePage from "./pages/profile-page"
+import ProgramPage from "./pages/program-page"
 import SettingsPage from "./pages/settings-page"
-import SignupPage from "./pages/signup-page"
+import AuthPage from "./pages/signup-page"
 import StatsPage from "./pages/stats-page"
 import TimerPage from "./pages/timer-page"
 import TrophyPage from "./pages/trophy-page"
@@ -21,7 +22,7 @@ import TypesList from "./pages/types-list"
 import WelcomePage from "./pages/welcome-page"
 import IsAuthenticated from "./routing/is-authenticated"
 import IsNotAuthenticated from "./routing/is-not-authenticated"
-import ProgramPage from "./pages/program-page"
+import ConfirmEmail from "./pages/confirm-page"
 
 function App() {
   return (
@@ -30,8 +31,9 @@ function App() {
         {/* <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme"> */}
         <Routes>
           <Route element={<IsNotAuthenticated />}>
-            <Route path="/signup" element={<SignupPage />} />
-          </Route>
+            <Route path="/signup" element={<AuthPage />} />
+            <Route path="/confirm-email" element={<ConfirmEmail />} />
+            </Route>
           <Route element={<IsAuthenticated redirect={"/welcome"} />}>
             <Route path="/" element={<HomePage />} />
           </Route>

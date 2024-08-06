@@ -1,70 +1,109 @@
-import React, { createContext, useEffect, useState } from "react"
+import React, { createContext, useEffect, useState } from "react";
+import { redirect } from "react-router-dom";
 
-import { User } from "@/types/user"
-import fetchApi from "@/lib/api-handler"
+import { User } from "@/types/user";
+import fetchApi from "@/lib/api-handler";
+import { supabase } from "@/lib/supabaseClient";
+import { Session } from "@supabase/supabase-js";
 
 type WrapperProps = {
-  children: React.ReactNode
-}
+  children: React.ReactNode;
+};
 
 interface IAuthContext {
-  user: User | null
-  isLoggedIn: boolean
-  isLoading: boolean
-  handleLogout: () => void
-  authenticateUser: () => void
+  user: User | null;
+  isLoggedIn: boolean;
+  isLoading: boolean;
+  handleLogout: () => void;
+  session: Session | null;
 }
 
 const AuthContext = createContext({
   user: null,
   isLoggedIn: false,
   isLoading: true,
-  authenticateUser: () => {},
-} as IAuthContext)
+  session: null,
+  handleLogout: () => {},
+} as IAuthContext);
 
 const AuthContextWrapper = ({ children }: WrapperProps) => {
-  const [user, setUser] = useState(null)
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [isLoading, setIsLoading] = useState(true)
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [session, setSession] = useState<Session | null>(null);
 
-  async function authenticateUser() {
-    const token = localStorage.getItem("token")
+  const getSession = async () => {
     try {
-      if (token) {
-        const response = await fetchApi("/api/auth/verify")
-        setUser(response.user)
-        setIsLoggedIn(true)
+      console.log("setData");
+      const {
+        data: { session },
+        error,
+      } = await supabase.auth.getSession();
+      setSession(session);
+      if (error) throw error;
+      console.log("session", session);
+      setIsLoggedIn(session !== null);
+
+      if (session) {
+        const response = await fetchApi("/api/auth/verify");
+        console.log("response", response);
+        setUser(response.user);
       } else {
-        setIsLoading(false)
-        setIsLoggedIn(false)
-        setUser(null)
+        setUser(null);
       }
     } catch (error) {
-      console.error(error)
-      setIsLoggedIn(false)
-      setUser(null)
+      setUser(null);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
-    authenticateUser()
-  }, [])
+    getSession();
 
-  const handleLogout = () => {
-    localStorage.removeItem("token")
-    setIsLoggedIn(false)
-    setUser(null)
-  }
+    // If user is logged in with email/password
+    const { data: listener } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      if (session) {
+        console.log("Logged in with email/password");
+        const response = await fetchApi("/api/auth/verify");
+        setUser(response.user);
+        setIsLoggedIn(session !== null);
+      } else {
+        console.log("Logged out");
+        setIsLoggedIn(false);
+        setUser(null);
+        redirect("/welcome");
+      }
+      setSession(session);
+    });
+
+    return () => {
+      listener?.subscription.unsubscribe();
+    };
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      setIsLoading(true);
+      await supabase.auth.signOut();
+      setIsLoggedIn(false);
+      setUser(null);
+      setSession(null);
+      redirect("/welcome");
+    } catch (error: any) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
-    <AuthContext.Provider value={{ user, isLoggedIn, isLoading, authenticateUser, handleLogout }}>
+    <AuthContext.Provider value={{ user, isLoggedIn, isLoading, handleLogout, session }}>
       {children}
     </AuthContext.Provider>
-  )
-}
+  );
+};
 
-export { AuthContext }
+export { AuthContext };
 
-export default AuthContextWrapper
+export default AuthContextWrapper;
