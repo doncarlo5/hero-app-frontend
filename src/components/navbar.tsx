@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom"
 
 function Navbar() {
   const { isLoggedIn } = useAuth()
-  const activeLink = "text-slate-900"
+  const activeLink = "text-teal-600"
   const inactiveLink = "text-slate-950/50"
 
   const strokeWidthActive = 2.2
@@ -18,7 +18,7 @@ function Navbar() {
       <div className="">
         <section
           id="bottom-navigation"
-          className="fixed inset-x-1 bottom-2 z-10 mx-auto block w-11/12 max-w-2xl rounded-full border-t border-gray-200 bg-white bg-opacity-30 shadow-2xl backdrop-blur-lg backdrop-filter dark:border-none"
+          className="fixed inset-x-1 bottom-1 z-10 mx-auto block w-11/12 max-w-2xl rounded-xl border-t border-gray-200 bg-white bg-opacity-30 shadow backdrop-blur-lg backdrop-filter dark:border-none"
         >
           <div id="tabs" className="flex justify-between">
             {!isLoggedIn ? (
