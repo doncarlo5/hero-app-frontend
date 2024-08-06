@@ -64,7 +64,7 @@ function DashboardComponent() {
             </div>
           </Link>
         </Button>
-        <Button variant={"outline"} onClick={handleLogout} className="flex h-24 flex-col gap-1">
+        <Button variant={"outline"} onClick={() => handleLogout()} className="flex h-24 flex-col gap-1">
           <LucideLogOut strokeWidth={1.1} size={31} />
           Déconnexion
         </Button>
