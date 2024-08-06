@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { PlusIcon } from "lucide-react";
+import { ChevronLeft, PlusIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 
 import fetchApi from "@/lib/api-handler";
@@ -65,8 +65,15 @@ export function TypesList() {
     <div>
       <Navbar />
       <main className="container mx-auto my-0 flex h-dvh max-w-lg flex-col">
-        <div className="pt-10">
-          <h1 className="text-4xl font-semibold tracking-tighter sm:text-5xl md:text-6xl">Mes exercices</h1>
+      <div className="flex items-center pt-5">
+          <Link to="/profile">
+            <Button variant="outline" size="icon">
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+          </Link>
+          <div>
+            <h1 className="ml-5 text-3xl font-medium">Mes exercices type</h1>
+          </div>
         </div>
         <div className="pb-10">
           <div className="rounded-lg border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-950 dark:shadow-sm">
