@@ -109,7 +109,7 @@ export function HistoryPage() {
                   ) : sessions.length === 0 ? (
                     <TableRow>
                       <TableCell colSpan={6} className="text-center">
-                        Aucun séance.
+                        Aucune séance.
                       </TableCell>
                     </TableRow>
                   ) : (
