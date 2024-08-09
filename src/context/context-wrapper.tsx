@@ -43,10 +43,8 @@ const AuthContextWrapper = ({ children }: WrapperProps) => {
       if (error) throw error;
       console.log("session", session);
       setIsLoggedIn(session !== null);
-
       if (session) {
         const response = await fetchApi("/api/auth/verify");
-        console.log("response", response);
         setUser(response.user);
       } else {
         setUser(null);

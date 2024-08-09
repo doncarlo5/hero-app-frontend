@@ -9,12 +9,13 @@ import fetchApi from "@/lib/api-handler"
 import { AnimatedCounter } from "@/components/animated-counter"
 import { Navbar } from "@/components/navbar"
 import NewSessionButton from "@/components/new-session-button"
+import OnboardingModal from "@/components/onboarding"
 
 import useAuth from "../context/use-auth"
 
 export function HomePage() {
   const { user } = useAuth()
-
+  const [showOnboarding, setShowOnboarding] = useState(true)
   const [lastSession, setLastSession] = useState([] as any)
   const [allSessions, setAllSessions] = useState([] as any)
   const [isLoading, setIsLoading] = useState(false)
@@ -51,6 +52,7 @@ export function HomePage() {
 
   return (
     <div className="">
+      {showOnboarding && <OnboardingModal onClose={() => setShowOnboarding(false)} />}
       <Navbar />
       <main className="container mx-auto my-0 flex h-dvh max-w-lg flex-col ">
         <div className="pt-10 ">

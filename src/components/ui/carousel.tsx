@@ -15,6 +15,7 @@ type CarouselProps = {
   plugins?: CarouselPlugin
   orientation?: "horizontal" | "vertical"
   setApi?: (api: CarouselApi) => void
+  onClose?: () => void
 }
 
 type CarouselContextProps = {
@@ -24,6 +25,7 @@ type CarouselContextProps = {
   scrollNext: () => void
   canScrollPrev: boolean
   canScrollNext: boolean
+  onClose?: () => void
 } & CarouselProps
 
 const CarouselContext = React.createContext<CarouselContextProps | null>(null)
@@ -39,7 +41,7 @@ function useCarousel() {
 }
 
 const Carousel = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement> & CarouselProps>(
-  ({ orientation = "horizontal", opts, setApi, plugins, className, children, onClick, ...props }, ref) => {
+  ({ orientation = "horizontal", opts, setApi, plugins, className, children, onClick, onClose, ...props }, ref) => {
     const [carouselRef, api] = useEmblaCarousel(
       {
         ...opts,
@@ -113,6 +115,7 @@ const Carousel = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivEl
           scrollNext,
           canScrollPrev,
           canScrollNext,
+          onClose, // Provide onClose through context
         }}
       >
         <div
@@ -194,14 +197,14 @@ CarouselPrevious.displayName = "CarouselPrevious"
 
 const CarouselNext = React.forwardRef<HTMLButtonElement, React.ComponentProps<typeof Button>>(
   ({ className, variant = "outline", size = "icon", ...props }, ref) => {
-    const { orientation, scrollNext, canScrollNext, canScrollPrev } = useCarousel()
+    const { orientation, scrollNext, canScrollNext, canScrollPrev, onClose } = useCarousel()
 
     return (
       <>
         <Button
           ref={ref}
           className={cn(
-            "absolute flex h-9 w-20 gap-1 rounded-full bg-slate-900 text-white shadow-lg active:bg-slate-900 active:text-white",
+            "absolute flex h-9 w-28 gap-1 rounded-full bg-slate-900 text-white shadow-lg active:bg-slate-900 active:text-white",
             orientation === "horizontal" ? "bottom-5 right-5" : "-bottom-12 left-1/2 -translate-x-1/2 rotate-90",
             (!canScrollNext || !canScrollPrev) && "hidden",
 
@@ -210,38 +213,41 @@ const CarouselNext = React.forwardRef<HTMLButtonElement, React.ComponentProps<ty
           onClick={scrollNext}
           {...props}
         >
-          <p>Next</p>
+          <p>Suivant</p>
           <FaArrowRight className="h-3 w-3" />
-          <span className="sr-only">Next slide</span>
+          <span className="sr-only">Suivant</span>
         </Button>
         <Button
           ref={ref}
           className={cn(
-            "absolute flex h-9 w-3/4 gap-1 rounded-full bg-slate-900 text-white shadow-lg active:bg-slate-900 active:text-white",
-            orientation === "horizontal" ? "bottom-5 left-1/2 transform -translate-x-1/2 " : "-bottom-12 left-1/2 -translate-x-1/2 rotate-90",
+            "absolute flex h-9 w-3/4 rounded-full bg-slate-900 text-white shadow-lg active:bg-slate-900 active:text-white",
+            orientation === "horizontal"
+              ? "bottom-5 left-1/2 -translate-x-1/2 transform "
+              : "-bottom-12 left-1/2 -translate-x-1/2 rotate-90",
             canScrollPrev && "hidden",
             className
           )}
           onClick={scrollNext}
           {...props}
         >
-          <p>Get Started</p>
-          <FaArrowRight className="h-3 w-3" />
-          <span className="sr-only">Get Started</span>
+          <p>Commencer</p>
+          <FaArrowRight className=" ml-2 h-3 w-3" />
+          <span className="sr-only">Commencer</span>
         </Button>
         <Button
           ref={ref}
           className={cn(
-            "absolute flex h-9 w-20 gap-1 rounded-full bg-slate-900 text-white shadow-lg active:bg-slate-900 active:text-white",
+            "absolute flex h-9 w-28 gap-1 rounded-full bg-slate-900 text-white shadow-lg active:bg-slate-900 active:text-white",
             orientation === "horizontal" ? "bottom-5 right-5" : "-bottom-12 left-1/2 -translate-x-1/2 rotate-90",
             canScrollNext && "hidden",
             className
           )}
+          onClick={onClose}
           {...props}
         >
-          <p>Done</p>
+          <p>Terminé</p>
           <FaCheck className="h-3 w-3" />
-          <span className="sr-only">Done</span>
+          <span className="sr-only">Terminé</span>
         </Button>
       </>
     )

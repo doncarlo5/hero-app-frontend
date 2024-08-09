@@ -10,9 +10,10 @@ import {
   type CounterProps = {
     from: number;
     to: number;
+    type?: "onboarding" | "dashboard";
   };
   
-  function AnimatedCounter({ from, to }: CounterProps) {
+  function AnimatedCounter({ from, to, type }: CounterProps) {
     const count = useMotionValue(from);
     const rounded = useTransform(count, (latest) => {
       return Math.round(latest);
@@ -23,7 +24,11 @@ import {
     // while in view animate the count
     useEffect(() => {
       if (inView) {
+        if (type === "onboarding") {
+          animate(count, to, { duration: 3.5 });
+        } else {
         animate(count, to, { duration: 2 });
+        }
       }
     }, [count, inView, to]);
   

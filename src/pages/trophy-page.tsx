@@ -149,7 +149,7 @@ function TrophyPage() {
                           <TrophyIcon
                             level={trophy.level}
                             achieved={trophy.achieved}
-                            className={`size-20 ${trophy.achieved ? "" : "grayscale opacity-30"}`}
+                            className={`size-20 ${trophy.achieved ? "" : "opacity-30 grayscale"}`}
                           />
                           <div className="space-y-1">
                             {trophy.achieved ? (
@@ -187,7 +187,7 @@ function TrophyPage() {
                       animate={{
                         y: [0, -10, 0], // Move up by 10 units and then back down
                         transition: {
-                          duration: 2,
+                          duration: 2.5,
                           ease: "easeInOut",
                           repeat: Infinity, // Repeat the animation infinitely
                           repeatType: "loop",
