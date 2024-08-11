@@ -192,6 +192,7 @@ const DoExercisePage = () => {
             title: "Nouveau trophée débloqué",
             description: trophy.description,
             variant: "success",
+            className: "bg-teal-500 border-none",
           })
         })
       }
