@@ -224,7 +224,7 @@ function TrophyPage() {
                         </div> */}
                       </div>
 
-                      <div className=" mt-1 flex flex-col items-center justify-evenly gap-2 rounded-lg border bg-slate-50 py-1 text-center italic text-gray-500 ">
+                      <div className=" mt-1 flex flex-col items-center justify-evenly gap-2 rounded-lg border bg-slate-50 py-1 text-center text-gray-500 ">
                         <div>Objectif: {selectedTrophy.description}</div>
                         <div>Rep min requises: {selectedTrophy.repsGoal}</div>
                       </div>
