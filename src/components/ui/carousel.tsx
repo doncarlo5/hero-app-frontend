@@ -220,7 +220,7 @@ const CarouselNext = React.forwardRef<HTMLButtonElement, React.ComponentProps<ty
         <Button
           ref={ref}
           className={cn(
-            "absolute flex h-9 w-3/4 rounded-full bg-slate-900 text-white shadow-lg active:bg-slate-900 active:text-white",
+            "group absolute flex h-9 w-3/4 rounded-full bg-slate-900 text-white shadow-lg active:bg-slate-900 active:text-white",
             orientation === "horizontal"
               ? "bottom-5 left-1/2 -translate-x-1/2 transform "
               : "-bottom-12 left-1/2 -translate-x-1/2 rotate-90",
@@ -231,7 +231,7 @@ const CarouselNext = React.forwardRef<HTMLButtonElement, React.ComponentProps<ty
           {...props}
         >
           <p>Commencer</p>
-          <FaArrowRight className=" ml-2 h-3 w-3" />
+          <FaArrowRight className=" group-hover:animate-fadeinleft ease-in-out transition-all ml-2 h-3 w-3" />
           <span className="sr-only">Commencer</span>
         </Button>
         <Button
