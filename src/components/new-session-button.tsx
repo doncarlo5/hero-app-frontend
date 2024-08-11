@@ -12,8 +12,8 @@ import { Switch } from "./ui/switch"
 import bodyBack from "/body-back.png"
 import bodyFront from "/body-front.png"
 import lower from "/lower.png"
-import upperBack from "/upper-back.png"
-import upperFront from "/upper-front.png"
+import upperBack from "../../public/upper-back.png"
+import upperFront from "../../public/upper-front.png"
 
 function NewSessionButton({ Children }: { Children: any }) {
   const [weight, setWeight] = React.useState("")
