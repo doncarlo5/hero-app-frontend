@@ -11,8 +11,8 @@ import {
 } from "lucide-react"
 import { FaWeightScale } from "react-icons/fa6"
 
-import exerciseImg from "../../public/exercise.png"
-import upperFront from "../../public/upper-front.png"
+import exerciseImg from "/exercise.png"
+import upperFront from "/upper-front.png"
 import { AnimatedCounter } from "./animated-counter"
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "./ui/carousel"
 
