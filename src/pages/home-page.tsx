@@ -159,7 +159,7 @@ export function HomePage() {
                 </div>
               </Link>
             )}
-            {isLoading ? (
+            {/* {isLoading ? (
               <div className="col-span-2 flex h-24 w-full animate-pulse flex-row items-center justify-center gap-3 rounded-lg bg-slate-100 px-3 py-3 shadow-lg">
                 <div className=" h-10 w-10 rounded-full bg-gray-200 "></div>
                 <div className="h-5 w-32 rounded-full bg-gray-200 "></div>
@@ -181,7 +181,7 @@ export function HomePage() {
                   </div>
                 </div>
               </Link>
-            )}
+            )} */}
             <NewSessionButton
               Children={
                 <div className="fixed bottom-20 right-10 cursor-pointer  ">
