@@ -7,8 +7,6 @@ import {
   Download,
   Edit,
   LucideActivity,
-  LucideLineChart,
-  LucidePencilRuler,
   Trophy,
 } from "lucide-react"
 import { FaWeightScale } from "react-icons/fa6"
