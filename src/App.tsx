@@ -51,7 +51,7 @@ function App() {
             <Route path="/profile/trophy" element={<TrophyPage />} />
             <Route path="/profile/timer" element={<TimerPage />} />
             <Route path="/profile/settings" element={<SettingsPage />} />
-            <Route path="/program" element={<ProgramPage />} />
+            <Route path="/profile/program" element={<ProgramPage />} />
           </Route>
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
