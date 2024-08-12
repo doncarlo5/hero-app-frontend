@@ -55,7 +55,7 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ onClose }) => {
                       className=" absolute right-1 -top-24 w-4/12 -z-50 rounded-lg"
                     />
                     <h2 className="mt-10 text-left text-2xl font-bold">Séance</h2>
-                    <p className="mb-4 text-left text-sm font-medium leading-snug bg-slate-50 rounded-xl">
+                    <p className="mb-4 text-left font-medium leading-snug bg-slate-50 rounded-xl">
                       Lance une séance et choisit le type. <strong>Upper</strong> pour le haut du corps,{" "}
                       <strong>Lower</strong> pour le bas du corps.
                     </p>
