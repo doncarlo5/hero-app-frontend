@@ -1,10 +1,12 @@
 import useAuth from "@/context/use-auth"
 import {
+  LucideActivity,
   LucideLineChart,
   LucideLogOut,
   LucidePencilRuler,
   LucideTimer,
   LucideTrophy,
+  LucideTv2,
   LucideUserRoundCog,
 } from "lucide-react"
 import { Link } from "react-router-dom"
@@ -64,9 +66,22 @@ function DashboardComponent() {
             </div>
           </Link>
         </Button>
+        <Button variant={"outline"} asChild className="h-24 ">
+          <Link to="/profile/program">
+            <div className="flex flex-col items-center justify-center gap-1">
+              <LucideActivity strokeWidth={1.1} size={32} />
+              Programme
+            </div>
+          </Link>
+        </Button>
         <Button variant={"outline"} onClick={() => handleLogout()} className="flex h-24 flex-col gap-1">
           <LucideLogOut strokeWidth={1.1} size={31} />
           Déconnexion
+        </Button>
+        <Button variant={"outline"} className="h-24 cursor-not-allowed opacity-50">
+          <div className="flex flex-col items-center justify-center gap-1">
+            <LucideTv2 strokeWidth={1.1} size={32} />À venir...
+          </div>
         </Button>
       </div>
     </div>
