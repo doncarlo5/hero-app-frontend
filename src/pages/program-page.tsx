@@ -25,7 +25,7 @@ function WorkoutPage() {
           </div>
 
           <div className="pt-5">
-            <h2 className=" text-center tracking-wide">Entrainement complet (x3)</h2>
+            <h2 className=" text-center tracking-tight">Entrainement complet (x3)</h2>
 
             <Accordion type="single" collapsible className="">
               <AccordionItem value="item-1">
@@ -212,7 +212,7 @@ function WorkoutPage() {
           </div>
 
           <div className="pt-5">
-            <h2 className=" text-center tracking-wide">Entrainement minimalite (x2)</h2>
+            <h2 className=" text-center tracking-tight">Entrainement minimalite (x2)</h2>
             <Accordion type="single" collapsible className="">
               <AccordionItem value="item-4">
                 <AccordionTrigger>Séance A</AccordionTrigger>
