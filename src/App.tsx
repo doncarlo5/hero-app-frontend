@@ -1,6 +1,7 @@
 // import SessionPage from "./pages/session-page"
 import { Route, Routes } from "react-router-dom"
 
+import ConfirmEmail from "./pages/confirm-page"
 // import { ThemeProvider } from "./components/theme-provider"
 import DoExercisePage from "./pages/do-exercise-page"
 import ErrorBoundary from "./pages/error-boundary"
@@ -22,7 +23,6 @@ import TypesList from "./pages/types-list"
 import WelcomePage from "./pages/welcome-page"
 import IsAuthenticated from "./routing/is-authenticated"
 import IsNotAuthenticated from "./routing/is-not-authenticated"
-import ConfirmEmail from "./pages/confirm-page"
 
 function App() {
   return (
@@ -33,7 +33,7 @@ function App() {
           <Route element={<IsNotAuthenticated />}>
             <Route path="/signup" element={<AuthPage />} />
             <Route path="/confirm-email" element={<ConfirmEmail />} />
-            </Route>
+          </Route>
           <Route element={<IsAuthenticated redirect={"/welcome"} />}>
             <Route path="/" element={<HomePage />} />
           </Route>
@@ -51,6 +51,7 @@ function App() {
             <Route path="/profile/trophy" element={<TrophyPage />} />
             <Route path="/profile/timer" element={<TimerPage />} />
             <Route path="/profile/settings" element={<SettingsPage />} />
+            {/* <Route path="/profile/settings/reset-password" element={<ResetPassword />} /> */}
             <Route path="/profile/program" element={<ProgramPage />} />
           </Route>
           <Route path="*" element={<NotFoundPage />} />
