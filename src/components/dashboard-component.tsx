@@ -6,8 +6,8 @@ import {
   LucidePencilRuler,
   LucideTimer,
   LucideTrophy,
-  LucideTv2,
   LucideUserRoundCog,
+  Video,
 } from "lucide-react"
 import { Link } from "react-router-dom"
 
@@ -80,7 +80,7 @@ function DashboardComponent() {
         </Button>
         <Button variant={"outline"} className="h-24 cursor-not-allowed opacity-50">
           <div className="flex flex-col items-center justify-center gap-1">
-            <LucideTv2 strokeWidth={1.1} size={32} />À venir...
+            <Video strokeWidth={1.1} size={32} />À venir...
           </div>
         </Button>
       </div>
