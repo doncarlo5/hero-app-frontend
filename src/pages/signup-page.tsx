@@ -10,7 +10,10 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
+import { useToast } from "../components/ui/use-toast"
+
 const AuthPage = () => {
+  const { toast } = useToast()
   const [isLogin, setIsLogin] = useState(true)
   const [loginState, setLoginState] = useState({
     email: "",
@@ -82,7 +85,16 @@ const AuthPage = () => {
         },
       })
       if (error) throw error
-      navigate("/")
+      toast({
+        title: "Inscription réussie!",
+        description: "Vérifiez votre email pour confirmer votre compte.",
+      })
+      setSignupState({
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+      })
     } catch (error: any) {
       setError(error.message)
     } finally {
@@ -96,7 +108,7 @@ const AuthPage = () => {
     setError("")
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(loginState.email, {
-        redirectTo: "https://hero-app-workout.vercel.app/profile/settings"
+        redirectTo: "https://hero-app-workout.vercel.app/profile/settings",
       })
       if (error) throw error
       alert("Check your email for the password reset link.")
@@ -113,6 +125,9 @@ const AuthPage = () => {
     try {
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
+        options: {
+          redirectTo: "http://localhost:5173/",
+        },
       })
       if (error) throw error
     } catch (error: any) {
