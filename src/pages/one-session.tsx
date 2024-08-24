@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { CalendarIcon, InfoCircledIcon } from "@radix-ui/react-icons"
+import { CalendarIcon, ReloadIcon } from "@radix-ui/react-icons"
 import { format } from "date-fns"
 import { fr } from "date-fns/locale/fr"
 import {
@@ -65,6 +65,7 @@ const OneSession = () => {
     is_done: false,
     comment: "",
   })
+  const [formIsDirty, setFormIsDirty] = useState(false)
 
   const { sessionId } = useParams()
   const navigate = useNavigate()
@@ -74,9 +75,8 @@ const OneSession = () => {
       const response = await fetchApi(`/api/sessions?limit=2&sortBy=date_session:desc`)
       if (response && response.length > 0) {
         setLastSession(response[1])
-        console.log("Last session found", response[1])
       } else {
-        console.log("No last session found")
+        setLastSession(null)
       }
     } catch (error) {
       console.error("Error fetching last session:", error)
@@ -108,6 +108,11 @@ const OneSession = () => {
     fetchLastSessionUser()
   }, [])
 
+  useEffect(() => {
+    const isDirty = formState.body_weight !== session.body_weight || formState.comment !== session.comment
+    setFormIsDirty(isDirty)
+  }, [formState, session])
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
@@ -124,6 +129,7 @@ const OneSession = () => {
         }),
       })
       fetchOneSession()
+      setFormIsDirty(false) // Reset dirty state after saving
       navigate("/history/")
     } catch (error: any) {
       console.error(error.message)
@@ -169,26 +175,38 @@ const OneSession = () => {
     setFormState({ ...formState, comment: value })
   }
 
-  const handleSaveComment = async (e: React.FormEvent) => {
-    e.preventDefault()
+  const handleSave = async () => {
     try {
+      setIsLoadingSubmit(true)
       await fetchApi(`/api/sessions/${sessionId}`, {
         method: "PUT",
-        body: JSON.stringify({ comment: formState.comment }),
+        body: JSON.stringify({
+          date_session: formState.date_session,
+          type_session: formState.type_session,
+          body_weight: formState.body_weight,
+          exercise_user_list: formState.exercise_user_list,
+          is_done: false,
+          comment: formState.comment,
+        }),
       })
+      fetchOneSession()
+      setFormIsDirty(false)
       toast({
-        title: "Commentaire enregistré.",
+        title: "Séance enregistrée",
+        description: "Les modifications ont été enregistrées avec succès.",
+        variant: "success",
       })
     } catch (error: any) {
       console.error(error.message)
       toast({
         title: "Erreur",
-        description: "Une erreur est survenue lors de l'enregistrement du commentaire.",
+        description: "Une erreur est survenue lors de l'enregistrement de la séance.",
+        variant: "destructive",
       })
+    } finally {
+      setIsLoadingSubmit(false)
     }
   }
-
-  const skeletonLoaders = Array(2).fill(0)
 
   return (
     <>
@@ -203,62 +221,6 @@ const OneSession = () => {
           <div>
             <h1 className="ml-5 text-2xl font-bold md:text-4xl">{session?.type_session}</h1>
           </div>
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button variant="ghost" size="icon" className="ml-5">
-                <InfoCircledIcon />
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-48 p-4" align="start">
-              <div className="text-sm text-gray-500">
-                {formState.type_session === "Upper A" && (
-                  <ol className="list-inside list-disc">
-                    <li>Développé Incliné</li>
-                    <li>Tractions Lestées</li>
-                    <li>Élévations Frontales</li>
-                    <li>Curl Incliné</li>
-                    <li>Élévations Latérales</li>
-                  </ol>
-                )}
-                {formState.type_session === "Lower" && (
-                  <ol className="list-inside list-disc">
-                    <li>Squat</li>
-                    <li>Fentes ou Presse</li>
-                    <li>Leg Curl/Leg Extension</li>
-                    <li>Extensions Mollets</li>
-                    <li>Upright Row Penché</li>
-                  </ol>
-                )}
-                {formState.type_session === "Upper B" && (
-                  <ol className="list-inside list-disc">
-                    <li>Overhead Press</li>
-                    <li>Développé Couché</li>
-                    <li>Tractions Neutres</li>
-                    <li>Oiseau Assis Prise Neutre</li>
-                    <li>Upright Row</li>
-                  </ol>
-                )}
-                {formState.type_session === "Séance A" && (
-                  <ol className="list-inside list-disc">
-                    <li>Développé incliné</li>
-                    <li>Traction prise neutre</li>
-                    <li>ATG Split Squat</li>
-                    <li>Upright Row</li>
-                    <li>Curl incliné</li>
-                  </ol>
-                )}
-                {formState.type_session === "Séance B" && (
-                  <ol className="list-inside list-disc">
-                    <li>Dips lestés</li>
-                    <li>Rowing bucheron</li>
-                    <li>Romanian deadlift</li>
-                    <li>Upright Row</li>
-                    <li>Extension Triceps Nuque</li>
-                  </ol>
-                )}
-              </div>
-            </PopoverContent>
-          </Popover>
         </div>
 
         <div className="space-y-4">
@@ -309,9 +271,7 @@ const OneSession = () => {
                     type="number"
                     onWheel={(e) => e.currentTarget.blur()}
                     className="pr-9"
-
-                    // disabled={!isEditable}
-                  />{" "}
+                  />
                   <Weight className="absolute right-1.5 top-0 m-2.5 h-4 w-4 text-muted-foreground opacity-50" />
                 </div>
               </div>
@@ -320,9 +280,11 @@ const OneSession = () => {
             <div className="flex flex-col items-center justify-center">
               {isLoading ? (
                 <div className="flex w-full flex-col items-center space-y-2">
-                  {skeletonLoaders.map((_, index) => (
-                    <Skeleton key={index} className=" h-40 w-11/12 rounded-xl" />
-                  ))}
+                  {Array(2)
+                    .fill(0)
+                    .map((_, index) => (
+                      <Skeleton key={index} className=" h-40 w-11/12 rounded-xl" />
+                    ))}
                 </div>
               ) : (
                 formState.exercise_user_list.map((exercise: any) => (
@@ -337,9 +299,9 @@ const OneSession = () => {
                 <p className="text-gray-600">Ajouter un exercice</p>
               </Link>
             </div>
-            <div className="col-span-2 mb-2 resize space-y-2">
+            <div className="col-span-2 mb-2 space-y-2">
               <Label htmlFor="comment">Notes</Label>
-              <div className="flex items-center gap-5 ">
+              <div className="flex items-center gap-5">
                 <Textarea
                   id="comment"
                   placeholder={
@@ -348,21 +310,30 @@ const OneSession = () => {
                   value={formState.comment}
                   onChange={handleCommentChange}
                   maxLength={200}
-                  className="h-full w-4/5"
+                  className="h-full w-full"
                 />
-                {formState.comment ? (
-                  <Button className="h-full w-1/6 rounded-full" onClick={handleSaveComment}>
-                    <SaveIcon className="size-5 " />
-                  </Button>
-                ) : (
-                  <Button disabled className="h-full w-1/6 rounded-full opacity-20">
-                    <SaveIcon className="size-5 text-gray-200 " />
-                  </Button>
-                )}
+                <div className="fixed bottom-20 right-10 cursor-pointer">
+                  {formIsDirty &&
+                    (isLoadingSubmit ? (
+                      <Button
+                        disabled
+                        className="flex h-16 w-16 items-center justify-center rounded-full text-white shadow-lg focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-opacity-75 active:scale-95 active:shadow-inner"
+                      >
+                        <ReloadIcon className="h-10 w-10 animate-spin" />
+                      </Button>
+                    ) : (
+                      <Button
+                        className="flex h-16 w-16 items-center justify-center rounded-full text-white shadow-lg focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-opacity-75 active:scale-95 active:shadow-inner"
+                        onClick={() => handleSave()}
+                      >
+                        <SaveIcon className="h-10 w-10" />
+                      </Button>
+                    ))}
+                </div>
               </div>
             </div>
 
-            <div className="col-span-2 flex gap-2 pb-5 ">
+            <div className="col-span-2 mb-20 flex gap-2 pb-5">
               <AlertDialog>
                 <AlertDialogTrigger asChild>
                   <Button variant={"outline"} className="flex-none">
