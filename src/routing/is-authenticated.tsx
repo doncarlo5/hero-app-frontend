@@ -2,11 +2,8 @@ import useAuth from "@/context/use-auth"
 import { LucideLoader2 } from "lucide-react"
 import { Navigate, Outlet } from "react-router-dom"
 
-type IsAuthenticatedProps = {
-  redirect: string
-}
 
-const IsAuthenticated = ({ redirect }: IsAuthenticatedProps) => {
+const IsAuthenticated = () => {
   const { isLoggedIn, isLoading } = useAuth()
 
   if (isLoading) {
@@ -19,7 +16,7 @@ const IsAuthenticated = ({ redirect }: IsAuthenticatedProps) => {
     )
   }
   if (!isLoggedIn) {
-    return <Navigate to={redirect} />
+    return <Navigate to="/welcome" />
   }
 
   return <Outlet />
