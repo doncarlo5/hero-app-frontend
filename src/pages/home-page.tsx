@@ -14,11 +14,14 @@ import OnboardingModal from "@/components/onboarding"
 import useAuth from "../context/use-auth"
 
 export function HomePage() {
-  const { user } = useAuth()
-  const [showOnboarding, setShowOnboarding] = useState(true)
+  const { user, contextBodyWeight } = useAuth()
   const [lastSession, setLastSession] = useState([] as any)
   const [allSessions, setAllSessions] = useState([] as any)
   const [isLoading, setIsLoading] = useState(false)
+  const [showOnboarding, setShowOnboarding] = useState(true)
+
+  console.log("user", user)
+  console.log("contextBodyWeight", contextBodyWeight)
 
   const fetchLastSession = async () => {
     try {
@@ -42,17 +45,33 @@ export function HomePage() {
       setAllSessions(response)
     } catch (error: any) {
       console.error("Fetch error: ", error)
+    } finally {
+    }
+  }
+
+  const handleOnboardingClose = async () => {
+    try {
+      await fetchApi("/api/auth/updateHasSeenOnboarding", {
+        method: "PATCH",
+      })
+      setShowOnboarding(false)
+    } catch (error: any) {
+      console.error("Error updating onboarding status:", error)
     }
   }
 
   useEffect(() => {
     fetchLastSession()
     fetchAllSessions()
-  }, [])
+
+    if (user && !user.hasSeenOnboarding) {
+      setShowOnboarding(true)
+    }
+  }, [user])
 
   return (
     <div className="">
-      {showOnboarding && <OnboardingModal onClose={() => setShowOnboarding(false)} />}
+      {showOnboarding && <OnboardingModal onClose={handleOnboardingClose} />}
       <Navbar />
       <main className="container mx-auto my-0 flex h-dvh max-w-lg flex-col ">
         <div className="pt-10 ">
@@ -66,20 +85,20 @@ export function HomePage() {
                 <div className="h-5 w-32 rounded-full bg-gray-200 "></div>
               </div>
             ) : (
-              <div className="flex h-24 flex-col justify-between rounded-lg bg-slate-100 px-3 py-3  shadow-lg dark:bg-slate-900 dark:bg-opacity-80">
+              <div className="flex h-24 flex-col justify-between rounded-lg bg-slate-100 px-3 py-3 shadow-lg dark:bg-slate-900 dark:bg-opacity-80">
                 {lastSession ? (
                   <h2 className="text-lg font-bold ">Dernière séance </h2>
                 ) : (
                   <h2 className="text-lg font-bold ">Aucune séance</h2>
-                )}{" "}
-                <div className="flex items-end justify-between   text-slate-600 dark:text-gray-400">
+                )}
+                <div className="flex items-end justify-between text-slate-600 dark:text-gray-400">
                   <span>
                     {lastSession?.date_session && format(new Date(lastSession?.date_session), "dd/MM/yyyy")}
                     {" - "}
                     {lastSession?.type_session && lastSession?.type_session}
                   </span>
                   <Link className=" flex" to="/history">
-                    <span className="jus flex  text-sm text-teal-500 hover:underline">Voir tout</span>
+                    <span className="jus flex text-sm text-teal-500 hover:underline">Voir tout</span>
                   </Link>
                 </div>
               </div>
@@ -96,7 +115,7 @@ export function HomePage() {
               </div>
             ) : (
               <Link
-                className="group flex h-24 w-full  flex-col justify-between rounded-lg bg-slate-100 px-3 py-3 shadow-lg  active:translate-y-0.5 active:shadow-inner dark:bg-slate-900 dark:bg-opacity-80"
+                className="group flex h-24 w-full flex-col justify-between rounded-lg bg-slate-100 px-3 py-3 shadow-lg active:translate-y-0.5 active:shadow-inner dark:bg-slate-900 dark:bg-opacity-80"
                 to="/history"
               >
                 <div className="flex items-center gap-2 text-sm text-slate-600">
@@ -115,7 +134,7 @@ export function HomePage() {
               </div>
             ) : (
               <Link
-                className="group flex h-24 w-full  flex-col justify-between rounded-lg bg-slate-100 px-3 py-3 shadow-lg  active:translate-y-0.5 active:shadow-inner dark:bg-slate-900 dark:bg-opacity-80"
+                className="group flex h-24 w-full flex-col justify-between rounded-lg bg-slate-100 px-3 py-3 shadow-lg active:translate-y-0.5 active:shadow-inner dark:bg-slate-900 dark:bg-opacity-80"
                 to={`/history/session/${lastSession?._id}`}
               >
                 <div className="flex items-baseline gap-2 text-sm text-slate-600">
@@ -135,7 +154,6 @@ export function HomePage() {
                 </div>
               </Link>
             )}
-
             {isLoading ? (
               <div className="col-span-2 flex h-24 w-full animate-pulse flex-row items-center justify-center gap-3 rounded-lg bg-slate-100 px-3 py-3 shadow-lg">
                 <div className=" h-10 w-10 rounded-full bg-gray-200 "></div>
@@ -143,13 +161,13 @@ export function HomePage() {
               </div>
             ) : (
               <Link
-                className="group col-span-2 flex h-24 w-full items-center justify-center rounded-lg bg-slate-100 px-2 py-3 shadow-lg  active:translate-y-0.5 active:shadow-inner dark:bg-slate-900 dark:bg-opacity-80"
+                className="group col-span-2 flex h-24 w-full items-center justify-center rounded-lg bg-slate-100 px-2 py-3 shadow-lg active:translate-y-0.5 active:shadow-inner dark:bg-slate-900 dark:bg-opacity-80"
                 to="/profile"
               >
                 <div className="flex items-center gap-4 pl-4">
                   <LucideCircleUser color="rgb(107 114 128)" className="" height={35} width={35} strokeWidth={1.5} />
                   <div>
-                    <p className="tab tab-whishlist block  text-slate-800">
+                    <p className="tab tab-whishlist block text-slate-800">
                       Consulte ton <span className="font-bold">profil</span>
                     </p>
                     <p className="text-xs tracking-tighter text-slate-600">

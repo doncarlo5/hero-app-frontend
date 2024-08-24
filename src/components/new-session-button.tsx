@@ -1,27 +1,31 @@
 import React, { useEffect, useState } from "react"
-import { LucideWeight } from "lucide-react"
+import useAuth from "@/context/use-auth"
 import { useNavigate } from "react-router-dom"
 
+import upperBack from "../../public/upper-back.png"
+import upperFront from "../../public/upper-front.png"
 import fetchApi from "../lib/api-handler"
 import { Button } from "./ui/button"
-import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "./ui/dialog"
 import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger } from "./ui/drawer"
-import { Input } from "./ui/input"
 import { Label } from "./ui/label"
 import { Switch } from "./ui/switch"
 import bodyBack from "/body-back.png"
 import bodyFront from "/body-front.png"
 import lower from "/lower.png"
-import upperBack from "../../public/upper-back.png"
-import upperFront from "../../public/upper-front.png"
 
 function NewSessionButton({ Children }: { Children: any }) {
-  const [weight, setWeight] = React.useState("")
-  const [showDialog, setShowDialog] = useState(false)
+  const [bodyWeight, setBodyWeight] = useState(0)
+
   const [showMinimaliste, setShowMinimaliste] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const { contextBodyWeight } = useAuth()
+  console.log("contextBodyWeight", contextBodyWeight)
 
   const navigate = useNavigate()
+
+  useEffect(() => {
+    setBodyWeight(contextBodyWeight)
+  }, [contextBodyWeight])
 
   useEffect(() => {
     fetchLastSessionUser()
@@ -31,9 +35,9 @@ function NewSessionButton({ Children }: { Children: any }) {
     try {
       const response = await fetchApi(`/api/sessions?limit=1&sortBy=createdAt:desc`)
       if (response && response.length > 0) {
-        setWeight(response[0].body_weight)
+        setBodyWeight(response[0].body_weight)
       } else {
-        setShowDialog(true)
+        setBodyWeight(contextBodyWeight)
       }
     } catch (error) {
       console.error("Error fetching last session:", error)
@@ -49,7 +53,7 @@ function NewSessionButton({ Children }: { Children: any }) {
         body: JSON.stringify({
           date_session: new Date(),
           type_session: userChoice,
-          body_weight: weight,
+          body_weight: bodyWeight,
           exercise_user_list: [],
           is_done: false,
           comment: "",
@@ -72,7 +76,7 @@ function NewSessionButton({ Children }: { Children: any }) {
       </DrawerTrigger>
       <DrawerContent className="select-none ">
         {isLoading ? (
-          <div className="h-6 w-6 animate-spin rounded-full border-b-2 border-current border-teal-700 my-20 mx-auto" />
+          <div className="mx-auto my-20 h-6 w-6 animate-spin rounded-full border-b-2 border-current border-teal-700" />
         ) : (
           <div className="mx-auto w-full max-w-sm">
             <DrawerHeader>
@@ -149,36 +153,6 @@ function NewSessionButton({ Children }: { Children: any }) {
           </div>
         )}
       </DrawerContent>
-      {showDialog && (
-        <div>
-          <DialogContent className="w-11/12 rounded-md">
-            <DialogHeader>
-              <DialogTitle className="flex items-end text-left ">
-                <LucideWeight className="mr-2 " size={20} />
-                <div>Combien pèses-tu ?</div>
-              </DialogTitle>
-              <DialogDescription>
-                <div className="text-left text-gray-500 dark:text-gray-400">Renseigne ton poids pour continuer.</div>
-              </DialogDescription>
-              <DialogDescription className="flex justify-center py-2 ">
-                <div className="flex w-3/5 items-end justify-center gap-2 text-xl font-light ">
-                  <Input
-                    className="w-2/5 text-lg font-bold text-black"
-                    type="number"
-                    id="body_weight"
-                    value={weight}
-                    onChange={(e) => setWeight(e.target.value)}
-                  />
-                  KG
-                </div>
-              </DialogDescription>
-            </DialogHeader>
-            <DialogFooter>
-              <Button onClick={() => setShowDialog(false)}>Valider</Button>
-            </DialogFooter>
-          </DialogContent>
-        </div>
-      )}
     </Drawer>
   )
 }

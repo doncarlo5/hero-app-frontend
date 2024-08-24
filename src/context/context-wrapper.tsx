@@ -12,18 +12,24 @@ type WrapperProps = {
 
 interface IAuthContext {
   user: User | null;
+  setUser: (user: User | null) => void
   isLoggedIn: boolean;
   isLoading: boolean;
   handleLogout: () => void;
   session: Session | null;
+  contextBodyWeight: number;
+  contextSetBodyWeight: (value: number) => void;
 }
 
 const AuthContext = createContext({
   user: null,
+  setUser: () => {},
   isLoggedIn: false,
   isLoading: true,
   session: null,
   handleLogout: () => {},
+  contextBodyWeight: 0,
+  contextSetBodyWeight: () => {},
 } as IAuthContext);
 
 const AuthContextWrapper = ({ children }: WrapperProps) => {
@@ -31,17 +37,16 @@ const AuthContextWrapper = ({ children }: WrapperProps) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [session, setSession] = useState<Session | null>(null);
+  const [contextBodyWeight, contextSetBodyWeight] = useState<number>(0);
 
   const getSession = async () => {
     try {
-      console.log("setData");
       const {
         data: { session },
         error,
       } = await supabase.auth.getSession();
       setSession(session);
       if (error) throw error;
-      console.log("session", session);
       setIsLoggedIn(session !== null);
       if (session) {
         const response = await fetchApi("/api/auth/verify");
@@ -96,7 +101,7 @@ const AuthContextWrapper = ({ children }: WrapperProps) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, isLoggedIn, isLoading, handleLogout, session }}>
+    <AuthContext.Provider value={{ user, isLoggedIn, isLoading, handleLogout, session, contextBodyWeight, contextSetBodyWeight, setUser }}>
       {children}
     </AuthContext.Provider>
   );
