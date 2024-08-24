@@ -1,14 +1,24 @@
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import useAuth from "@/context/use-auth"
-import useEmblaCarousel from "embla-carousel-react"
-import { ArrowDown01, Brackets, Calendar, Download, Edit, LucideActivity, LucideWeight, Trophy } from "lucide-react"
+import { motion } from "framer-motion"
+import {
+  ArrowDown01,
+  Brackets,
+  Calendar,
+  Download,
+  Edit,
+  LucideActivity,
+  LucideCheckCircle,
+  Trophy,
+  User2,
+} from "lucide-react"
 import { FaWeightScale } from "react-icons/fa6"
 
 import { User } from "@/types/user"
 import fetchApi from "@/lib/api-handler"
 
 import { AnimatedCounter } from "./animated-counter"
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "./ui/carousel"
+import { Carousel, CarouselApi, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "./ui/carousel"
 import { Input } from "./ui/input"
 import { Label } from "./ui/label"
 import { toast } from "./ui/use-toast"
@@ -22,12 +32,47 @@ type OnboardingModalProps = {
 const OnboardingModal: React.FC<OnboardingModalProps> = ({ onClose }) => {
   const { user, contextSetBodyWeight, setUser } = useAuth()
   const [bodyWeight, setBodyWeight] = useState(0)
-
   const [formState, setFormState] = useState({
     firstName: user?.firstName || "",
     lastName: user?.lastName || "",
     email: user?.email || "",
   })
+
+  const [api, setApi] = useState<CarouselApi | undefined>()
+  const [current, setCurrent] = useState(0)
+  const [count, setCount] = useState(0)
+  const [currentStep, setCurrentStep] = useState(0)
+  const [showFinalMessage, setShowFinalMessage] = useState(false)
+
+  const steps = [
+    "Création du programme...",
+    "Ajout de 5 types de séances...",
+    "Création de 40 types d'exercices...",
+    "Création de 27 trophées...",
+  ]
+
+  useEffect(() => {
+    if (!api) return
+
+    setCount(api.scrollSnapList().length)
+    setCurrent(api.selectedScrollSnap())
+
+    api.on("select", () => {
+      setCurrent(api.selectedScrollSnap())
+    })
+  }, [api, count])
+
+  useEffect(() => {
+    if (current === 4) {
+      if (currentStep < steps.length) {
+        const timeout = setTimeout(() => setCurrentStep((prev) => prev + 1), 2000)
+        return () => clearTimeout(timeout)
+      } else {
+        const timeout = setTimeout(() => setShowFinalMessage(true), 1000)
+        return () => clearTimeout(timeout)
+      }
+    }
+  }, [current, currentStep])
 
   const handleSubmit = async () => {
     try {
@@ -60,14 +105,14 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ onClose }) => {
   }
 
   const handleOnboardingClose = async () => {
-    handleSubmit()
+    await handleSubmit()
     onClose()
   }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 ">
       <div className="relative mt-4 w-10/12 max-w-md overflow-hidden rounded-lg bg-slate-50 shadow-lg">
-        <Carousel onClose={handleOnboardingClose} className="w-full">
+        <Carousel setApi={setApi} onClose={handleOnboardingClose} className="w-full">
           <CarouselContent>
             <CarouselItem className="my-auto flex h-full w-full items-center justify-center" key={0}>
               <div className="p-4 text-center ">
@@ -81,7 +126,10 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ onClose }) => {
                 <h2 className="mt-10 text-left text-2xl font-bold">Complétez vos informations...</h2>
                 <form onSubmit={(e) => e.preventDefault()}>
                   <div className=" mx-auto mt-8 w-11/12 rounded-xl border border-gray-200 bg-gray-100 p-3">
-                    <h3 className="mb-2 font-semibold ">Mon identité</h3>
+                    <h3 className="mb-2 flex items-baseline gap-2 font-semibold text-gray-800">
+                      <User2 size={20} />
+                      Mon identité
+                    </h3>
                     <div className=" space-y-2">
                       <div>
                         <Label htmlFor="firstName" className="mb-4">
@@ -102,11 +150,11 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ onClose }) => {
                         <Input id="lastName" placeholder="Nom" value={formState.lastName} onChange={handleChange} />
                       </div>
                     </div>
-                    <div>
+                    <div className="mt-5 flex flex-col items-center justify-center">
                       <Label htmlFor="bodyWeight" className="mb-2">
                         Poids du corps
                       </Label>
-                      <div className="flex w-3/5 items-end justify-center gap-2 text-xl font-light ">
+                      <div className="flex w-3/6 items-end justify-center gap-2 text-xl font-light ">
                         <Input
                           className=" text-lg font-bold text-black"
                           type="number"
@@ -220,57 +268,80 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ onClose }) => {
             <CarouselItem key={4}>
               <div className="relative p-4 text-center">
                 <div className="relative">
-                  <h2 className="mb-4 mt-16 text-left text-2xl font-bold">En résumé...</h2>
+                  {showFinalMessage && <h2 className="mb-4 mt-1 text-left text-2xl font-bold">En résumé...</h2>}
+
                   <div className="flex flex-col gap-2">
-                    <div className="h-24 rounded-xl bg-white p-2 px-3 text-gray-800 shadow-md">
-                      <div className="flex h-full items-end justify-between">
-                        <div className="flex flex-col">
-                          <h3 className="text-left font-semibold">
-                            <span className="text-2xl font-black">
-                              <AnimatedCounter type="onboarding" from={0} to={40} />
-                            </span>{" "}
-                            exercices
-                          </h3>
-                          <h3 className="text-left font-semibold">types pré-enregistrés</h3>
-                        </div>
-                        <div className="mx-4 my-auto">
-                          <Download className="text-gray-500" strokeWidth={1.1} size={40} />
-                        </div>
-                      </div>
-                    </div>
-                    <div className="h-24 rounded-xl bg-white p-2 px-3 shadow-md">
-                      <div className="flex h-full items-end justify-between">
-                        <div className="flex flex-col">
-                          <h3 className="text-left font-semibold">
-                            <span className="text-2xl font-black">
-                              <AnimatedCounter type="onboarding" from={0} to={27} />{" "}
-                            </span>{" "}
-                            trophées à
-                          </h3>
-                          <h3 className="text-left font-semibold">gagner pour te challenger</h3>
-                        </div>
-                        <div className="mx-4 my-auto">
-                          <Trophy className="text-gray-500" strokeWidth={1.1} size={40} />
-                        </div>
-                      </div>
-                    </div>
-                    <div className="h-24 rounded-xl bg-white p-2 px-3 shadow-md">
-                      <div className="flex h-full items-end justify-between">
-                        <div className="flex flex-col">
-                          <h3 className="text-left font-semibold">
-                            <span className="text-2xl font-black">
-                              <AnimatedCounter type="onboarding" from={0} to={5} />{" "}
-                            </span>{" "}
-                            types de séances
-                          </h3>
-                          <h3 className="text-left font-semibold"> selon ton programme</h3>
-                        </div>
-                        <div className="mx-4 my-auto">
-                          <LucideActivity className="text-gray-500" strokeWidth={1.1} size={40} />
-                        </div>
-                      </div>
-                    </div>
+                    {!showFinalMessage ? (
+                      <>
+                        <div className="mx-auto my-20 h-6 w-6 animate-spin rounded-full border-b-2 border-current border-teal-700" />
+                        <motion.div
+                          key={currentStep}
+                          className="box"
+                          initial={{ opacity: 0, scale: 0 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                        >
+                          <p>{steps[currentStep]}</p>
+                        </motion.div>
+                      </>
+                    ) : (
+                      <motion.div className="box" initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }}>
+                        <LucideCheckCircle className="mx-auto h-12 w-12 text-green-500" />
+                        <p className=" font-medium mt-1">Profil créé.</p>
+                      </motion.div>
+                    )}
                   </div>
+                  {showFinalMessage && (
+                    <div className="mt-4 flex flex-col gap-2">
+                      <div className="h-24 rounded-xl bg-white p-2 px-3 text-gray-800 shadow-md">
+                        <div className="flex h-full items-end justify-between">
+                          <div className="flex flex-col">
+                            <h3 className="text-left font-semibold">
+                              <span className="text-2xl font-black">
+                                <AnimatedCounter type="onboarding" from={0} to={40} />
+                              </span>{" "}
+                              exercices
+                            </h3>
+                            <h3 className="text-left font-semibold">types pré-enregistrés</h3>
+                          </div>
+                          <div className="mx-4 my-auto">
+                            <Download className="text-gray-500" strokeWidth={1.1} size={40} />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="h-24 rounded-xl bg-white p-2 px-3 shadow-md">
+                        <div className="flex h-full items-end justify-between">
+                          <div className="flex flex-col">
+                            <h3 className="text-left font-semibold">
+                              <span className="text-2xl font-black">
+                                <AnimatedCounter type="onboarding" from={0} to={27} />{" "}
+                              </span>{" "}
+                              trophées à
+                            </h3>
+                            <h3 className="text-left font-semibold">gagner pour te challenger</h3>
+                          </div>
+                          <div className="mx-4 my-auto">
+                            <Trophy className="text-gray-500" strokeWidth={1.1} size={40} />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="h-24 rounded-xl bg-white p-2 px-3 shadow-md">
+                        <div className="flex h-full items-end justify-between">
+                          <div className="flex flex-col">
+                            <h3 className="text-left font-semibold">
+                              <span className="text-2xl font-black">
+                                <AnimatedCounter type="onboarding" from={0} to={5} />{" "}
+                              </span>{" "}
+                              types de séances
+                            </h3>
+                            <h3 className="text-left font-semibold"> selon ton programme</h3>
+                          </div>
+                          <div className="mx-4 my-auto">
+                            <LucideActivity className="text-gray-500" strokeWidth={1.1} size={40} />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </CarouselItem>

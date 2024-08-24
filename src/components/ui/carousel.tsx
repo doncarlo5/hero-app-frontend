@@ -170,7 +170,7 @@ CarouselItem.displayName = "CarouselItem"
 
 const CarouselPrevious = React.forwardRef<HTMLButtonElement, React.ComponentProps<typeof Button>>(
   ({ className, variant = "outline", size = "icon", ...props }, ref) => {
-    const { orientation, scrollPrev, canScrollPrev } = useCarousel()
+    const { orientation, scrollPrev, canScrollPrev, canScrollNext } = useCarousel()
 
     return (
       <Button
@@ -180,7 +180,7 @@ const CarouselPrevious = React.forwardRef<HTMLButtonElement, React.ComponentProp
         className={cn(
           "absolute h-8 w-10 rounded-full shadow-xl",
           orientation === "horizontal" ? "bottom-5 left-5" : "-bottom-12 left-1/2 -translate-x-1/2 rotate-90",
-          !canScrollPrev && "hidden",
+          (!canScrollPrev || !canScrollNext) && "hidden",
           className
         )}
         disabled={!canScrollPrev}
@@ -197,7 +197,41 @@ CarouselPrevious.displayName = "CarouselPrevious"
 
 const CarouselNext = React.forwardRef<HTMLButtonElement, React.ComponentProps<typeof Button>>(
   ({ className, variant = "outline", size = "icon", ...props }, ref) => {
-    const { orientation, scrollNext, canScrollNext, canScrollPrev, onClose } = useCarousel()
+    const { orientation, scrollNext, canScrollNext, canScrollPrev, api, onClose } = useCarousel()
+    const [current, setCurrent] = React.useState(0)
+    const [count, setCount] = React.useState(0)
+    const [showButton, setShowButton] = React.useState(false)
+
+    React.useEffect(() => {
+      if (!api) return
+
+      setCount(api.scrollSnapList().length)
+      setCurrent(api.selectedScrollSnap())
+
+      api.on("select", () => {
+        setCurrent(api.selectedScrollSnap())
+      })
+    }, [api, count])
+
+    React.useEffect(() => {
+      if (current === count - 1) {
+        // Checking if the current slide is the last slide
+        setShowButton(false) // Hide button if on the last slide
+        const timer = setTimeout(() => {
+          setShowButton(true)
+        }, 12000)
+
+        return () => {
+          clearTimeout(timer)
+        }
+      } else {
+        setShowButton(true) // Hide button if not on the last slide
+      }
+    }, [current, count])
+
+    if (!showButton) {
+      return null
+    }
 
     return (
       <>
@@ -207,7 +241,6 @@ const CarouselNext = React.forwardRef<HTMLButtonElement, React.ComponentProps<ty
             "absolute flex h-9 w-28 gap-1 rounded-full bg-slate-900 text-white shadow-lg active:bg-slate-900 active:text-white",
             orientation === "horizontal" ? "bottom-5 right-5" : "-bottom-12 left-1/2 -translate-x-1/2 rotate-90",
             (!canScrollNext || !canScrollPrev) && "hidden",
-
             className
           )}
           onClick={scrollNext}
@@ -231,14 +264,16 @@ const CarouselNext = React.forwardRef<HTMLButtonElement, React.ComponentProps<ty
           {...props}
         >
           <p>Commencer</p>
-          <FaArrowRight className=" group-hover:animate-fadeinleft ease-in-out transition-all ml-2 h-3 w-3" />
+          <FaArrowRight className=" ml-2 h-3 w-3 transition-all ease-in-out group-hover:animate-fadeinleft" />
           <span className="sr-only">Commencer</span>
         </Button>
         <Button
           ref={ref}
           className={cn(
-            "absolute flex h-9 w-28 gap-1 rounded-full bg-slate-900 text-white shadow-lg active:bg-slate-900 active:text-white",
-            orientation === "horizontal" ? "bottom-5 right-5" : "-bottom-12 left-1/2 -translate-x-1/2 rotate-90",
+            "absolute flex h-9 w-3/4 rounded-full bg-slate-900 text-white shadow-lg active:bg-slate-900 active:text-white",
+            orientation === "horizontal"
+              ? "bottom-5 left-1/2 -translate-x-1/2 transform" // Center horizontally
+              : "-bottom-12 left-1/2 -translate-x-1/2 rotate-90", // Center horizontally
             canScrollNext && "hidden",
             className
           )}
@@ -246,7 +281,7 @@ const CarouselNext = React.forwardRef<HTMLButtonElement, React.ComponentProps<ty
           {...props}
         >
           <p>Terminé</p>
-          <FaCheck className="h-3 w-3" />
+          <FaCheck className="ml-2 h-3 w-3" />
           <span className="sr-only">Terminé</span>
         </Button>
       </>
