@@ -34,11 +34,9 @@ function App() {
             <Route path="/signup" element={<AuthPage />} />
             <Route path="/confirm-email" element={<ConfirmEmail />} />
           </Route>
-          <Route element={<IsAuthenticated redirect={"/welcome"} />}>
-            <Route path="/" element={<HomePage />} />
-          </Route>
           <Route path="/welcome" element={<WelcomePage />} />
-          <Route element={<IsAuthenticated redirect={"/"} />}>
+          <Route element={<IsAuthenticated />}>
+            <Route path="/" element={<HomePage />} />
             <Route path="/history" element={<HistoryPage />} />
             <Route path="/history/exercise/:exerciseId" element={<OneExercise />} />
             <Route path="/history/session/:sessionId" element={<OneSession />} />
