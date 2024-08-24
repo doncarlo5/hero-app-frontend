@@ -175,8 +175,6 @@ const DoExercisePage = () => {
         }),
       })
 
-      console.log("response", response)
-
       const updatedSession = {
         exercise_user_list: [...session.exercise_user_list, response._id],
       }

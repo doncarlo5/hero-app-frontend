@@ -5,7 +5,6 @@ import { ChevronLeft } from "lucide-react"
 import { Link } from "react-router-dom"
 
 import fetchApi from "@/lib/api-handler"
-import { supabase } from "@/lib/supabaseClient"
 
 import { Button } from "../components/ui/button"
 import { Input } from "../components/ui/input"
@@ -15,7 +14,6 @@ import { useToast } from "../components/ui/use-toast"
 function SettingsPage() {
   const { toast } = useToast()
   const { user, session } = useAuth()
-  console.log("session", session)
 
   const [formState, setFormState] = useState({
     firstName: user?.firstName || "",
@@ -50,19 +48,6 @@ function SettingsPage() {
         method: "PATCH",
         body: JSON.stringify(formState),
       })
-
-      await supabase.auth.updateUser({
-        data: {
-          firstName: formState.firstName,
-          lastName: formState.lastName,
-          email: formState.email,
-        },
-      })
-
-      if (newPassword) {
-        const { error } = await supabase.auth.updateUser({ password: newPassword })
-        if (error) throw error
-      }
 
       toast({
         title: "Profil mis à jour!",

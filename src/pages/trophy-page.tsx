@@ -71,7 +71,6 @@ function TrophyPage() {
       try {
         const response: Trophy[] = await fetchApi("/api/trophies")
         setTrophies(response)
-        console.log("response", response)
       } catch (error) {
         console.error("Error fetching trophies:", error)
       }

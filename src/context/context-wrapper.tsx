@@ -67,12 +67,10 @@ const AuthContextWrapper = ({ children }: WrapperProps) => {
     // If user is logged in with email/password
     const { data: listener } = supabase.auth.onAuthStateChange(async (_event, session) => {
       if (session) {
-        console.log("Logged in with email/password");
         const response = await fetchApi("/api/auth/verify");
         setUser(response.user);
         setIsLoggedIn(session !== null);
       } else {
-        console.log("Logged out");
         setIsLoggedIn(false);
         setUser(null);
         redirect("/welcome");

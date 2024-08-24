@@ -19,7 +19,6 @@ function NewSessionButton({ Children }: { Children: any }) {
   const [showMinimaliste, setShowMinimaliste] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const { contextBodyWeight } = useAuth()
-  console.log("contextBodyWeight", contextBodyWeight)
 
   const navigate = useNavigate()
 

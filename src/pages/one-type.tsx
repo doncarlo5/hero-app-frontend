@@ -81,7 +81,6 @@ const OneType = () => {
         setIsRepRange4(true)
       }
       setType(response)
-      console.log("response", response)
     } catch (error: any) {
       console.error(error.message)
     } finally {

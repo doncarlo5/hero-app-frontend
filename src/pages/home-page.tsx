@@ -20,9 +20,6 @@ export function HomePage() {
   const [isLoading, setIsLoading] = useState(false)
   const [showOnboarding, setShowOnboarding] = useState(true)
 
-  console.log("user", user)
-  console.log("contextBodyWeight", contextBodyWeight)
-
   const fetchLastSession = async () => {
     try {
       setIsLoading(true)
