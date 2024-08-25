@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react"
 import { format } from "date-fns"
 import { fr } from "date-fns/locale/fr"
-import { LucideCircleUser, Plus } from "lucide-react"
-import { FaDumbbell, FaWeightScale } from "react-icons/fa6"
+import {  LucidePencilRuler, Plus } from "lucide-react"
+import { FaDumbbell, FaTrophy, FaWeightScale } from "react-icons/fa6"
 import { Link } from "react-router-dom"
 
+import { Trophy } from "@/types/trophy"
 import fetchApi from "@/lib/api-handler"
 import { AnimatedCounter } from "@/components/animated-counter"
 import { Navbar } from "@/components/navbar"
@@ -18,7 +19,22 @@ export function HomePage() {
   const [lastSession, setLastSession] = useState([] as any)
   const [allSessions, setAllSessions] = useState([] as any)
   const [isLoading, setIsLoading] = useState(false)
-  const [showOnboarding, setShowOnboarding] = useState(true)
+  const [showOnboarding, setShowOnboarding] = useState(false)
+  const [trophies, setTrophies] = useState([] as any)
+
+  useEffect(() => {
+    const fetchTrophies = async () => {
+      try {
+        const response: Trophy[] = await fetchApi("/api/trophies")
+        setTrophies(response)
+        console.log("Trophies", response)
+      } catch (error) {
+        console.error("Error fetching trophies:", error)
+      }
+    }
+
+    fetchTrophies()
+  }, [])
 
   const fetchLastSession = async () => {
     try {
@@ -30,10 +46,6 @@ export function HomePage() {
     } finally {
       setIsLoading(false)
     }
-  }
-
-  const capitalizeFirstLetter = (string: string) => {
-    return string.charAt(0).toUpperCase() + string.slice(1)
   }
 
   const fetchAllSessions = async () => {
@@ -66,6 +78,11 @@ export function HomePage() {
     }
   }, [user])
 
+  const calculateAchievedTrophies = (trophies: any) => {
+    const achievedTrophies = trophies.filter((trophy: Trophy) => trophy.achieved)
+    return achievedTrophies.length
+  }
+
   return (
     <div className="">
       {showOnboarding && <OnboardingModal onClose={handleOnboardingClose} />}
@@ -77,12 +94,12 @@ export function HomePage() {
           </h1>
           <div className="flex flex-col gap-4 pb-4 ">
             {isLoading ? (
-              <div className="flex h-24 animate-pulse flex-col justify-between rounded-lg bg-slate-100 px-3 py-3 shadow-lg">
+              <div className="flex h-24 animate-pulse flex-col justify-between rounded-2xl bg-slate-100 px-3 py-3 shadow-lg">
                 <div className="mb-4 h-6 w-24 rounded-full bg-gray-200 "></div>
                 <div className="h-5 w-32 rounded-full bg-gray-200 "></div>
               </div>
             ) : (
-              <div className="flex h-24 flex-col justify-between rounded-lg bg-slate-100 px-3 py-3 shadow-lg dark:bg-slate-900 dark:bg-opacity-80">
+              <div className="flex h-24 flex-col justify-between rounded-2xl bg-slate-100 px-3 py-3 shadow-lg dark:bg-slate-900 dark:bg-opacity-80">
                 {lastSession ? (
                   <h2 className="text-lg font-bold ">Dernière séance </h2>
                 ) : (
@@ -106,13 +123,13 @@ export function HomePage() {
           </div>
           <div className="grid grid-cols-2 gap-4 pb-20">
             {isLoading ? (
-              <div className="flex h-24 animate-pulse flex-col justify-between rounded-lg bg-slate-100 px-3 py-3 shadow-lg">
+              <div className="flex h-24 animate-pulse flex-col justify-between rounded-2xl bg-slate-100 px-3 py-3 shadow-lg">
                 <div className="mb-4 h-6 w-24 rounded-full bg-gray-200 "></div>
                 <div className="h-5 w-32 rounded-full bg-gray-200 "></div>
               </div>
             ) : (
               <Link
-                className="group flex h-24 w-full flex-col justify-between rounded-lg bg-slate-100 px-3 py-3 shadow-lg active:translate-y-0.5 active:shadow-inner dark:bg-slate-900 dark:bg-opacity-80"
+                className="group flex h-24 w-full flex-col justify-between rounded-2xl bg-slate-100 px-3 py-3 shadow-lg active:translate-y-0.5 active:shadow-inner dark:bg-slate-900 dark:bg-opacity-80"
                 to="/history"
               >
                 <div className="flex items-center gap-2 text-sm text-slate-600">
@@ -125,13 +142,13 @@ export function HomePage() {
               </Link>
             )}
             {isLoading ? (
-              <div className="flex h-24 animate-pulse flex-col justify-between rounded-lg bg-slate-100 px-3 py-3 shadow-lg">
+              <div className="flex h-24 animate-pulse flex-col justify-between rounded-2xl bg-slate-100 px-3 py-3 shadow-lg">
                 <div className="mb-4 h-6 w-24 rounded-full bg-gray-200 "></div>
                 <div className="h-5 w-32 rounded-full bg-gray-200 "></div>
               </div>
             ) : (
               <Link
-                className="group flex h-24 w-full flex-col justify-between rounded-lg bg-slate-100 px-3 py-3 shadow-lg active:translate-y-0.5 active:shadow-inner dark:bg-slate-900 dark:bg-opacity-80"
+                className="group flex h-24 w-full flex-col justify-between rounded-2xl bg-slate-100 px-3 py-3 shadow-lg active:translate-y-0.5 active:shadow-inner dark:bg-slate-900 dark:bg-opacity-80"
                 to={`/history/session/${lastSession?._id}`}
               >
                 <div className="flex items-baseline gap-2 text-sm text-slate-600">
@@ -141,24 +158,59 @@ export function HomePage() {
                 <div className=" text-2xl font-medium">
                   {lastSession?.body_weight} <span className=" text-xl font-extralight">KG</span>
                 </div>
-                <div className="text-xs font-extralight text-slate-600 ">
+                <div className="text-xs font-extralight capitalize text-slate-600 ">
                   {lastSession?.date_session &&
-                    capitalizeFirstLetter(
-                      format(new Date(lastSession?.date_session), "iiii do MMMM yyyy", {
-                        locale: fr,
-                      })
-                    )}
+                    format(new Date(lastSession?.date_session), "iiii do MMMM yyyy", {
+                      locale: fr,
+                    })}
                 </div>
               </Link>
             )}
             {isLoading ? (
-              <div className="col-span-2 flex h-24 w-full animate-pulse flex-row items-center justify-center gap-3 rounded-lg bg-slate-100 px-3 py-3 shadow-lg">
+              <div className="flex h-24 animate-pulse flex-col justify-between rounded-2xl bg-slate-100 px-3 py-3 shadow-lg">
+                <div className="mb-4 h-6 w-24 rounded-full bg-gray-200 "></div>
+                <div className="h-5 w-32 rounded-full bg-gray-200 "></div>
+              </div>
+            ) : (
+              <Link
+                className="group flex h-24 w-full flex-col justify-between rounded-2xl bg-slate-100 px-3 py-3 shadow-lg active:translate-y-0.5 active:shadow-inner dark:bg-slate-900 dark:bg-opacity-80"
+                to="/profile/trophy"
+              >
+                <div className="flex items-center gap-2 text-sm text-slate-600">
+                  <FaTrophy color="rgb(71 85 105)" className="" height={17} width={17} strokeWidth={2.2} />
+                  Total trophées
+                </div>
+                {/* Display {number of trophy achieved to true} / {total of trophies} */}
+                <div className=" text-3xl font-extrabold">
+                  <AnimatedCounter from={0} to={calculateAchievedTrophies(trophies)} />
+                  /27
+                </div>
+              </Link>
+            )}
+            {isLoading ? (
+              <div className="flex h-24 animate-pulse flex-col justify-between rounded-2xl bg-slate-100 px-3 py-3 shadow-lg">
+                <div className="mb-4 h-6 w-24 rounded-full bg-gray-200 "></div>
+                <div className="h-5 w-32 rounded-full bg-gray-200 "></div>
+              </div>
+            ) : (
+              <Link
+                className="group flex h-24 w-full flex-col justify-between rounded-2xl bg-slate-100 px-3 py-3 shadow-lg active:translate-y-0.5 active:shadow-inner dark:bg-slate-900 dark:bg-opacity-80"
+                to="/profile/type/new-type"
+              >
+                <div className=" text-sm flex items-center justify-center my-auto gap-2 text-slate-600">
+                  <LucidePencilRuler color="rgb(71 85 105)" className="" height={60} width={60} strokeWidth={1} />
+                  <p className=" text-center">Create a <strong>new exercise</strong></p>
+                </div>
+              </Link>
+            )}
+            {/* {isLoading ? (
+              <div className="col-span-2 flex h-24 w-full animate-pulse flex-row items-center justify-center gap-3 rounded-2xl bg-slate-100 px-3 py-3 shadow-lg">
                 <div className=" h-10 w-10 rounded-full bg-gray-200 "></div>
                 <div className="h-5 w-32 rounded-full bg-gray-200 "></div>
               </div>
             ) : (
               <Link
-                className="group col-span-2 flex h-24 w-full items-center justify-center rounded-lg bg-slate-100 px-2 py-3 shadow-lg active:translate-y-0.5 active:shadow-inner dark:bg-slate-900 dark:bg-opacity-80"
+                className="group col-span-2 flex h-24 w-full items-center justify-center rounded-2xl bg-slate-100 px-2 py-3 shadow-lg active:translate-y-0.5 active:shadow-inner dark:bg-slate-900 dark:bg-opacity-80"
                 to="/profile"
               >
                 <div className="flex items-center gap-4 pl-4">
@@ -173,7 +225,7 @@ export function HomePage() {
                   </div>
                 </div>
               </Link>
-            )}
+            )} */}
             <NewSessionButton
               Children={
                 <div className="fixed bottom-20 right-10 cursor-pointer  ">

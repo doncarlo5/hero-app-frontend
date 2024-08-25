@@ -197,7 +197,7 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ onClose }) => {
                         <div className="text-left">
                           <h3 className="mt-1 font-bold">Poids du corps</h3>
                           <p className="text-sm font-semibold text-gray-600">
-                            La mesure du poids du corps est prise le matin à jeun.
+                            Le poids du corps est mesuré le matin à jeun.
                           </p>
                         </div>
                       </div>
