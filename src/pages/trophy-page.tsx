@@ -11,56 +11,7 @@ import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog"
 import { Navbar } from "@/components/navbar"
 import TrophyIcon from "@/components/TrophyIcon"
-
-interface ExerciseType {
-  _id: string
-  name: string
-  advice: string
-  timer: number
-  repRange1: string
-  repRange2: string
-  repRange3: string
-  type_session: string
-  owner: string
-  createdAt: string
-  updatedAt: string
-  __v: number
-}
-
-interface ExerciseUser {
-  _id: string
-  type: string
-  weight: number[]
-  rep: number[]
-  session: string
-  owner: string
-  comment: string
-  createdAt: string
-  updatedAt: string
-  __v: number
-}
-
-interface Trophy {
-  _id: string
-  name: string
-  exerciseType: ExerciseType
-  exerciseUser: ExerciseUser
-  repsGoal: number
-  weightMultiplier: number
-  awardedAt: string | null
-  achieved: boolean
-  description: string
-  repsUser: number
-  weightUser: number
-  owner: string
-  createdAt: string
-  updatedAt: string
-  __v: number
-  trophyType: string
-  level: number
-  rewardText: string
-  bodyWeight: number
-}
+import { Trophy } from "@/types/trophy"
 
 function TrophyPage() {
   const [trophies, setTrophies] = useState<Trophy[]>([])
