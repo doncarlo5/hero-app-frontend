@@ -10,7 +10,6 @@ import {
   LucideActivity,
   LucideCheckCircle,
   Trophy,
-  User2,
 } from "lucide-react"
 import { FaWeightScale } from "react-icons/fa6"
 
@@ -46,9 +45,9 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ onClose }) => {
 
   const steps = [
     "Création du programme...",
-    "Ajout de 5 types de séances...",
-    "Création de 40 types d'exercices...",
-    "Création de 27 trophées...",
+    "Ajout de types séances...",
+    "Création des types d'exercices...",
+    "Création des trophées...",
   ]
 
   useEffect(() => {
@@ -65,7 +64,7 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ onClose }) => {
   useEffect(() => {
     if (current === 4) {
       if (currentStep < steps.length) {
-        const timeout = setTimeout(() => setCurrentStep((prev) => prev + 1), 2000)
+        const timeout = setTimeout(() => setCurrentStep((prev) => prev + 1), 2500)
         return () => clearTimeout(timeout)
       } else {
         const timeout = setTimeout(() => setShowFinalMessage(true), 1000)
@@ -126,10 +125,7 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ onClose }) => {
                 <h2 className="mt-10 text-left text-2xl font-bold">Complétez vos informations...</h2>
                 <form onSubmit={(e) => e.preventDefault()}>
                   <div className=" mx-auto mt-8 w-11/12 rounded-xl border border-gray-200 bg-gray-100 p-3">
-                    <h3 className="mb-2 flex items-baseline gap-2 font-semibold text-gray-800">
-                      <User2 size={20} />
-                      Mon identité
-                    </h3>
+              
                     <div className=" space-y-2">
                       <div>
                         <Label htmlFor="firstName" className="mb-4">
@@ -268,7 +264,7 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ onClose }) => {
             <CarouselItem key={4}>
               <div className="relative p-4 text-center">
                 <div className="relative">
-                  {showFinalMessage && <h2 className="mb-4 mt-1 text-left text-2xl font-bold">En résumé...</h2>}
+                  {showFinalMessage && <h2 className="mb-4 mt-1 text-left text-2xl font-bold"></h2>}
 
                   <div className="flex flex-col gap-2">
                     {!showFinalMessage ? (
@@ -280,7 +276,7 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ onClose }) => {
                           initial={{ opacity: 0, scale: 0 }}
                           animate={{ opacity: 1, scale: 1 }}
                         >
-                          <p>{steps[currentStep]}</p>
+                          <p className=" font-medium">{steps[currentStep]}</p>
                         </motion.div>
                       </>
                     ) : (
@@ -317,7 +313,7 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ onClose }) => {
                               </span>{" "}
                               trophées à
                             </h3>
-                            <h3 className="text-left font-semibold">gagner pour te challenger</h3>
+                            <h3 className="text-left font-semibold">obtenir selon ton poids</h3>
                           </div>
                           <div className="mx-4 my-auto">
                             <Trophy className="text-gray-500" strokeWidth={1.1} size={40} />
