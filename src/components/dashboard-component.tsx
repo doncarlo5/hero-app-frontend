@@ -134,12 +134,12 @@ function DashboardComponent() {
               Feedback
             </Button>
           </DialogTrigger>
-          <DialogContent className=" w-11/12 rounded-2xl">
+          <DialogContent className=" w-11/12 rounded-2xl mx-0 px-3">
             <DialogHeader>
               <DialogTitle className="text-left">Feedback</DialogTitle>
               <DialogDescription className="text-left">Décrivez votre expérience de l'application.</DialogDescription>
             </DialogHeader>
-            <div className="grid gap-2">
+            <div className="grid gap-2 ">
               {error && <p className="text-sm text-red-500">{error}</p>}
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="subject" className="text-right">
@@ -165,7 +165,6 @@ function DashboardComponent() {
                   className="col-span-3"
                 />
               </div>
-              {/* Buttons "Bug", "Feature" shortchuts to type directly in text area */}
               <div className="flex justify-evenly gap-2">
                 <Button
                   variant="outline"
@@ -187,6 +186,13 @@ function DashboardComponent() {
                   className="text-xs"
                 >
                   Séance
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => setFormState({ ...formState, message: formState.message + "\n• Design: " })}
+                  className="text-xs"
+                >
+                  Design
                 </Button>
               </div>
             </div>
