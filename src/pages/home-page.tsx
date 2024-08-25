@@ -14,7 +14,7 @@ import OnboardingModal from "@/components/onboarding"
 import useAuth from "../context/use-auth"
 
 export function HomePage() {
-  const { user, contextBodyWeight } = useAuth()
+  const { user } = useAuth()
   const [lastSession, setLastSession] = useState([] as any)
   const [allSessions, setAllSessions] = useState([] as any)
   const [isLoading, setIsLoading] = useState(false)
