@@ -121,12 +121,6 @@ function DashboardComponent() {
             </div>
           </Link>
         </Button>
-        <Button variant={"outline"} onClick={() => handleLogout()} className="flex h-24 flex-col gap-1">
-          <LucideLogOut strokeWidth={1.1} size={31} />
-          Déconnexion
-        </Button>
-
-        {/* Feedback Button and Dialog */}
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
             <Button variant={"outline"} className="flex h-24 flex-col gap-1">
@@ -134,7 +128,7 @@ function DashboardComponent() {
               Feedback
             </Button>
           </DialogTrigger>
-          <DialogContent className=" w-11/12 rounded-2xl mx-0 px-3">
+          <DialogContent className=" mx-0 w-11/12 rounded-2xl px-3">
             <DialogHeader>
               <DialogTitle className="text-left">Feedback</DialogTitle>
               <DialogDescription className="text-left">Décrivez votre expérience de l'application.</DialogDescription>
@@ -203,6 +197,10 @@ function DashboardComponent() {
             </DialogFooter>
           </DialogContent>
         </Dialog>
+        <Button variant={"outline"} onClick={() => handleLogout()} className="flex h-24 flex-col gap-1">
+          <LucideLogOut strokeWidth={1.1} size={31} />
+          Déconnexion
+        </Button>
       </div>
     </div>
   )
