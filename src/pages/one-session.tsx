@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { CalendarIcon, ReloadIcon } from "@radix-ui/react-icons"
+import { CalendarIcon, InfoCircledIcon, ReloadIcon } from "@radix-ui/react-icons"
 import { format } from "date-fns"
 import { fr } from "date-fns/locale/fr"
 import {
@@ -129,7 +129,7 @@ const OneSession = () => {
         }),
       })
       fetchOneSession()
-      setFormIsDirty(false) // Reset dirty state after saving
+      setFormIsDirty(false)
       navigate("/history/")
     } catch (error: any) {
       console.error(error.message)
@@ -221,6 +221,62 @@ const OneSession = () => {
           <div>
             <h1 className="ml-5 text-2xl font-bold md:text-4xl">{session?.type_session}</h1>
           </div>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button variant="ghost" size="icon" className="ml-5">
+                <InfoCircledIcon />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-48 p-4" align="start">
+              <div className="text-sm text-gray-500">
+                {formState.type_session === "Upper A" && (
+                  <ol className="list-inside list-disc">
+                    <li>Développé Incliné</li>
+                    <li>Tractions Lestées</li>
+                    <li>Élévations Frontales</li>
+                    <li>Curl Incliné</li>
+                    <li>Élévations Latérales</li>
+                  </ol>
+                )}
+                {formState.type_session === "Lower" && (
+                  <ol className="list-inside list-disc">
+                    <li>Squat</li>
+                    <li>Fentes ou Presse</li>
+                    <li>Leg Curl/Leg Extension</li>
+                    <li>Extensions Mollets</li>
+                    <li>Upright Row Penché</li>
+                  </ol>
+                )}
+                {formState.type_session === "Upper B" && (
+                  <ol className="list-inside list-disc">
+                    <li>Overhead Press</li>
+                    <li>Développé Couché</li>
+                    <li>Tractions Neutres</li>
+                    <li>Oiseau Assis Prise Neutre</li>
+                    <li>Upright Row</li>
+                  </ol>
+                )}
+                {formState.type_session === "Séance A" && (
+                  <ol className="list-inside list-disc">
+                    <li>Développé incliné</li>
+                    <li>Traction prise neutre</li>
+                    <li>ATG Split Squat</li>
+                    <li>Upright Row</li>
+                    <li>Curl incliné</li>
+                  </ol>
+                )}
+                {formState.type_session === "Séance B" && (
+                  <ol className="list-inside list-disc">
+                    <li>Dips lestés</li>
+                    <li>Rowing bucheron</li>
+                    <li>Romanian deadlift</li>
+                    <li>Upright Row</li>
+                    <li>Extension Triceps Nuque</li>
+                  </ol>
+                )}
+              </div>
+            </PopoverContent>
+          </Popover>
         </div>
 
         <div className="space-y-4">
