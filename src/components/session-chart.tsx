@@ -144,8 +144,8 @@ function SessionChart() {
       )}
 
       {sessions.length === 0 && !isLoading && (
-        <div className="mt-4 text-center text-gray-500">
-          <div>No session data available for the last 4 weeks.</div>
+        <div className="text-center text-gray-500">
+          <div>En attentes de nouvelles séances...</div>
         </div>
       )}
     </>
