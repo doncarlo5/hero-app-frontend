@@ -125,9 +125,6 @@ const AuthPage = () => {
     try {
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
-        options: {
-          redirectTo: "http://localhost:5173/",
-        },
       })
       if (error) throw error
     } catch (error: any) {

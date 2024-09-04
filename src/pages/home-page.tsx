@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { format } from "date-fns"
 import { fr } from "date-fns/locale/fr"
-import {  LucidePencilRuler, Plus } from "lucide-react"
+import { LucidePencilRuler, Plus } from "lucide-react"
 import { FaDumbbell, FaTrophy, FaWeightScale } from "react-icons/fa6"
 import { Link } from "react-router-dom"
 
@@ -11,6 +11,7 @@ import { AnimatedCounter } from "@/components/animated-counter"
 import { Navbar } from "@/components/navbar"
 import NewSessionButton from "@/components/new-session-button"
 import OnboardingModal from "@/components/onboarding"
+import SessionChart from "@/components/session-chart"
 
 import useAuth from "../context/use-auth"
 
@@ -55,6 +56,7 @@ export function HomePage() {
     } catch (error: any) {
       console.error("Fetch error: ", error)
     } finally {
+      setIsLoading(false)
     }
   }
 
@@ -88,7 +90,7 @@ export function HomePage() {
       {showOnboarding && <OnboardingModal onClose={handleOnboardingClose} />}
       <Navbar />
       <main className="container mx-auto my-0 flex h-dvh max-w-lg flex-col ">
-        <div className="pt-10 ">
+        <div className="pt-10  ">
           <h1 className="mb-5 text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl/none">
             Bienvenue {user?.firstName}
           </h1>
@@ -112,7 +114,9 @@ export function HomePage() {
                     {lastSession?.type_session && lastSession?.type_session}
                   </span>
                   <Link className=" flex" to="/history">
-                    <span className="jus flex text-sm text-teal-500 hover:underline">Voir tout</span>
+                    <span className="jus flex rounded-full bg-gray-500/10 px-3 py-0.5 text-sm font-medium text-gray-800 hover:underline">
+                      Voir tout →
+                    </span>
                   </Link>
                 </div>
               </div>
@@ -122,6 +126,17 @@ export function HomePage() {
             <h1 className="mt-4 text-2xl font-bold">Progression</h1>
           </div>
           <div className="grid grid-cols-2 gap-4 pb-20">
+            {isLoading ? (
+              <div className="flex h-24 animate-pulse flex-col justify-between rounded-2xl bg-slate-100 px-3 py-3 shadow-lg ">
+                <div className="mb-4 h-6 w-24 rounded-full bg-gray-200 "></div>
+                <div className="h-5 w-32 rounded-full bg-gray-200 "></div>
+              </div>
+            ) : (
+              <div className="group col-span-2 flex h-32 w-full flex-col justify-between rounded-2xl px-3 bg-slate-100 active:translate-y-0.5 active:shadow-inner dark:bg-slate-900 dark:bg-opacity-80">
+                <div className="flex items-center gap-2 text-sm text-slate-600 pl-3 pt-3 font-medium mb-2">Activités récentes</div>{" "}
+                <SessionChart />
+              </div>
+            )}
             {isLoading ? (
               <div className="flex h-24 animate-pulse flex-col justify-between rounded-2xl bg-slate-100 px-3 py-3 shadow-lg">
                 <div className="mb-4 h-6 w-24 rounded-full bg-gray-200 "></div>
@@ -197,12 +212,19 @@ export function HomePage() {
                 className="group flex h-24 w-full flex-col justify-between rounded-2xl bg-slate-100 px-3 py-3 shadow-lg active:translate-y-0.5 active:shadow-inner dark:bg-slate-900 dark:bg-opacity-80"
                 to="/profile/type/new-type"
               >
-                <div className=" text-sm flex items-center justify-center my-auto gap-2 text-slate-600">
-                  <LucidePencilRuler color="rgb(71 85 105)" className="" height={60} width={60} strokeWidth={1} />
-                  <p className=" text-center">Create a <strong>new exercise</strong></p>
+                <div className=" my-auto flex items-center justify-center gap-2 text-sm text-slate-600">
+                  <p className=" text-center">
+                    Create a <strong>new exercise</strong>
+                  </p>
+                  <div className=" flex-none">
+                  <LucidePencilRuler color="rgb(71 85 105)" className=" mr-2" height={30} width={30} strokeWidth={1} />
+                  </div>
                 </div>
               </Link>
             )}
+            <div className=" h-32">
+
+            </div>
             {/* {isLoading ? (
               <div className="col-span-2 flex h-24 w-full animate-pulse flex-row items-center justify-center gap-3 rounded-2xl bg-slate-100 px-3 py-3 shadow-lg">
                 <div className=" h-10 w-10 rounded-full bg-gray-200 "></div>

@@ -5,6 +5,7 @@ const getAuthHeaders = () => {
   try {
     token = JSON.parse(localStorage.getItem('sb-qmhziwpyeqpwllseache-auth-token') ?? '')
   } catch (error) {
+    console.error('Error parsing token', error);
   }
 
   return {
