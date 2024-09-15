@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { format } from "date-fns"
-import { ArrowDown, ArrowRight, ArrowUp, MessageSquareText, Plus } from "lucide-react"
+import { ArrowDown, ArrowRight, ArrowUp, MessageSquareText } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 
 import fetchApi from "@/lib/api-handler"
@@ -239,15 +239,7 @@ export function HistoryPage() {
             )}
           </TabsContent>
         </Tabs>
-        <NewSessionButton
-          Children={
-            <div className="fixed bottom-20 right-10 cursor-pointer">
-              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white/5 text-white shadow-lg backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-opacity-75 active:scale-95 active:shadow-inner">
-                <Plus color="rgb(107 114 128)" className="inline-block " height={40} width={40} strokeWidth={1.5} />
-              </div>
-            </div>
-          }
-        />
+        <NewSessionButton />
       </main>
     </div>
   )
