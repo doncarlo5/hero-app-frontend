@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react"
 import useAuth from "@/context/use-auth"
+import { FaDumbbell } from "react-icons/fa6"
 import { useNavigate } from "react-router-dom"
 
-import upperBack from "/upper-back.png"
-import upperFront from "/upper-front.png"
 import fetchApi from "../lib/api-handler"
 import { Button } from "./ui/button"
 import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger } from "./ui/drawer"
@@ -12,8 +11,11 @@ import { Switch } from "./ui/switch"
 import bodyBack from "/body-back.png"
 import bodyFront from "/body-front.png"
 import lower from "/lower.png"
+import upperBack from "/upper-back.png"
+import upperFront from "/upper-front.png"
+import { Zap } from "lucide-react"
 
-function NewSessionButton({ Children }: { Children: any }) {
+function NewSessionButton() {
   const [bodyWeight, setBodyWeight] = useState(0)
 
   const [showMinimaliste, setShowMinimaliste] = useState(false)
@@ -71,7 +73,11 @@ function NewSessionButton({ Children }: { Children: any }) {
   return (
     <Drawer>
       <DrawerTrigger className="select-none " asChild>
-        {Children}
+        <div className="fixed bottom-20 right-10 cursor-pointer  ">
+          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white/5 border-2 border-gray-100/50 text-white shadow-lg backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-opacity-75 active:scale-95 active:shadow-inner">
+            <Zap color="rgb(107 114 128)" className=" w-full h-7 " height={10} width={10} strokeWidth={1.7} />
+          </div>
+        </div>
       </DrawerTrigger>
       <DrawerContent className="select-none ">
         {isLoading ? (

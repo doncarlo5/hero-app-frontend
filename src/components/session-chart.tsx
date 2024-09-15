@@ -124,7 +124,7 @@ function SessionChart() {
             </YAxis>
 
             <Tooltip
-              labelFormatter={(value) => `Week starting: ${value}`}
+              labelFormatter={(value) => `Semaine: ${value}`}
               cursor={{ stroke: "transparent", strokeWidth: 0 }}
               formatter={(value: number) => [`${value} Séances`]}
             />
