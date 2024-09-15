@@ -15,31 +15,33 @@ export function HistoryPage() {
   const [tab, setTab] = useState("session")
   const [sessions, setSessions] = useState([] as any[])
   const [exercises, setExercises] = useState([] as any[])
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoadingSessions, setIsLoadingSessions] = useState(true) // Separate loading state for sessions
+  const [isLoadingExercises, setIsLoadingExercises] = useState(true) // Separate loading state for exercises
   const [sortConfig, setSortConfig] = useState({ field: "date_session", order: "desc" })
 
   const navigate = useNavigate()
 
   const fetchUserSessions = async () => {
     try {
-      setIsLoading(true)
+      setIsLoadingSessions(true)
       const response = await fetchApi(`/api/sessions?limit=1000&sortBy=${sortConfig.field}:${sortConfig.order}`)
       setSessions(response)
     } catch (error: any) {
       console.error("Fetch error: ", error)
     } finally {
-      setIsLoading(false)
+      setIsLoadingSessions(false)
     }
   }
 
   const fetchUserExercises = async () => {
     try {
+      setIsLoadingExercises(true)
       const response = await fetchApi("/api/exercise-user?limit=1000&sort=-updatedAt")
       setExercises(response)
     } catch (error: any) {
       console.error("Fetch error: ", error)
     } finally {
-      setIsLoading(false)
+      setIsLoadingExercises(false)
     }
   }
 
@@ -98,7 +100,8 @@ export function HistoryPage() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {isLoading ? (
+                  {isLoadingSessions ? (
+                    // Show skeletons while loading
                     Array.from({ length: 15 }).map((_, index) => (
                       <TableRow key={index}>
                         <TableCell colSpan={6}>
@@ -106,7 +109,8 @@ export function HistoryPage() {
                         </TableCell>
                       </TableRow>
                     ))
-                  ) : sessions.length === 0 ? (
+                  ) : sessions.length === 0 && !isLoadingSessions ? (
+                    // Show no sessions message only after loading is finished and no data
                     <TableRow>
                       <TableCell colSpan={6} className="text-center">
                         Aucune séance.
@@ -165,12 +169,20 @@ export function HistoryPage() {
             </>
           </TabsContent>
           <TabsContent value="exercise">
-            {isLoading ? (
+            {isLoadingExercises ? (
               Array.from({ length: 7 }).map((_, index) => (
                 <div key={index} className="my-2">
                   <Skeleton className="h-10 w-full rounded-lg" />
                 </div>
               ))
+            ) : exercises.length === 0 && !isLoadingExercises ? (
+              <div className="flex flex-1 items-center justify-center">
+                <div className="container flex flex-col items-center justify-center gap-4 px-4 md:px-6">
+                  <div className="text-center">
+                    <p className="max-w-[600px] py-5 text-gray-500 dark:text-gray-400 md:text-xl">Aucun exercice.</p>
+                  </div>
+                </div>
+              </div>
             ) : (
               <>
                 <Table>
@@ -185,56 +197,37 @@ export function HistoryPage() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {exercises.length === 0 ? (
-                      <TableRow>
-                        <TableCell colSpan={5} className="text-center">
-                          Aucun exercice.
+                    {exercises.map((exercise) => (
+                      <TableRow
+                        key={exercise._id}
+                        className="group cursor-pointer"
+                        onClick={() => navigate(`/history/exercise/${exercise._id}`)}
+                      >
+                        <TableCell>
+                          <div>
+                            {exercise.comment ? (
+                              <MessageSquareText size={16} />
+                            ) : (
+                              <MessageSquareText className="text-slate-200" size={16} />
+                            )}
+                          </div>
+                        </TableCell>
+                        <TableCell>{format(new Date(exercise.session.date_session), "dd/MM/yyyy")}</TableCell>
+                        <TableCell>{exercise.type?.name}</TableCell>
+                        <TableCell>
+                          {exercise.rep[0]}x{exercise.weight[0]}
+                          <br />
+                          {exercise.rep[1]}x{exercise.weight[1]}
+                          <br />
+                          {exercise.rep[2]}x{exercise.weight[2]}
+                        </TableCell>
+                        <TableCell className="items-center justify-center">
+                          <ArrowRight className="text-slate-300 group-hover:text-slate-900" size={18} />
                         </TableCell>
                       </TableRow>
-                    ) : (
-                      exercises.map((exercise) => (
-                        <TableRow
-                          key={exercise._id}
-                          className="group cursor-pointer"
-                          onClick={() => navigate(`/history/exercise/${exercise._id}`)}
-                        >
-                          <TableCell>
-                            <div>
-                              {exercise.comment ? (
-                                <MessageSquareText size={16} />
-                              ) : (
-                                <MessageSquareText className="text-slate-200" size={16} />
-                              )}
-                            </div>
-                          </TableCell>
-                          <TableCell>{format(new Date(exercise.session.date_session), "dd/MM/yyyy")}</TableCell>
-                          <TableCell>{exercise.type?.name}</TableCell>
-                          <TableCell>
-                            {exercise.rep[0]}x{exercise.weight[0]}
-                            <br />
-                            {exercise.rep[1]}x{exercise.weight[1]}
-                            <br />
-                            {exercise.rep[2]}x{exercise.weight[2]}
-                          </TableCell>
-                          <TableCell className="items-center justify-center">
-                            <ArrowRight className="text-slate-300 group-hover:text-slate-900" size={18} />
-                          </TableCell>
-                        </TableRow>
-                      ))
-                    )}
+                    ))}
                   </TableBody>
                 </Table>
-                {!isLoading && exercises.length === 0 && (
-                  <div className="flex flex-1 items-center justify-center">
-                    <div className="container flex flex-col items-center justify-center gap-4 px-4 md:px-6">
-                      <div className="text-center">
-                        <p className="max-w-[600px] py-5 text-gray-500 dark:text-gray-400 md:text-xl">
-                          Aucun exercice.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                )}
               </>
             )}
           </TabsContent>
