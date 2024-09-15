@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react"
 import { format } from "date-fns"
 import { fr } from "date-fns/locale/fr"
-import { Activity,  LucidePlus } from "lucide-react"
+import { Activity, LucidePlus } from "lucide-react"
 import { FaDumbbell, FaTrophy, FaWeightScale } from "react-icons/fa6"
 import { Link } from "react-router-dom"
 
 import { Trophy } from "@/types/trophy"
 import fetchApi from "@/lib/api-handler"
+import { Badge } from "@/components/ui/badge"
 import { AnimatedCounter } from "@/components/animated-counter"
 import { Navbar } from "@/components/navbar"
 import NewSessionButton from "@/components/new-session-button"
@@ -107,12 +108,30 @@ export function HomePage() {
                 ) : (
                   <h2 className="text-lg font-bold ">Aucune séance</h2>
                 )}
-                <div className="flex items-end justify-between text-slate-600 dark:text-gray-400">
-                  <span>
-                    {lastSession?.date_session && format(new Date(lastSession?.date_session), "dd/MM/yyyy")}
-                    {" - "}
-                    {lastSession?.type_session && lastSession?.type_session}
-                  </span>
+                <div className="flex items-center justify-between text-slate-600 dark:text-gray-400">
+                  <div className=" flex gap-2">
+                    <p>{lastSession?.date_session && format(new Date(lastSession?.date_session), "dd/MM/yyyy")}</p>
+                    {lastSession?.type_session && (
+                      <Badge
+                        variant={
+                          lastSession.type_session === "Upper A"
+                            ? "upperA"
+                            : lastSession.type_session === "Upper B"
+                              ? "upperB"
+                              : lastSession.type_session === "Lower"
+                                ? "lower"
+                                : lastSession.type_session === "Séance A"
+                                  ? "seanceA"
+                                  : lastSession.type_session === "Séance B"
+                                    ? "seanceB"
+                                    : "default"
+                        }
+                      >
+                        {lastSession.type_session}
+                      </Badge>
+                    )}
+                  </div>
+
                   <Link className=" flex" to="/history">
                     <span className="jus flex rounded-full bg-gray-500/10 px-3 py-0.5 text-sm font-medium text-gray-800 hover:underline">
                       Voir tout →
