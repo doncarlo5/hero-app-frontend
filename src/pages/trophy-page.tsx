@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react"
 import { LockClosedIcon } from "@radix-ui/react-icons"
 import { motion } from "framer-motion"
-import { ChevronLeft } from "lucide-react"
+import { ChevronLeft, Unlock } from "lucide-react"
 import { Link } from "react-router-dom"
 
+import { Trophy } from "@/types/trophy"
 import fetchApi from "@/lib/api-handler"
 import { cn } from "@/lib/utils"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
@@ -11,7 +12,6 @@ import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog"
 import { Navbar } from "@/components/navbar"
 import TrophyIcon from "@/components/TrophyIcon"
-import { Trophy } from "@/types/trophy"
 
 function TrophyPage() {
   const [trophies, setTrophies] = useState<Trophy[]>([])
@@ -128,7 +128,7 @@ function TrophyPage() {
         {selectedTrophy && (
           <Dialog open={!!selectedTrophy} onOpenChange={() => setSelectedTrophy(null)}>
             <DialogTitle>{""}</DialogTitle>
-            <DialogContent className="h-3/5 w-11/12 rounded-3xl sm:max-w-md">
+            <DialogContent className=" w-11/12 rounded-3xl sm:max-w-md">
               <DialogDescription>
                 {selectedTrophy.achieved ? (
                   <div className=" relative">
@@ -152,31 +152,25 @@ function TrophyPage() {
                     </motion.div>
                     <div className=" flex h-full flex-col justify-between">
                       <div className="mt-28 flex flex-col items-center">
-                        <div className=" mb-2 text-4xl font-semibold capitalize text-gray-900 ">
-                          {selectedTrophy.rewardText}
-                        </div>
-                        <div className=" mb-2 px-3 text-center text-gray-600">
-                          Tu as obtenu le trophée{" "}
-                          <span className=" font-medium capitalize ">{selectedTrophy.trophyType} </span> pour l'exercice{" "}
-                          <span className=" font-medium capitalize ">{selectedTrophy.exerciseType.name}</span> avec{" "}
-                          {selectedTrophy.repsUser} reps.
-                        </div>
-                        {/* <div className="mb-2 flex items-center gap-2 rounded-lg border-2 border-double py-1 pl-4 pr-2 text-xs text-gray-700 ">
-                          <div>
-                            <Link
-                              to={`/history/exercise/${selectedTrophy.exerciseUser._id}`}
-                              className=" flex items-center gap-2"
-                            >
-                              <div> Lien vers l'exercice </div>
-                              <ChevronRight className="mx-0 h-4 w-4 text-gray-700" />
-                            </Link>
+                        <div className=" flex flex-col gap-4 items-center">
+                          <div className="text-center text-4xl font-semibold capitalize text-gray-900 ">
+                            {selectedTrophy.rewardText}
                           </div>
-                        </div> */}
-                      </div>
-
-                      <div className=" mt-1 flex flex-col items-center justify-evenly gap-2 rounded-lg border bg-slate-50 py-1 text-center text-gray-500 ">
-                        <div>Objectif: {selectedTrophy.description}</div>
-                        <div>Rep min requises: {selectedTrophy.repsGoal}</div>
+                          <div className=" px-3 text-gray-600">
+                            Tu as obtenu le trophée{" "}
+                            <span className=" font-medium capitalize ">{selectedTrophy.trophyType} </span> pour
+                            l'exercice{" "}
+                            <span className=" font-medium capitalize ">{selectedTrophy.exerciseType.name}</span> avec{" "}
+                            {selectedTrophy.repsUser} reps.
+                          </div>
+                          <div className="flex w-fit items-center justify-evenly gap-2 rounded-lg border border-gray-300 shadow-gray-300 bg-gray-500/60 py-1 text-white shadow-md px-2 text-xs">
+                            <Unlock className="h-5 w-5" />
+                            <div className=" flex flex-col ">
+                            <div className=" flex flex-row">{selectedTrophy.description}</div>
+                            <div>{selectedTrophy.repsGoal} Rep min requises</div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -186,11 +180,6 @@ function TrophyPage() {
                     <div className="text-lg  font-semibold ">{selectedTrophy.description}</div>
                   </div>
                 )}
-                <div className="absolute bottom-2 right-2 justify-end">
-                  <Button variant="secondary" onClick={() => setSelectedTrophy(null)}>
-                    Close
-                  </Button>
-                </div>
               </DialogDescription>
             </DialogContent>
           </Dialog>

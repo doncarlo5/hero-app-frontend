@@ -212,17 +212,17 @@ export function HomePage() {
                 className="group flex h-24 w-full flex-col justify-between rounded-2xl bg-slate-100 px-3 py-3 shadow-lg active:translate-y-0.5 active:shadow-inner dark:bg-slate-900 dark:bg-opacity-80"
                 to="/profile/type/new-type"
               >
-                <div className=" my-auto flex items-center justify-center gap-2 text-sm text-slate-600">
-                  <p className=" text-center">
-                    Create a <strong>new exercise</strong>
-                  </p>
+                <div className=" my-auto flex flex-col items-center justify-center gap-2 text-sm text-slate-600">
+                  <div className=" text-center">
+                    <p className=" text-gray-500 leading-4">Create a</p> <p className="font-bold leading-4 tracking-tighter">NEW EXERCISE</p>
+                  </div>
                   <div className=" flex-none">
-                  <LucidePencilRuler color="rgb(71 85 105)" className=" mr-2" height={30} width={30} strokeWidth={1} />
+                  <LucidePencilRuler color="rgb(71 85 105)" className="" height={30} width={30} strokeWidth={1} />
                   </div>
                 </div>
               </Link>
             )}
-            <div className=" h-32">
+            <div className=" h-20">
 
             </div>
             {/* {isLoading ? (
