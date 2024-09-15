@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react"
+import { useEffect,  useState } from "react"
 import { LockClosedIcon } from "@radix-ui/react-icons"
 import { motion } from "framer-motion"
 import { ChevronLeft, Unlock } from "lucide-react"
+import Crossfire from "react-canvas-confetti/dist/presets/realistic"
 import { Link } from "react-router-dom"
 
 import { Trophy } from "@/types/trophy"
@@ -16,6 +17,9 @@ import TrophyIcon from "@/components/TrophyIcon"
 function TrophyPage() {
   const [trophies, setTrophies] = useState<Trophy[]>([])
   const [selectedTrophy, setSelectedTrophy] = useState<Trophy | null>(null)
+  const [confetti, setConfetti] = useState(false)
+
+  // Ref for confetti animation
 
   useEffect(() => {
     const fetchTrophies = async () => {
@@ -54,6 +58,13 @@ function TrophyPage() {
     },
     {} as Record<string, { trophies: Trophy[]; achievedCount: number; totalCount: number }>
   )
+
+  const handleConfetti = () => {
+    setConfetti(true)
+    setTimeout(() => {
+      setConfetti(false)
+    }, 3000)
+  }
 
   return (
     <div>
@@ -108,8 +119,8 @@ function TrophyPage() {
                               <div className="mt-1 italic text-gray-500">???</div>
                             )}
                             {trophy.achieved ? (
-                              <div className="text-sm">
-                                Obtenu le: {trophy.awardedAt ? new Date(trophy.awardedAt).toLocaleDateString() : ""}
+                              <div className="text-sm text-gray-500">
+                                Obtenu le {trophy.awardedAt ? new Date(trophy.awardedAt).toLocaleDateString() : ""}
                               </div>
                             ) : (
                               ""
@@ -124,6 +135,20 @@ function TrophyPage() {
             )
           })}
         </Accordion>
+
+        {confetti && <Crossfire style={
+          {
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            zIndex: 1000,
+          }
+        } autorun={{ 
+          delay: 0,
+          duration: 2500,
+          speed: 0.2 }} />}
 
         {selectedTrophy && (
           <Dialog open={!!selectedTrophy} onOpenChange={() => setSelectedTrophy(null)}>
@@ -144,15 +169,17 @@ function TrophyPage() {
                         },
                       }}
                     >
-                      <TrophyIcon
-                        level={selectedTrophy.level}
-                        achieved={selectedTrophy.achieved}
-                        className="absolute -top-16  left-0 right-0 m-auto size-44"
-                      />
+                      <button onClick={() => handleConfetti()}>
+                        <TrophyIcon
+                          level={selectedTrophy.level}
+                          achieved={selectedTrophy.achieved}
+                          className="absolute -top-16  left-0 right-0 m-auto size-44"
+                        />
+                      </button>
                     </motion.div>
                     <div className=" flex h-full flex-col justify-between">
                       <div className="mt-28 flex flex-col items-center">
-                        <div className=" flex flex-col gap-4 items-center">
+                        <div className=" flex flex-col items-center gap-4">
                           <div className="text-center text-4xl font-semibold capitalize text-gray-900 ">
                             {selectedTrophy.rewardText}
                           </div>
@@ -163,21 +190,21 @@ function TrophyPage() {
                             <span className=" font-medium capitalize ">{selectedTrophy.exerciseType.name}</span> avec{" "}
                             {selectedTrophy.repsUser} reps.
                           </div>
-                          <div className="flex w-fit items-center justify-evenly gap-2 rounded-lg border border-gray-300 shadow-gray-300 bg-gray-500/60 py-1 text-white shadow-md px-2 text-xs">
+                          <button className="flex w-fit items-center justify-evenly gap-2 rounded-lg border border-gray-300 bg-gray-500/60 px-2 py-1 text-xs text-white shadow-md shadow-gray-300">
                             <Unlock className="h-5 w-5" />
-                            <div className=" flex flex-col ">
-                            <div className=" flex flex-row">{selectedTrophy.description}</div>
-                            <div>{selectedTrophy.repsGoal} Rep min requises</div>
+                            <div className=" flex flex-col text-left ">
+                              <div className=" flex flex-row">{selectedTrophy.description}</div>
+                              <div>{selectedTrophy.repsGoal} Rep min requises</div>
                             </div>
-                          </div>
+                          </button>
                         </div>
                       </div>
                     </div>
                   </div>
                 ) : (
-                  <div className="flex h-full flex-col items-center justify-center gap-4 pb-10">
+                  <div className="flex h-full flex-col items-center justify-center gap-4">
                     <LockClosedIcon className="mx-auto h-16 w-16 text-gray-500" />
-                    <div className="text-lg  font-semibold ">{selectedTrophy.description}</div>
+                    <div className="text-  font-medium ">{selectedTrophy.description}</div>
                   </div>
                 )}
               </DialogDescription>
