@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { Accordion, AccordionItem } from "@radix-ui/react-accordion"
 import { LockClosedIcon, LockOpen1Icon, ReloadIcon } from "@radix-ui/react-icons"
 import { format } from "date-fns"
-import { Check, ChevronLeft, Edit, History, HistoryIcon, LoaderIcon, LucideInfo, Stars } from "lucide-react"
+import { Check, ChevronLeft, Edit, HistoryIcon, LoaderIcon, LucideInfo, Stars } from "lucide-react"
 import { useNavigate, useParams } from "react-router-dom"
 import useWakeLock from "react-use-wake-lock"
 
@@ -274,8 +274,8 @@ const DoExercisePage = () => {
         </Select>
         {/* display last time that exercise has be done with lastExercise.session.dat_session with date-fns */}
         {lastExercise && (
-          <div className=" flex items-center gap-1 px-2 justify-end text-gray-500 dark:text-gray-400 py-1">
-            <HistoryIcon size={14} /> 
+          <div className=" flex items-center justify-end gap-1 px-2 py-1 text-gray-500 dark:text-gray-400">
+            <HistoryIcon size={14} />
             <p className="text-sm">{format(new Date(lastExercise?.session?.date_session), "dd/MM/yyyy")}</p>
           </div>
         )}

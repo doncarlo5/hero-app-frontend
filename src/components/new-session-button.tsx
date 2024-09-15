@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react"
 import useAuth from "@/context/use-auth"
-import { FaDumbbell } from "react-icons/fa6"
 import { useNavigate } from "react-router-dom"
 
 import fetchApi from "../lib/api-handler"
