@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react"
 import { Accordion, AccordionItem } from "@radix-ui/react-accordion"
 import { LockClosedIcon, LockOpen1Icon, ReloadIcon } from "@radix-ui/react-icons"
-import { Check, ChevronLeft, Edit, LoaderIcon, LucideInfo, Stars } from "lucide-react"
+import { format } from "date-fns"
+import { Check, ChevronLeft, Edit, History, HistoryIcon, LoaderIcon, LucideInfo, Stars } from "lucide-react"
 import { useNavigate, useParams } from "react-router-dom"
 import useWakeLock from "react-use-wake-lock"
 
@@ -94,6 +95,7 @@ const DoExercisePage = () => {
     try {
       const response = await fetchApi(`/api/exercise-user?limit=1&sort=-createdAt&type=${value._id}`)
       setLastExercise(response[0])
+      console.log("🚀 ~ onExerciseTypeChange ~ response[0]:", response[0])
     } catch (error: any) {
       console.error("Fetch error: ", error)
     }
@@ -157,7 +159,7 @@ const DoExercisePage = () => {
     setShowPrefillButton(false)
   }
 
-  let { sessionId } = useParams()
+  const { sessionId } = useParams()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -206,7 +208,7 @@ const DoExercisePage = () => {
   return (
     <>
       <Navbar />
-      <main className="container mx-auto mt-0 mb-16 flex h-dvh max-w-md flex-col">
+      <main className="container mx-auto mb-16 mt-0 flex h-dvh max-w-md flex-col">
         <div className="flex items-center justify-between py-5">
           <div className=" flex">
             <AlertDialog>
@@ -270,6 +272,13 @@ const DoExercisePage = () => {
             )}
           </SelectContent>
         </Select>
+        {/* display last time that exercise has be done with lastExercise.session.dat_session with date-fns */}
+        {lastExercise && (
+          <div className=" flex items-center gap-1 px-2 justify-end text-gray-500 dark:text-gray-400 py-1">
+            <HistoryIcon size={14} /> 
+            <p className="text-sm">{format(new Date(lastExercise?.session?.date_session), "dd/MM/yyyy")}</p>
+          </div>
+        )}
         <div className="pt-3">{oneExerciseType && <CountDownTimer exerciseTypeTimer={oneExerciseType.timer} />}</div>
         {oneExerciseType?.advice && (
           <Accordion type="single" collapsible className="mb-5 rounded-2xl bg-slate-100">
