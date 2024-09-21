@@ -294,7 +294,7 @@ const OneSession = () => {
                       )}
                     >
                       {formState.date_session ? (
-                        format(formState.date_session, "PPP", { locale: fr })
+                        format(formState.date_session, "d MMM yyyy", { locale: fr })
                       ) : (
                         <span>Choisir une date</span>
                       )}
