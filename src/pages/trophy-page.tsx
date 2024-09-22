@@ -81,7 +81,7 @@ function TrophyPage() {
           </div>
         </div>
 
-        <Accordion type="multiple" className=" pt-5 ">
+        <Accordion type="multiple" className=" pt-5 pb-20 ">
           {Object.keys(groupedTrophiesWithCounts).map((exerciseTypeName) => {
             const { trophies, achievedCount, totalCount } = groupedTrophiesWithCounts[exerciseTypeName]
             return (
