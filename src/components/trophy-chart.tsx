@@ -51,7 +51,7 @@ function TrophyChart() {
             cy="50%"
             innerRadius="100%"
             outerRadius="100%"
-            barSize={7}
+            barSize={8}
             data={data}
             startAngle={90}
             endAngle={-270}
@@ -79,11 +79,11 @@ function TrophyChart() {
             {/* Display percentage in the center of the radial bar chart */}
             <text
               x="50%"
-              y="50%"
+              y="52%"
               textAnchor="middle"
               dominantBaseline="middle"
               style={{
-                fontSize: "14px",
+                fontSize: "24px",
                 fill: "#333",
                 fontWeight: "bold",
               }}
