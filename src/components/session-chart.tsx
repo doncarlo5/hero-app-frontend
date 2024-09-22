@@ -80,7 +80,7 @@ function SessionChart() {
             width={0}
             data={data}
             margin={{
-              top: 5,
+              top: 10,
               right: 5, // Add padding to right side
               left: 5, // Add padding to left side
               bottom: 0,

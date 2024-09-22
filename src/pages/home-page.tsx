@@ -154,7 +154,7 @@ export function HomePage() {
               <div className="group col-span-2 flex h-32 w-full flex-col justify-between rounded-2xl bg-slate-100 px-3 py-2 shadow-lg active:translate-y-0.5 active:shadow-inner dark:bg-slate-900 dark:bg-opacity-80">
                 <div className="flex items-center gap-2 text-sm text-slate-600 ">
                   <Activity color="rgb(71 85 105)" className="" height={17} width={17} strokeWidth={2.5} />
-                  Activités récentes
+                  Activité des dernières semaines
                 </div>
                 <SessionChart />
               </div>
