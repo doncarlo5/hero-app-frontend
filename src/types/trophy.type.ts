@@ -1,7 +1,7 @@
 import { ExerciseType } from "./exercise.type"
 import { ExerciseUserType } from "./exerciseUser.type"
 
-export interface Trophy {
+export interface TrophyType {
     _id: string
     name: string
     exerciseType: ExerciseType
