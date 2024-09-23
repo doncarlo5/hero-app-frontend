@@ -1,11 +1,11 @@
-import { useEffect,  useState } from "react"
+import { useEffect, useState } from "react"
 import { LockClosedIcon } from "@radix-ui/react-icons"
 import { motion } from "framer-motion"
 import { ChevronLeft, Unlock } from "lucide-react"
 import Crossfire from "react-canvas-confetti/dist/presets/realistic"
 import { Link } from "react-router-dom"
 
-import { Trophy } from "@/types/trophy"
+import { TrophyType } from "@/types/trophy.type"
 import fetchApi from "@/lib/api-handler"
 import { cn } from "@/lib/utils"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
@@ -15,8 +15,8 @@ import { Navbar } from "@/components/navbar"
 import TrophyIcon from "@/components/TrophyIcon"
 
 function TrophyPage() {
-  const [trophies, setTrophies] = useState<Trophy[]>([])
-  const [selectedTrophy, setSelectedTrophy] = useState<Trophy | null>(null)
+  const [trophies, setTrophies] = useState<TrophyType[]>([])
+  const [selectedTrophy, setSelectedTrophy] = useState<TrophyType | null>(null)
   const [confetti, setConfetti] = useState(false)
 
   // Ref for confetti animation
@@ -24,7 +24,7 @@ function TrophyPage() {
   useEffect(() => {
     const fetchTrophies = async () => {
       try {
-        const response: Trophy[] = await fetchApi("/api/trophies")
+        const response: TrophyType[] = await fetchApi("/api/trophies")
         setTrophies(response)
       } catch (error) {
         console.error("Error fetching trophies:", error)
@@ -43,7 +43,7 @@ function TrophyPage() {
       acc[trophy.exerciseType.name].push(trophy)
       return acc
     },
-    {} as Record<string, Trophy[]>
+    {} as Record<string, TrophyType[]>
   )
 
   // Calculate the number of achieved trophies per group
@@ -56,7 +56,7 @@ function TrophyPage() {
       acc[exerciseTypeName] = { trophies, achievedCount, totalCount }
       return acc
     },
-    {} as Record<string, { trophies: Trophy[]; achievedCount: number; totalCount: number }>
+    {} as Record<string, { trophies: TrophyType[]; achievedCount: number; totalCount: number }>
   )
 
   const handleConfetti = () => {
@@ -81,7 +81,7 @@ function TrophyPage() {
           </div>
         </div>
 
-        <Accordion type="multiple" className=" pt-5 pb-20 ">
+        <Accordion type="multiple" className=" pb-20 pt-5 ">
           {Object.keys(groupedTrophiesWithCounts).map((exerciseTypeName) => {
             const { trophies, achievedCount, totalCount } = groupedTrophiesWithCounts[exerciseTypeName]
             return (
@@ -136,19 +136,23 @@ function TrophyPage() {
           })}
         </Accordion>
 
-        {confetti && <Crossfire style={
-          {
-            position: "fixed",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            zIndex: 1000,
-          }
-        } autorun={{ 
-          delay: 0,
-          duration: 2500,
-          speed: 0.2 }} />}
+        {confetti && (
+          <Crossfire
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              zIndex: 1000,
+            }}
+            autorun={{
+              delay: 0,
+              duration: 2500,
+              speed: 0.2,
+            }}
+          />
+        )}
 
         {selectedTrophy && (
           <Dialog open={!!selectedTrophy} onOpenChange={() => setSelectedTrophy(null)}>
