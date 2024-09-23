@@ -193,6 +193,14 @@ const ProgramPage = () => {
     }
   }
 
+  if (isLoading) {
+    return (
+      <main className="flex flex-1 items-center justify-center">
+        <LoaderIcon className="h-6 w-6 animate-spin" />
+      </main>
+    )
+  }
+
   return (
     <div>
       <Navbar />
@@ -340,7 +348,7 @@ const ProgramPage = () => {
         </div>
 
         {/* Save Program */}
-        <div className="pt-5 pb-20">
+        <div className="pb-20 pt-5">
           <Button onClick={saveProgram}>Save Program</Button>
         </div>
       </main>
