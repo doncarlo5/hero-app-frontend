@@ -3,8 +3,6 @@ import useAuth from "@/context/use-auth"
 import { Zap } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 
-import { SessionType } from "@/types/session.type"
-
 import fetchApi from "../lib/api-handler"
 import { Button } from "./ui/button"
 import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger } from "./ui/drawer"
