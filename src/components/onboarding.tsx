@@ -13,7 +13,6 @@ import {
 } from "lucide-react"
 import { FaWeightScale } from "react-icons/fa6"
 
-import { User } from "@/types/user"
 import fetchApi from "@/lib/api-handler"
 
 import { AnimatedCounter } from "./animated-counter"
@@ -23,6 +22,7 @@ import { Label } from "./ui/label"
 import { toast } from "./ui/use-toast"
 import exerciseImg from "/exercise.png"
 import upperFront from "/upper-front.png"
+import { UserType } from "@/types/user.type"
 
 type OnboardingModalProps = {
   onClose: () => void
@@ -84,7 +84,7 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ onClose }) => {
         body: JSON.stringify(updatedUser),
       })
       contextSetBodyWeight(bodyWeight)
-      setUser(updatedUser as User)
+      setUser(updatedUser as UserType)
     } catch (error: any) {
       const errorMessage = error.message || "Une erreur est survenue!"
       toast({
