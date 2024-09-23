@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react"
 import useAuth from "@/context/use-auth"
+import { Zap } from "lucide-react"
 import { useNavigate } from "react-router-dom"
+
+import { SessionType } from "@/types/session.type"
 
 import fetchApi from "../lib/api-handler"
 import { Button } from "./ui/button"
@@ -12,7 +15,6 @@ import bodyFront from "/body-front.png"
 import lower from "/lower.png"
 import upperBack from "/upper-back.png"
 import upperFront from "/upper-front.png"
-import { Zap } from "lucide-react"
 
 function NewSessionButton() {
   const [bodyWeight, setBodyWeight] = useState(0)
@@ -59,9 +61,9 @@ function NewSessionButton() {
           comment: "",
         }),
       })
-
-      const newSessionId = response._id
-      navigate(`/history/session/${newSessionId}`)
+      if (response.session) {
+        navigate(`/history/session/${response.session._id}`)
+      }
     } catch (error: any) {
       console.error(error)
     } finally {
@@ -73,8 +75,8 @@ function NewSessionButton() {
     <Drawer>
       <DrawerTrigger className="select-none " asChild>
         <div className="fixed bottom-20 right-10 cursor-pointer  ">
-          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white/5 border-2 border-gray-100/50 text-white shadow-lg backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-opacity-75 active:scale-95 active:shadow-inner">
-            <Zap color="rgb(107 114 128)" className=" w-full h-7 " height={10} width={10} strokeWidth={1.7} />
+          <div className="flex h-16 w-16 items-center justify-center rounded-full border-2 border-gray-100/50 bg-white/5 text-white shadow-lg backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-opacity-75 active:scale-95 active:shadow-inner">
+            <Zap color="rgb(107 114 128)" className=" h-7 w-full " height={10} width={10} strokeWidth={1.7} />
           </div>
         </div>
       </DrawerTrigger>
