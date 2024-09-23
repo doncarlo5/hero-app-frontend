@@ -5,7 +5,7 @@ import { Activity, LucidePlus } from "lucide-react"
 import { FaDumbbell, FaTrophy, FaWeightScale } from "react-icons/fa6"
 import { Link } from "react-router-dom"
 
-import { Trophy } from "@/types/trophy"
+
 import fetchApi from "@/lib/api-handler"
 import { Badge } from "@/components/ui/badge"
 import { AnimatedCounter } from "@/components/animated-counter"
@@ -16,6 +16,7 @@ import SessionChart from "@/components/session-chart"
 import TrophyChart from "@/components/trophy-chart"
 
 import useAuth from "../context/use-auth"
+import { TrophyType } from "@/types/trophy.type"
 
 export function HomePage() {
   const { user } = useAuth()
@@ -28,7 +29,7 @@ export function HomePage() {
   useEffect(() => {
     const fetchTrophies = async () => {
       try {
-        const response: Trophy[] = await fetchApi("/api/trophies")
+        const response: TrophyType[] = await fetchApi("/api/trophies")
         setTrophies(response)
         console.log("Trophies", response)
       } catch (error) {
@@ -39,7 +40,7 @@ export function HomePage() {
     fetchTrophies()
   }, [])
   const calculateAchievedTrophies = (trophies: any) => {
-    const achievedTrophies = trophies.filter((trophy: Trophy) => trophy.achieved)
+    const achievedTrophies = trophies.filter((trophy: TrophyType) => trophy.achieved)
     return achievedTrophies.length
   }
 
