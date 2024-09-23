@@ -1,11 +1,11 @@
-import { ExerciseType } from "./exerciseType"
-import { ExerciseUser } from "./exerciseUser"
+import { ExerciseType } from "./exercise.type"
+import { ExerciseUserType } from "./exerciseUser.type"
 
 export interface Trophy {
     _id: string
     name: string
     exerciseType: ExerciseType
-    exerciseUser: ExerciseUser
+    exerciseUser: ExerciseUserType
     repsGoal: number
     weightMultiplier: number
     awardedAt: string | null

@@ -1,4 +1,4 @@
-export interface ExerciseUser {
+export interface ExerciseUserType {
     _id: string
     type: string
     weight: number[]
