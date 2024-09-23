@@ -1,20 +1,21 @@
 import { useEffect, useState } from "react"
 import { PolarAngleAxis, RadialBar, RadialBarChart, ResponsiveContainer } from "recharts"
 
-import { Trophy } from "@/types/trophy"
+
 import fetchApi from "@/lib/api-handler"
+import { TrophyType } from "@/types/trophy.type"
 
 const COLORS = ["#38b2ac", "#e0e0e0"] // Teal for achieved, gray for unachieved
 
 function TrophyChart() {
-  const [trophies, setTrophies] = useState<Trophy[]>([])
+  const [trophies, setTrophies] = useState<TrophyType[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [data, setData] = useState<any[]>([])
 
   // Fetch all trophies
   const fetchTrophies = async () => {
     try {
-      const response: Trophy[] = await fetchApi("/api/trophies")
+      const response: TrophyType[] = await fetchApi("/api/trophies")
       setTrophies(response)
 
       // Calculate achieved vs unachieved trophies
