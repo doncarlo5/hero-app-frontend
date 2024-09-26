@@ -22,6 +22,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Skeleton } from "@/components/ui/skeleton"
 import { Textarea } from "@/components/ui/textarea"
 import { useToast } from "@/components/ui/use-toast"
 import CountDownTimer from "@/components/countdown-timer"
@@ -36,6 +37,7 @@ const DoExercisePage = () => {
   const [isLoadingTypes, setIsLoadingTypes] = useState(true)
   const [showPrefillButton, setShowPrefillButton] = useState(false)
   const [addRep4, setAddRep4] = useState(false)
+  const [isLoadingLastExercise, setIsLoadingLastExercise] = useState(true)
 
   const [formState, setFormState] = useState({
     rep1: lastExercise?.rep[0] || "",
@@ -92,12 +94,14 @@ const DoExercisePage = () => {
 
   const onExerciseTypeChange = async (value: any) => {
     setOneExerciseType(value)
+    setIsLoadingLastExercise(true)
     try {
       const response = await fetchApi(`/api/exercise-user?limit=1&sort=-createdAt&type=${value._id}`)
       setLastExercise(response[0])
-      console.log("🚀 ~ onExerciseTypeChange ~ response[0]:", response[0])
     } catch (error: any) {
       console.error("Fetch error: ", error)
+    } finally {
+      setIsLoadingLastExercise(false)
     }
   }
 
@@ -276,7 +280,13 @@ const DoExercisePage = () => {
         {lastExercise && (
           <div className=" flex items-center justify-end gap-1 px-2 py-1 text-gray-500 dark:text-gray-400">
             <HistoryIcon size={14} />
-            <p className="text-sm">{format(new Date(lastExercise?.session?.date_session), "dd/MM/yyyy")}</p>
+            <p className="text-sm">
+              {isLoadingLastExercise ? (
+                <Skeleton className="h-3 w-20" />
+              ) : (
+                format(new Date(lastExercise?.session?.date_session), "dd/MM/yyyy")
+              )}
+            </p>
           </div>
         )}
         <div className="pt-3">{oneExerciseType && <CountDownTimer exerciseTypeTimer={oneExerciseType.timer} />}</div>
