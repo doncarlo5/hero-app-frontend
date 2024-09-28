@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react"
 import { Accordion, AccordionItem } from "@radix-ui/react-accordion"
-import { LockClosedIcon, LockOpen1Icon, ReloadIcon } from "@radix-ui/react-icons"
+import { ReloadIcon } from "@radix-ui/react-icons"
 import { format } from "date-fns"
-import { Check, ChevronLeft, Edit, HistoryIcon, LoaderIcon, LucideInfo, Stars } from "lucide-react"
-import { useNavigate, useParams } from "react-router-dom"
-import useWakeLock from "react-use-wake-lock"
+import { Check, ChevronLeft,  Edit, HistoryIcon, LoaderIcon, LucideInfo, Stars, X } from "lucide-react"
+import { useNavigate, useParams, useSearchParams } from "react-router-dom"
 
 import fetchApi from "@/lib/api-handler"
 import { AccordionContent, AccordionTrigger } from "@/components/ui/accordion"
@@ -27,16 +26,17 @@ import { Textarea } from "@/components/ui/textarea"
 import { useToast } from "@/components/ui/use-toast"
 import CountDownTimer from "@/components/countdown-timer"
 import { Navbar } from "@/components/navbar"
+import ScreenLockToggle from "@/components/screen-lock-toggle"
 
 const DoExercisePage = () => {
   const [oneExerciseType, setOneExerciseType] = useState(null as any)
   const [lastExercise, setLastExercise] = useState(null as any)
   const [allExerciseTypes, setAllExerciseTypes] = useState([] as any[])
   const [session, setSession] = useState<any>({})
-  const [isLoading, setIsLoading] = useState(false)
-  const [isLoadingTypes, setIsLoadingTypes] = useState(true)
   const [showPrefillButton, setShowPrefillButton] = useState(false)
   const [addRep4, setAddRep4] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [isLoadingTypes, setIsLoadingTypes] = useState(true)
   const [isLoadingLastExercise, setIsLoadingLastExercise] = useState(true)
 
   const [formState, setFormState] = useState({
@@ -51,27 +51,10 @@ const DoExercisePage = () => {
     comment: lastExercise?.comment || "",
   })
 
-  const navigate = useNavigate()
-  const { isLocked, request, release } = useWakeLock()
-  const { toast } = useToast()
+  const [searchParams] = useSearchParams()
 
-  const handleLockScreen = () => {
-    if (isLocked) {
-      release()
-      toast({
-        title: "Allumage forcé: OFF",
-        description: "Votre écran peut s'éteindre.",
-        variant: "default",
-      })
-    } else {
-      request()
-      toast({
-        title: "Allumage forcé: ON",
-        description: "Votre écran restera allumé.",
-        variant: "success",
-      })
-    }
-  }
+  const navigate = useNavigate()
+  const { toast } = useToast()
 
   useEffect(() => {
     setFormState({
@@ -126,13 +109,25 @@ const DoExercisePage = () => {
   }
 
   useEffect(() => {
-    const init = async () => {
+    console.log("🚀 ~ DoExercisePage ~ exerciseId:", searchParams.get("exerciseId"))
+
+    const exerciseId = searchParams.get("exerciseId")
+
+    if (exerciseId) {
+      const asyncFunction = async () => {
+        const response = await fetchApi(`/api/exercise-type/${exerciseId}`)
+        setOneExerciseType(response)
+      }
+      asyncFunction()
+    }
+
+    const asyncFunction = async () => {
       const sessionData = await fetchOneSession()
       setSession(sessionData)
       const exerciseTypeData = await fetchAllExerciseTypes(sessionData)
       setAllExerciseTypes(exerciseTypeData)
     }
-    init()
+    asyncFunction()
   }, [])
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -242,9 +237,7 @@ const DoExercisePage = () => {
             )}
           </div>
 
-          <button className="" type="button" onClick={() => handleLockScreen()}>
-            {isLocked ? <LockClosedIcon className="h-6 w-6" /> : <LockOpen1Icon className="h-6 w-6" />}
-          </button>
+          <ScreenLockToggle />
         </div>
 
         <Select onValueChange={onExerciseTypeChange}>
@@ -305,15 +298,26 @@ const DoExercisePage = () => {
         {oneExerciseType && (
           <form onSubmit={handleSubmit} className="">
             {showPrefillButton && (
-              <Button
-                variant={"outline"}
-                type="button"
-                onClick={handlePrefillWeights}
-                className="mb-2 w-full cursor-pointer"
-              >
-                <Stars className="mr-1 h-4 w-4" />
-                Toutes les séries à {formState.weight1} KG
-              </Button>
+              <div className=" flex gap-2 ">
+                <Button
+                  variant={"outline"}
+                  type="button"
+                  onClick={handlePrefillWeights}
+                  className="mb-2 w-full cursor-pointer"
+                >
+                  <Stars className="mr-1 h-4 w-4" />
+                  Toutes les séries à {formState.weight1} KG
+                </Button>
+                {/* Close button */}
+                <Button
+                  variant={"outline"}
+                  type="button"
+                  onClick={() => setShowPrefillButton(false)}
+                  className="mb-2 w-fit cursor-pointer"
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
             )}
             <div className="flex flex-col items-center justify-center rounded-2xl bg-slate-50 py-4 dark:bg-slate-900 dark:bg-opacity-40 md:text-lg">
               <div className="flex gap-2">
