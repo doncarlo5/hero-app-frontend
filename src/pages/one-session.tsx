@@ -15,6 +15,7 @@ import {
 import { SelectSingleEventHandler } from "react-day-picker"
 import { Link, useNavigate, useParams } from "react-router-dom"
 
+import { ProgramType } from "@/types/program.type"
 import { cn } from "@/lib/utils"
 import {
   AlertDialog,
@@ -66,6 +67,7 @@ const OneSession = () => {
     comment: "",
   })
   const [formIsDirty, setFormIsDirty] = useState(false)
+  const [program, setProgram] = useState<ProgramType>()
 
   const { sessionId } = useParams()
   const navigate = useNavigate()
@@ -85,8 +87,10 @@ const OneSession = () => {
 
   const fetchOneSession = async () => {
     try {
-      const response = await fetchApi(`/api/sessions/${sessionId}`)
-      setFormState({
+      const response = await fetchApi(`/api/sessions/${sessionId}?type_session=${formState.type_session}`)
+
+      console.log("🚀 ~ fetchOneSession ~ response:", response)
+      const formStateValues = {
         id: response._id,
         date_session: response.date_session,
         type_session: response.type_session,
@@ -94,8 +98,12 @@ const OneSession = () => {
         exercise_user_list: response.exercise_user_list,
         is_done: response.is_done,
         comment: response.comment,
-      })
+      }
+
+      setFormState(formStateValues)
+
       setSession(response)
+      return formStateValues
     } catch (error: any) {
       console.error(error.message)
     } finally {
@@ -103,9 +111,29 @@ const OneSession = () => {
     }
   }
 
+  const fetchProgram = async (typeSession: string) => {
+    try {
+      const response = await fetchApi(`/api/program/${typeSession}`)
+      setProgram(response)
+      console.log("🚀 ~ fetchProgram ~ response:", response)
+    } catch (error: any) {
+      console.error(error.message)
+    }
+  }
+
+  const getNextExercise = () => {
+    const completedExercisesIds = formState.exercise_user_list.map((ex) => ex.exerciseType._id)
+    const nextExercise = program?.exercises.find((ex) => !completedExercisesIds.includes(ex.exerciseType._id))
+    return nextExercise
+  }
+
   useEffect(() => {
-    fetchOneSession()
-    fetchLastSessionUser()
+    const asyncFunction = async () => {
+      const formStateValues = await fetchOneSession()
+      fetchProgram(formStateValues?.type_session)
+      fetchLastSessionUser()
+    }
+    asyncFunction()
   }, [])
 
   useEffect(() => {
@@ -294,7 +322,7 @@ const OneSession = () => {
                       )}
                     >
                       {formState.date_session ? (
-                        format(formState.date_session, "d MMM yyyy", { locale: fr })
+                        format(new Date(formState.date_session), "d MMM yyyy", { locale: fr })
                       ) : (
                         <span>Choisir une date</span>
                       )}
@@ -343,16 +371,60 @@ const OneSession = () => {
                     ))}
                 </div>
               ) : (
-                formState.exercise_user_list.map((exercise: any) => (
-                  <ExerciseCard exercise={exercise} key={exercise._id} />
-                ))
+                <>
+                  {formState.exercise_user_list.map((exercise: any) => (
+                    <ExerciseCard exercise={exercise} key={exercise._id} />
+                  ))}
+
+                  {/* Suggest the next exercise based on order */}
+                  {program && getNextExercise() && (
+                    <div className="my-4 w-11/12">
+                      <p className="text-center text-lg font-semibold">Suggested Exercise:</p>
+
+                      {/* Main exercise button */}
+                      <Button
+                        variant={"outline"}
+                        onClick={() => {
+                          const nextExercise = getNextExercise()
+                          if (nextExercise && nextExercise.exerciseType) {
+                            navigate(
+                              `/history/session/${sessionId}/do-exercise?exerciseId=${nextExercise.exerciseType._id}`
+                            )
+                          }
+                        }}
+                        className="my-2 w-full"
+                      >
+                        {getNextExercise()?.exerciseType?.name}
+                      </Button>
+
+                      {/* Alternative exercises buttons */}
+                      {(getNextExercise()?.alternatives?.length ?? 0) > 0 && (
+                        <>
+                          <p className="text-sm text-gray-500">Alternatives:</p>
+                          {getNextExercise()?.alternatives?.map((alt) => (
+                            <Button
+                              variant={"outline"}
+                              key={alt._id}
+                              onClick={() =>
+                                navigate(`/history/session/${sessionId}/do-exercise?exerciseId=${alt._id}`)
+                              }
+                              className="my-1 w-full"
+                            >
+                              {alt.name}
+                            </Button>
+                          ))}
+                        </>
+                      )}
+                    </div>
+                  )}
+                </>
               )}
               <Link
                 to={`/history/session/${sessionId}/do-exercise`}
                 className="relative my-2 flex h-14 w-11/12 items-center justify-center gap-2 rounded-2xl border-2 border-dotted bg-slate-100/20 px-3 py-2 shadow-md active:translate-y-0.5 active:shadow-none dark:bg-slate-900 dark:bg-opacity-40 md:text-lg"
               >
                 <Plus className="size-5 text-gray-600" />
-                <p className="text-gray-600">Ajouter un exercice</p>
+                <p className="text-gray-600">Sélectionner un exercice</p>
               </Link>
             </div>
             <div className="col-span-2 mb-2 space-y-2">
