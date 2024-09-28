@@ -388,7 +388,7 @@ const OneSession = () => {
                           const nextExercise = getNextExercise()
                           if (nextExercise && nextExercise.exerciseType) {
                             navigate(
-                              `/history/session/${sessionId}/do-exercise?exerciseId=${nextExercise.exerciseType._id}`
+                              `/history/session/${sessionId}/do-exercise?exerciseTypeId=${nextExercise.exerciseType._id}`
                             )
                           }
                         }}
@@ -406,7 +406,7 @@ const OneSession = () => {
                               variant={"outline"}
                               key={alt._id}
                               onClick={() =>
-                                navigate(`/history/session/${sessionId}/do-exercise?exerciseId=${alt._id}`)
+                                navigate(`/history/session/${sessionId}/do-exercise?exerciseTypeId=${alt._id}`)
                               }
                               className="my-1 w-full"
                             >
