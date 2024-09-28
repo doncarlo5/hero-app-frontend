@@ -39,6 +39,11 @@ const DoExercisePage = () => {
   const [isLoadingTypes, setIsLoadingTypes] = useState(true)
   const [isLoadingLastExercise, setIsLoadingLastExercise] = useState(true)
 
+  const { sessionId } = useParams()
+  const [searchParams] = useSearchParams()
+  const exerciseTypeId = searchParams.get("exerciseTypeId")
+  console.log("🚀 ~ DoExercisePage ~ exerciseTypeId:", exerciseTypeId)
+
   const [formState, setFormState] = useState({
     rep1: lastExercise?.rep[0] || "",
     rep2: lastExercise?.rep[1] || "",
@@ -50,8 +55,6 @@ const DoExercisePage = () => {
     weight4: lastExercise?.weight[3] || "",
     comment: lastExercise?.comment || "",
   })
-
-  const [searchParams] = useSearchParams()
 
   const navigate = useNavigate()
   const { toast } = useToast()
@@ -75,25 +78,25 @@ const DoExercisePage = () => {
     }
   }, [lastExercise])
 
-  const onExerciseTypeChange = async (value: any) => {
-    setOneExerciseType(value)
-    setIsLoadingLastExercise(true)
-    try {
-      const response = await fetchApi(`/api/exercise-user?limit=1&sort=-createdAt&type=${value._id}`)
-      setLastExercise(response[0])
-    } catch (error: any) {
-      console.error("Fetch error: ", error)
-    } finally {
-      setIsLoadingLastExercise(false)
-    }
-  }
-
   const fetchOneSession = async () => {
     try {
       const response = await fetchApi(`/api/sessions/${sessionId}`)
       return response
     } catch (error: any) {
       console.error("Fetch error: ", error)
+    }
+  }
+
+  const onExerciseTypeChange = async (exerciseType: any) => {
+    setOneExerciseType(exerciseType)
+    setIsLoadingLastExercise(true)
+    try {
+      const response = await fetchApi(`/api/exercise-user?limit=1&sort=-createdAt&type=${exerciseType._id}`)
+      setLastExercise(response[0])
+    } catch (error: any) {
+      console.error("Fetch error: ", error)
+    } finally {
+      setIsLoadingLastExercise(false)
     }
   }
 
@@ -109,26 +112,23 @@ const DoExercisePage = () => {
   }
 
   useEffect(() => {
-    console.log("🚀 ~ DoExercisePage ~ exerciseId:", searchParams.get("exerciseId"))
-
-    const exerciseId = searchParams.get("exerciseId")
-
-    if (exerciseId) {
-      const asyncFunction = async () => {
-        const response = await fetchApi(`/api/exercise-type/${exerciseId}`)
-        setOneExerciseType(response)
-      }
-      asyncFunction()
-    }
-
-    const asyncFunction = async () => {
+    const fetchInitialData = async () => {
       const sessionData = await fetchOneSession()
       setSession(sessionData)
-      const exerciseTypeData = await fetchAllExerciseTypes(sessionData)
-      setAllExerciseTypes(exerciseTypeData)
+      const exerciseTypes = await fetchAllExerciseTypes(sessionData)
+      setAllExerciseTypes(exerciseTypes)
+
+      // Check if exerciseTypeId exists in URL, and auto-select the exercise type
+      if (exerciseTypeId) {
+        const selectedExerciseType = exerciseTypes.find((type: any) => type._id === exerciseTypeId)
+        if (selectedExerciseType) {
+          await onExerciseTypeChange(selectedExerciseType) // Pre-select the exercise type
+        }
+      }
     }
-    asyncFunction()
-  }, [])
+
+    fetchInitialData()
+  }, [exerciseTypeId])
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { target } = event
@@ -157,8 +157,6 @@ const DoExercisePage = () => {
     }
     setShowPrefillButton(false)
   }
-
-  const { sessionId } = useParams()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -245,7 +243,13 @@ const DoExercisePage = () => {
             <SelectValue
               onLoad={() => setIsLoadingTypes(false)}
               placeholder={
-                isLoadingTypes ? <LoaderIcon className="mr-2 h-4 w-4 animate-spin" /> : "Sélectionner un exercice"
+                isLoadingTypes ? (
+                  <LoaderIcon className="mr-2 h-4 w-4 animate-spin" />
+                ) : exerciseTypeId ? (
+                  oneExerciseType?.name
+                ) : (
+                  "Sélectionner un exercice"
+                )
               }
             />
           </SelectTrigger>
