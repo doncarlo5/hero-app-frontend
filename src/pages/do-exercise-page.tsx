@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { Accordion, AccordionItem } from "@radix-ui/react-accordion"
 import { ReloadIcon } from "@radix-ui/react-icons"
 import { format } from "date-fns"
-import { Check, ChevronLeft,  Edit, HistoryIcon, LoaderIcon, LucideInfo, Stars, X } from "lucide-react"
+import { Check, ChevronLeft, Edit, HistoryIcon, LoaderIcon, LucideInfo, Stars, X } from "lucide-react"
 import { useNavigate, useParams, useSearchParams } from "react-router-dom"
 
 import fetchApi from "@/lib/api-handler"
