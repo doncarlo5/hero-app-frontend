@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Circle, CircleDashed, CircleDot } from "lucide-react"
+import { Circle, CircleDashed } from "lucide-react"
 
 import fetchApi from "@/lib/api-handler"
 import {
@@ -22,6 +22,8 @@ const WeekActivityCarousel = () => {
   const [api, setApi] = useState<CarouselApi | null>(null) // Carousel API reference
   const [current, setCurrent] = useState(0) // Current slide index
   const [count, setCount] = useState(0) // Total slide count
+
+  console.log(current, count)
 
   // Fetch user sessions for the last four weeks
   const fetchSessions = async () => {
@@ -106,13 +108,13 @@ const WeekActivityCarousel = () => {
                       const isActive = hasSessionOnDay(currentDate) // Check if activity exists
 
                       return (
-                        <div key={idx} className="flex flex-col gap-0.5 items-center">
+                        <div key={idx} className="flex flex-col items-center gap-0.5">
                           {isActive ? (
                             <Circle className="h-6 w-6 fill-teal-500/20 text-teal-600" />
                           ) : (
                             <CircleDashed className="h-6 w-6 text-gray-300" />
                           )}
-                          <p className=" text-gray-700 text-sm">{day}</p>
+                          <p className=" text-sm text-gray-700">{day}</p>
                         </div>
                       )
                     })}
