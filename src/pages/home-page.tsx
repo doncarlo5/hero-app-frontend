@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
 import { format } from "date-fns"
 import { fr } from "date-fns/locale/fr"
-import { Activity, Circle, CircleDashed, CircleDot, LucidePlus } from "lucide-react"
-import { FaCircleCheck, FaCircleDot, FaDumbbell, FaTrophy, FaWeightScale } from "react-icons/fa6"
+import { Activity, LucidePlus } from "lucide-react"
+import { FaDumbbell, FaTrophy, FaWeightScale } from "react-icons/fa6"
 import { Link } from "react-router-dom"
 
 import { TrophyType } from "@/types/trophy.type"
