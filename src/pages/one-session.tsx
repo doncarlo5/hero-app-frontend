@@ -3,12 +3,16 @@ import { CalendarIcon, InfoCircledIcon, ReloadIcon } from "@radix-ui/react-icons
 import { format } from "date-fns"
 import { fr } from "date-fns/locale/fr"
 import {
+  ArrowRight,
   ChevronLeft,
+  ChevronsRight,
   LucideArrowLeft,
   LucideCheckCircle,
   LucideLoader2,
   LucideTrash,
   Plus,
+  Redo,
+  RedoDot,
   SaveIcon,
   Weight,
 } from "lucide-react"
@@ -67,6 +71,8 @@ const OneSession = () => {
     comment: "",
   })
   const [formIsDirty, setFormIsDirty] = useState(false)
+  const [skippedExercises, setSkippedExercises] = useState<string[]>([])
+
   const [program, setProgram] = useState<ProgramType>()
 
   const { sessionId } = useParams()
@@ -89,7 +95,6 @@ const OneSession = () => {
     try {
       const response = await fetchApi(`/api/sessions/${sessionId}?type_session=${formState.type_session}`)
 
-      console.log("🚀 ~ fetchOneSession ~ response:", response)
       const formStateValues = {
         id: response._id,
         date_session: response.date_session,
@@ -113,18 +118,33 @@ const OneSession = () => {
 
   const fetchProgram = async (typeSession: string) => {
     try {
+      console.log("typeSession", typeSession)
       const response = await fetchApi(`/api/program/${typeSession}`)
+      console.log("response", response)
       setProgram(response)
-      console.log("🚀 ~ fetchProgram ~ response:", response)
     } catch (error: any) {
       console.error(error.message)
     }
   }
 
   const getNextExercise = () => {
-    const completedExercisesIds = formState.exercise_user_list.map((ex) => ex.exerciseType._id)
-    const nextExercise = program?.exercises.find((ex) => !completedExercisesIds.includes(ex.exerciseType._id))
+    const completedExerciseIds = formState.exercise_user_list.map((exercise) => exercise.type._id)
+
+    // Find the next exercise that hasn't been completed or skipped
+    const nextExercise = program?.exercises.find(
+      (exercise) =>
+        !completedExerciseIds.includes(exercise.exerciseType._id) &&
+        !skippedExercises.includes(exercise.exerciseType._id)
+    )
+
     return nextExercise
+  }
+
+  const handleSkipExercise = () => {
+    const nextExercise = getNextExercise()
+    if (nextExercise && nextExercise.exerciseType) {
+      setSkippedExercises([...skippedExercises, nextExercise.exerciseType._id])
+    }
   }
 
   useEffect(() => {
@@ -307,7 +327,7 @@ const OneSession = () => {
           </Popover>
         </div>
 
-        <div className="space-y-4">
+        <div className="">
           <form onSubmit={handleSubmit} className="pb-14">
             <div className="mb-5 flex gap-10 ">
               <div className="flex flex-1 flex-col justify-between gap-2">
@@ -378,42 +398,55 @@ const OneSession = () => {
 
                   {/* Suggest the next exercise based on order */}
                   {program && getNextExercise() && (
-                    <div className="my-4 w-11/12">
-                      <p className="text-center text-lg font-semibold">Suggested Exercise:</p>
+                    <div className="w-11/12 flex  flex-col gap-2">
+                      <p className="font-semibold">Exercise suivant:</p>
 
                       {/* Main exercise button */}
-                      <Button
-                        variant={"outline"}
-                        onClick={() => {
-                          const nextExercise = getNextExercise()
-                          if (nextExercise && nextExercise.exerciseType) {
-                            navigate(
-                              `/history/session/${sessionId}/do-exercise?exerciseTypeId=${nextExercise.exerciseType._id}`
-                            )
-                          }
-                        }}
-                        className="my-2 w-full"
-                      >
-                        {getNextExercise()?.exerciseType?.name}
-                      </Button>
+                      <div className=" flex gap-4">
+                        <Button
+                          variant="outline"
+                          onClick={() => {
+                            const nextExercise = getNextExercise()
+                            if (nextExercise && nextExercise.exerciseType) {
+                              navigate(
+                                `/history/session/${sessionId}/do-exercise?exerciseTypeId=${nextExercise.exerciseType._id}`
+                              )
+                            }
+                          }}
+                          className="flex h-fit w-full items-center justify-center gap-2 rounded-2xl border-2 border-dotted bg-slate-100/20 px-3 py-2 shadow-md active:translate-y-0.5 active:shadow-none dark:bg-slate-900 dark:bg-opacity-40 md:text-lg"
+                        >
+                          {getNextExercise()?.exerciseType?.name}
+                        </Button>
+
+                        {/* Skip button */}
+                        <Button
+                          variant="outline"
+                          type="button"
+                          onClick={handleSkipExercise}
+                          className="text-gray-400  flex w-1/4 h-fit border-none shadow  gap-2 rounded-2xl  bg-slate-100/60  px-3 py-2  active:translate-y-0.5 active:shadow-none dark:bg-slate-900 dark:bg-opacity-40 md:text-lg"
+                        >
+                          <p className=" text-sm italic">Skip</p>
+                          <ChevronsRight />
+                        </Button>
+                      </div>
 
                       {/* Alternative exercises buttons */}
                       {(getNextExercise()?.alternatives?.length ?? 0) > 0 && (
-                        <>
-                          <p className="text-sm text-gray-500">Alternatives:</p>
+                        <div className=" flex flex-col gap-1">
+                          <p className="text-sm font-medium text-gray-500">Alternative:</p>
                           {getNextExercise()?.alternatives?.map((alt) => (
                             <Button
-                              variant={"outline"}
+                              variant="outline"
                               key={alt._id}
                               onClick={() =>
                                 navigate(`/history/session/${sessionId}/do-exercise?exerciseTypeId=${alt._id}`)
                               }
-                              className="my-1 w-full"
+                              className="flex h-fit w-full items-center justify-center rounded-2xl border-2 border-dotted text-gray-500 bg-slate-100/20 px-3 py-2 shadow-md active:translate-y-0.5 active:shadow-none dark:bg-slate-900 dark:bg-opacity-40 md:text-lg"
                             >
                               {alt.name}
                             </Button>
                           ))}
-                        </>
+                        </div>
                       )}
                     </div>
                   )}
