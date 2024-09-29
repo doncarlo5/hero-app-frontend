@@ -122,7 +122,6 @@ const WeekActivityCarousel = () => {
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <CarouselNext />
           </Carousel>
           {/* Slide counter */}
           {/* <div className="py-2 text-center text-sm text-muted-foreground">
