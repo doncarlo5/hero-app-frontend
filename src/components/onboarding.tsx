@@ -13,16 +13,23 @@ import {
 } from "lucide-react"
 import { FaWeightScale } from "react-icons/fa6"
 
+import { UserType } from "@/types/user.type"
 import fetchApi from "@/lib/api-handler"
 
 import { AnimatedCounter } from "./animated-counter"
-import { Carousel, CarouselApi, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "./ui/carousel-onboarding"
+import {
+  Carousel,
+  CarouselApi,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "./ui/carousel-onboarding"
 import { Input } from "./ui/input"
 import { Label } from "./ui/label"
 import { toast } from "./ui/use-toast"
 import exerciseImg from "/exercise.png"
 import upperFront from "/upper-front.png"
-import { UserType } from "@/types/user.type"
 
 type OnboardingModalProps = {
   onClose: () => void
@@ -73,6 +80,18 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ onClose }) => {
     }
   }, [current, currentStep])
 
+  const handleOnboardingClose = async () => {
+    try {
+      await fetchApi("/api/auth/updateHasSeenOnboarding", {
+        method: "PATCH",
+      })
+      await handleSubmit()
+      onClose() 
+    } catch (error) {
+      console.error("Error updating onboarding status:", error)
+    }
+  }
+
   const handleSubmit = async () => {
     try {
       const updatedUser = {
@@ -103,11 +122,6 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ onClose }) => {
     }))
   }
 
-  const handleOnboardingClose = async () => {
-    await handleSubmit()
-    onClose()
-  }
-
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 ">
       <div className="relative mt-4 w-10/12 max-w-md overflow-hidden rounded-lg bg-slate-50 shadow-lg">
@@ -125,7 +139,6 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ onClose }) => {
                 <h2 className="mt-10 text-left text-2xl font-bold">Complétez vos informations...</h2>
                 <form onSubmit={(e) => e.preventDefault()}>
                   <div className=" mx-auto mt-8 w-11/12 rounded-xl border border-gray-200 bg-gray-100 p-3">
-              
                     <div className=" space-y-2">
                       <div>
                         <Label htmlFor="firstName" className="mb-4">
@@ -282,7 +295,7 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ onClose }) => {
                     ) : (
                       <motion.div className="box" initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }}>
                         <LucideCheckCircle className="mx-auto h-12 w-12 text-green-500" />
-                        <p className=" font-medium mt-1">Profil créé.</p>
+                        <p className=" mt-1 font-medium">Profil créé.</p>
                       </motion.div>
                     )}
                   </div>

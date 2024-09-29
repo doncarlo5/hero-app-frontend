@@ -89,7 +89,7 @@ export function HomePage() {
 
   return (
     <div className="">
-      {showOnboarding && <OnboardingModal onClose={handleOnboardingClose} />}
+      {showOnboarding && <OnboardingModal onClose={() => setShowOnboarding(false)} />}
       <Navbar />
       <main className="container mx-auto my-0 flex h-dvh max-w-lg flex-col ">
         <div className="pt-10  ">
