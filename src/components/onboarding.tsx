@@ -16,7 +16,7 @@ import { FaWeightScale } from "react-icons/fa6"
 import fetchApi from "@/lib/api-handler"
 
 import { AnimatedCounter } from "./animated-counter"
-import { Carousel, CarouselApi, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "./ui/carousel"
+import { Carousel, CarouselApi, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "./ui/carousel-onboarding"
 import { Input } from "./ui/input"
 import { Label } from "./ui/label"
 import { toast } from "./ui/use-toast"

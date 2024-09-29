@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react"
 import { format } from "date-fns"
 import { fr } from "date-fns/locale/fr"
-import { Activity, LucidePlus } from "lucide-react"
-import { FaDumbbell, FaTrophy, FaWeightScale } from "react-icons/fa6"
+import { Activity, Circle, CircleDashed, CircleDot, LucidePlus } from "lucide-react"
+import { FaCircleCheck, FaCircleDot, FaDumbbell, FaTrophy, FaWeightScale } from "react-icons/fa6"
 import { Link } from "react-router-dom"
 
-
+import { TrophyType } from "@/types/trophy.type"
 import fetchApi from "@/lib/api-handler"
 import { Badge } from "@/components/ui/badge"
 import { AnimatedCounter } from "@/components/animated-counter"
@@ -14,9 +14,9 @@ import NewSessionButton from "@/components/new-session-button"
 import OnboardingModal from "@/components/onboarding"
 import SessionChart from "@/components/session-chart"
 import TrophyChart from "@/components/trophy-chart"
+import WeekActivityCarousel from "@/components/week-activity-carousel"
 
 import useAuth from "../context/use-auth"
-import { TrophyType } from "@/types/trophy.type"
 
 export function HomePage() {
   const { user } = useAuth()
@@ -142,6 +142,8 @@ export function HomePage() {
               </div>
             )}
           </div>
+          <WeekActivityCarousel />
+
           <div className="flex flex-col gap-4 pb-2">
             <h1 className=" text-2xl font-bold">Progression</h1>
           </div>
