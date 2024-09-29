@@ -3,7 +3,6 @@ import { CalendarIcon, InfoCircledIcon, ReloadIcon } from "@radix-ui/react-icons
 import { format } from "date-fns"
 import { fr } from "date-fns/locale/fr"
 import {
-  ArrowRight,
   ChevronLeft,
   ChevronsRight,
   LucideArrowLeft,
@@ -11,8 +10,6 @@ import {
   LucideLoader2,
   LucideTrash,
   Plus,
-  Redo,
-  RedoDot,
   SaveIcon,
   Weight,
 } from "lucide-react"
@@ -398,7 +395,7 @@ const OneSession = () => {
 
                   {/* Suggest the next exercise based on order */}
                   {program && getNextExercise() && (
-                    <div className="w-11/12 flex  flex-col gap-2">
+                    <div className="flex w-11/12  flex-col gap-2">
                       <p className="font-semibold">Exercise suivant:</p>
 
                       {/* Main exercise button */}
@@ -423,7 +420,7 @@ const OneSession = () => {
                           variant="outline"
                           type="button"
                           onClick={handleSkipExercise}
-                          className="text-gray-400  flex w-1/4 h-fit border-none shadow  gap-2 rounded-2xl  bg-slate-100/60  px-3 py-2  active:translate-y-0.5 active:shadow-none dark:bg-slate-900 dark:bg-opacity-40 md:text-lg"
+                          className="flex  h-fit w-1/4 gap-2 rounded-2xl border-none  bg-slate-100/60 px-3  py-2  text-gray-400 shadow  active:translate-y-0.5 active:shadow-none dark:bg-slate-900 dark:bg-opacity-40 md:text-lg"
                         >
                           <p className=" text-sm italic">Skip</p>
                           <ChevronsRight />
@@ -441,7 +438,7 @@ const OneSession = () => {
                               onClick={() =>
                                 navigate(`/history/session/${sessionId}/do-exercise?exerciseTypeId=${alt._id}`)
                               }
-                              className="flex h-fit w-full items-center justify-center rounded-2xl border-2 border-dotted text-gray-500 bg-slate-100/20 px-3 py-2 shadow-md active:translate-y-0.5 active:shadow-none dark:bg-slate-900 dark:bg-opacity-40 md:text-lg"
+                              className="flex h-fit w-full items-center justify-center rounded-2xl border-2 border-dotted bg-slate-100/20 px-3 py-2 text-gray-500 shadow-md active:translate-y-0.5 active:shadow-none dark:bg-slate-900 dark:bg-opacity-40 md:text-lg"
                             >
                               {alt.name}
                             </Button>
