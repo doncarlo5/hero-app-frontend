@@ -67,17 +67,6 @@ export function HomePage() {
     }
   }
 
-  const handleOnboardingClose = async () => {
-    try {
-      await fetchApi("/api/auth/updateHasSeenOnboarding", {
-        method: "PATCH",
-      })
-      setShowOnboarding(false)
-    } catch (error: any) {
-      console.error("Error updating onboarding status:", error)
-    }
-  }
-
   useEffect(() => {
     fetchLastSession()
     fetchAllSessions()
