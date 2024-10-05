@@ -6,7 +6,6 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselPrevious,
   type CarouselApi,
 } from "@/components/ui/carousel"
 
@@ -96,7 +95,6 @@ const WeekActivityCarousel = () => {
       ) : (
         <div>
           <Carousel setApi={setApi}>
-            <CarouselPrevious />
             <CarouselContent>
               {lastThreeWeeks.map((week, index) => (
                 <CarouselItem key={index} className="week-slide">
