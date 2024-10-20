@@ -51,9 +51,9 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ onClose }) => {
   const [showFinalMessage, setShowFinalMessage] = useState(false)
 
   const steps = [
-    "Création du programme...",
-    "Ajout de types séances...",
     "Création des types d'exercices...",
+    "Création des séances...",
+    "Création des programmes...",
     "Création des trophées...",
   ]
 
@@ -71,7 +71,7 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ onClose }) => {
   useEffect(() => {
     if (current === 4) {
       if (currentStep < steps.length) {
-        const timeout = setTimeout(() => setCurrentStep((prev) => prev + 1), 2500)
+        const timeout = setTimeout(() => setCurrentStep((prev) => prev + 1), 2000)
         return () => clearTimeout(timeout)
       } else {
         const timeout = setTimeout(() => setShowFinalMessage(true), 1000)
@@ -316,7 +316,7 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ onClose }) => {
                               </span>{" "}
                               trophées à
                             </h3>
-                            <h3 className="text-left font-semibold">obtenir selon ton poids</h3>
+                            <h3 className="text-left font-semibold">gagner selon ton poids</h3>
                           </div>
                           <div className="mx-4 my-auto">
                             <Trophy className="text-gray-500" strokeWidth={1.1} size={40} />
