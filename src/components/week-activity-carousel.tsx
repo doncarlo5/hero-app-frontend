@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { Circle, CircleDashed } from "lucide-react"
+import {  subDays, startOfWeek, addDays, isSameDay } from "date-fns"
 
 import fetchApi from "@/lib/api-handler"
 import {
@@ -8,27 +9,26 @@ import {
   CarouselItem,
   type CarouselApi,
 } from "@/components/ui/carousel"
+import { Skeleton } from "@/components/ui/skeleton"
 
 interface SessionType {
+  _id: string
   date_session: string
   type_session: string
+  is_done: boolean
 }
 
 const WeekActivityCarousel = () => {
   const [sessions, setSessions] = useState<SessionType[]>([])
   const [isLoading, setIsLoading] = useState(false)
-  const [api, setApi] = useState<CarouselApi | null>(null) // Carousel API reference
-  const [current, setCurrent] = useState(0) // Current slide index
-  const [count, setCount] = useState(0) // Total slide count
+  const [api, setApi] = useState<CarouselApi | null>(null)
 
-  console.log(current, count)
-
-  // Fetch user sessions for the last four weeks
   const fetchSessions = async () => {
     try {
       setIsLoading(true)
-      const response = await fetchApi(`/api/sessions?lastFourWeeks=true`)
+      const response = await fetchApi(`/api/sessions/last-31-days`)
       setSessions(response)
+      console.log("last-31-days", response)
     } catch (error) {
       console.error("Error fetching sessions", error)
     } finally {
@@ -40,78 +40,66 @@ const WeekActivityCarousel = () => {
     fetchSessions()
   }, [])
 
-  // Track carousel state
   useEffect(() => {
     if (!api) return
-
-    setCount(api.scrollSnapList().length) // Total slides
-    setCurrent(api.selectedScrollSnap() + 1) // Current slide index (starts at 0)
-
-    api.on("select", () => {
-      setCurrent(api.selectedScrollSnap() + 1) // Update current slide when user scrolls
-    })
   }, [api])
 
-  // Helper to group sessions by week and day
-  const getLastThreeWeeks = () => {
+  const getWeeks = () => {
     const today = new Date()
-    let weeks = []
-
-    // Reverse loop to show most recent week first
-    for (let i = 2; i >= 0; i--) {
-      let weekStart = new Date(today)
-      weekStart.setDate(today.getDate() - today.getDay() - i * 7) // Start of week
-      let weekEnd = new Date(weekStart)
-      weekEnd.setDate(weekEnd.getDate() + 6) // End of week
-
-      weeks.push({
-        start: weekStart,
-        end: weekEnd,
-      })
-    }
-
-    return weeks
-  }
-
-  // Helper to check if a session occurred on a particular date
-  const hasSessionOnDay = (date: Date) => {
-    return sessions.some((session) => {
-      const sessionDate = new Date(session.date_session)
-      return (
-        sessionDate.getDate() === date.getDate() &&
-        sessionDate.getMonth() === date.getMonth() &&
-        sessionDate.getFullYear() === date.getFullYear()
-      )
+    const currentWeekStart = startOfWeek(today, { weekStartsOn: 1 }) // Start on Monday
+    return [2, 1, 0].map(weekOffset => {
+      const weekStart = subDays(currentWeekStart, 7 * weekOffset)
+      return Array.from({ length: 7 }, (_, i) => addDays(weekStart, i))
     })
   }
 
-  const lastThreeWeeks = getLastThreeWeeks() // Get weeks
-  const daysOfWeek = ["L", "M", "M", "J", "V", "S", "D"] // Days labels
+  const hasSessionOnDay = (date: Date) => {
+    return sessions.some(session => isSameDay(new Date(session.date_session), date))
+  }
+
+  const weeks = getWeeks()
+  const daysOfWeek = ["L", "M", "M", "J", "V", "S", "D"] // French abbreviations
+
+  const renderSkeletonLoader = () => {
+    return (
+      <div>
+        {[0].map((week) => (
+          <div key={week} className="flex justify-between">
+            {[0, 1, 2, 3, 4, 5, 6].map((day) => (
+              <div key={day} className="flex flex-col items-center gap-0.5">
+                <Skeleton className="h-6 w-6 rounded-full" />
+                <Skeleton className="h-4 w-4" />
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+    )
+  }
 
   return (
     <div className="week-carousel">
       {isLoading ? (
-        <p>Loading...</p>
+        renderSkeletonLoader()
       ) : (
         <div>
-          <Carousel setApi={setApi}>
+          <Carousel setApi={setApi} opts={{ startIndex: 2, loop: false }}>
             <CarouselContent>
-              {lastThreeWeeks.map((week, index) => (
-                <CarouselItem key={index} className="week-slide">
+              {weeks.map((week, weekIndex) => (
+                <CarouselItem key={weekIndex} className="week-slide">
                   <div className="flex justify-between">
-                    {daysOfWeek.map((day, idx) => {
-                      const currentDate = new Date(week.start)
-                      currentDate.setDate(week.start.getDate() + idx) // Set current day
-                      const isActive = hasSessionOnDay(currentDate) // Check if activity exists
+                    {week.map((date, dayIndex) => {
+                      const isActive = hasSessionOnDay(date)
 
                       return (
-                        <div key={idx} className="flex flex-col items-center gap-0.5">
+                        <div key={dayIndex} className="flex flex-col items-center gap-0.5">
                           {isActive ? (
                             <Circle className="h-6 w-6 fill-teal-500/20 text-teal-600" />
                           ) : (
                             <CircleDashed className="h-6 w-6 text-gray-300" />
                           )}
-                          <p className=" text-sm text-gray-700">{day}</p>
+                          <p className="text-sm text-gray-700">{daysOfWeek[dayIndex]}</p>
+                       
                         </div>
                       )
                     })}
@@ -120,10 +108,6 @@ const WeekActivityCarousel = () => {
               ))}
             </CarouselContent>
           </Carousel>
-          {/* Slide counter */}
-          {/* <div className="py-2 text-center text-sm text-muted-foreground">
-            Slide {current} of {count}
-          </div> */}
         </div>
       )}
     </div>
