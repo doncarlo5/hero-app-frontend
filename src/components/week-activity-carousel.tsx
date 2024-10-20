@@ -10,6 +10,7 @@ import {
   type CarouselApi,
 } from "@/components/ui/carousel"
 import { Skeleton } from "@/components/ui/skeleton"
+import { Button } from "@/components/ui/button"
 
 interface SessionType {
   _id: string
@@ -22,6 +23,7 @@ const WeekActivityCarousel = () => {
   const [sessions, setSessions] = useState<SessionType[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [api, setApi] = useState<CarouselApi | null>(null)
+  const [currentSlide, setCurrentSlide] = useState(2)
 
   const fetchSessions = async () => {
     try {
@@ -42,6 +44,10 @@ const WeekActivityCarousel = () => {
 
   useEffect(() => {
     if (!api) return
+
+    api.on("select", () => {
+      setCurrentSlide(api.selectedScrollSnap())
+    })
   }, [api])
 
   const getWeeks = () => {
@@ -82,7 +88,7 @@ const WeekActivityCarousel = () => {
       {isLoading ? (
         renderSkeletonLoader()
       ) : (
-        <div>
+        <div className="">
           <Carousel setApi={setApi} opts={{ startIndex: 2, loop: false }}>
             <CarouselContent>
               {weeks.map((week, weekIndex) => (
@@ -94,7 +100,7 @@ const WeekActivityCarousel = () => {
                       return (
                         <div key={dayIndex} className="flex flex-col items-center gap-0.5">
                           {isActive ? (
-                            <Circle className="h-6 w-6 fill-teal-500/20 text-teal-600" />
+                            <Circle className="h-6 w-6 fill-teal-500/40 text-teal-600" />
                           ) : (
                             <CircleDashed className="h-6 w-6 text-gray-300" />
                           )}
@@ -108,6 +114,20 @@ const WeekActivityCarousel = () => {
               ))}
             </CarouselContent>
           </Carousel>
+          <div className="flex justify-center mt-4 space-x-2">
+            {[0, 1, 2].map((index) => (
+              <Button
+                key={index}
+                variant="ghost"
+                size="sm"
+                className={`w-2 h-2 p-0 rounded-full opacity-90 ${
+                  currentSlide === index ? 'bg-teal-600' : 'bg-gray-300'
+                }`}
+                aria-label={`Go to slide ${index + 1}`}
+                onClick={() => api?.scrollTo(index)}
+              />
+            ))}
+          </div>
         </div>
       )}
     </div>

@@ -132,7 +132,9 @@ export function HomePage() {
               </div>
             )}
           </div>
-          <WeekActivityCarousel />
+          <div className="flex flex-col pb-2">
+            <WeekActivityCarousel />
+          </div>
 
           <div className="flex flex-col gap-4 pb-2">
             <h1 className=" text-2xl font-bold">Progression</h1>
