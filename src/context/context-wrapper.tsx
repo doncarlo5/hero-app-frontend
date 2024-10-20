@@ -86,10 +86,10 @@ const AuthContextWrapper = ({ children }: WrapperProps) => {
   const handleLogout = async () => {
     try {
       setIsLoading(true)
-      await supabase.auth.signOut()
-      setIsLoggedIn(false)
       setUser(null)
       setSession(null)
+      await supabase.auth.signOut()
+      setIsLoggedIn(false)
       redirect("/welcome")
     } catch (error: any) {
       console.error(error)

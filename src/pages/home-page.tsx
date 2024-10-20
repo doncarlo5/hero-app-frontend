@@ -71,13 +71,14 @@ export function HomePage() {
     fetchLastSession()
     fetchAllSessions()
 
+
     if (user && !user.hasSeenOnboarding) {
       setShowOnboarding(true)
     }
   }, [user])
 
   return (
-    <div className="">
+    <div>
       {showOnboarding && <OnboardingModal onClose={() => setShowOnboarding(false)} />}
       <Navbar />
       <main className="container mx-auto my-0 flex h-dvh max-w-lg flex-col ">

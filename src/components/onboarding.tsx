@@ -82,26 +82,16 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ onClose }) => {
 
   const handleOnboardingClose = async () => {
     try {
-      await fetchApi("/api/auth/updateHasSeenOnboarding", {
-        method: "PATCH",
-      })
-      await handleSubmit()
-      onClose() 
-    } catch (error) {
-      console.error("Error updating onboarding status:", error)
-    }
-  }
-
-  const handleSubmit = async () => {
-    try {
       const updatedUser = {
         ...user,
         ...formState,
+        hasSeenOnboarding: true,
       }
-      await fetchApi("/api/auth/settings", {
-        method: "PATCH",
+      await fetchApi("/api/auth/update", {
+        method: "PUT",
         body: JSON.stringify(updatedUser),
       })
+      onClose() 
       contextSetBodyWeight(bodyWeight)
       setUser(updatedUser as UserType)
     } catch (error: any) {
