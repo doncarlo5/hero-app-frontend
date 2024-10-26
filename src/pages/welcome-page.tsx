@@ -47,9 +47,9 @@ export function HomePage() {
 
         {/* Privacy Policy Link */}
         <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-sm text-gray-500">
-          <a href="https://www.freeprivacypolicy.com/live/922cbcb7-b28c-41ea-987c-052b46c2a5bd" className="hover:underline" target="_blank" rel="noopener noreferrer">
+          <Link to="/privacy-policy" className="hover:underline">
             Privacy Policy
-          </a>
+          </Link>
         </div>
       </main>
     </div>
