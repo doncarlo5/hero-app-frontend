@@ -27,6 +27,7 @@ export function HomePage() {
             <BorderRotateButton />
           </Link>
         </div>
+        
 
         {/* <div className="absolute bottom-0 right-0 mb-8 mr-8">
           <Button variant={"outline"} className="rounded-full px-4 py-5" onClick={toggleTheme}>
@@ -42,6 +43,14 @@ export function HomePage() {
             <span className="sr-only">Toggle theme</span>
           </Button>
         </div> */}
+
+
+        {/* Privacy Policy Link */}
+        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-sm text-gray-500">
+          <Link to="/privacy-policy" className="hover:underline">
+            Privacy Policy
+          </Link>
+        </div>
       </main>
     </div>
   )

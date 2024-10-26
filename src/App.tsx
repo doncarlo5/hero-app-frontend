@@ -23,6 +23,7 @@ import TypesList from "./pages/types-list"
 import WelcomePage from "./pages/welcome-page"
 import IsAuthenticated from "./routing/is-authenticated"
 import IsNotAuthenticated from "./routing/is-not-authenticated"
+import PrivacyPolicyPage from "./pages/privacy-policy-page"
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
             <Route path="/confirm-email" element={<ConfirmEmail />} />
           </Route>
           <Route path="/welcome" element={<WelcomePage />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
           <Route element={<IsAuthenticated />}>
             <Route path="/" element={<HomePage />} />
             <Route path="/history" element={<HistoryPage />} />
