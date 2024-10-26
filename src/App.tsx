@@ -35,7 +35,7 @@ function App() {
             <Route path="/signup" element={<AuthPage />} />
             <Route path="/confirm-email" element={<ConfirmEmail />} />
           </Route>
-          <Route path="/welcome" element={<WelcomePage />} />
+          <Route path="/" element={<WelcomePage />} />
           <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
           <Route element={<IsAuthenticated />}>
             <Route path="/" element={<HomePage />} />
