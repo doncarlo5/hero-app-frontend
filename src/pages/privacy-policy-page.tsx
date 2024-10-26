@@ -8,9 +8,34 @@ const PrivacyPolicyPage: React.FC = () => {
       <p className="mb-4">Last updated: October 23, 2024</p>
       
       <div className="prose">
+        <h2 className="text-2xl font-semibold mt-6 mb-4">About Hero App Workout</h2>
+        <p>Hero App Workout is your personalized fitness assistant for achieving workout goals. Our app is designed to help you create, track, and optimize your fitness journey.</p>
+
+        <h3 className="text-xl font-semibold mt-4 mb-2">Key Features:</h3>
+        <ul className="list-disc list-inside">
+          <li>Personalized workout plans tailored to your fitness level and goals</li>
+          <li>Progress tracking with detailed metrics and visualizations</li>
+          <li>Extensive exercise library with tutorials and form guides</li>
+          <li>Goal setting and achievement rewards system</li>
+          <li>Integration with wearable devices for comprehensive health monitoring</li>
+        </ul>
+
+        <h2 className="text-2xl font-semibold mt-6 mb-4">Data Usage and Collection</h2>
+        <p>At Hero App Workout, we are committed to transparency in our data practices. We collect and use personal data to provide you with a tailored and effective fitness experience. Here's how we use your data:</p>
+
+        <ul className="list-disc list-inside">
+          <li><strong>Personal Information:</strong> We collect data such as your name, email, age, and gender to create and manage your account.</li>
+          <li><strong>Fitness Data:</strong> Your workout history, exercise preferences, and physical measurements are used to create personalized workout plans and track your progress.</li>
+          <li><strong>Device Information:</strong> We collect data about your device and how you interact with our app to improve our service and troubleshoot issues.</li>
+          <li><strong>Location Data:</strong> With your permission, we may use your location to provide relevant fitness recommendations and features.</li>
+        </ul>
+
+        <p>This data is used solely to enhance your experience with Hero App Workout and is never sold to third parties.</p>
+
+        <h2 className="text-2xl font-semibold mt-6 mb-4">Detailed Privacy Policy</h2>
         <p>This Privacy Policy describes Our policies and procedures on the collection, use, and disclosure of Your information when You use the Service and tells You about Your privacy rights and how the law protects You.</p>
 
-        <p>We use Your Personal data to provide and improve the Service. By using the Service, You agree to the collection and use of information in accordance with this Privacy Policy. This Privacy Policy has been created with the help of the Free Privacy Policy Generator.</p>
+        <p>We use Your Personal data to provide and improve the Service. By using the Service, You agree to the collection and use of information in accordance with this Privacy Policy.</p>
 
         <h2 className="text-2xl font-semibold mt-6 mb-4">Interpretation and Definitions</h2>
         <h3 className="text-xl font-semibold mt-4 mb-2">Interpretation</h3>
@@ -19,17 +44,13 @@ const PrivacyPolicyPage: React.FC = () => {
         <h3 className="text-xl font-semibold mt-4 mb-2">Definitions</h3>
         <ul className="list-disc list-inside">
           <li><strong>Account</strong> means a unique account created for You to access our Service or parts of our Service.</li>
-          <li><strong>Affiliate</strong> means an entity that controls, is controlled by, or is under common control with a party, where "control" means ownership of 50% or more of the shares, equity interest, or other securities entitled to vote for election of directors or other managing authority.</li>
           <li><strong>Application</strong> refers to Hero App Workout, the software program provided by the Company.</li>
           <li><strong>Company</strong> (referred to as either "the Company", "We", "Us" or "Our" in this Agreement) refers to Hero App Workout.</li>
-          <li><strong>Cookies</strong> are small files that are placed on Your computer, mobile device, or any other device by a website, containing the details of Your browsing history on that website among its many uses.</li>
           <li><strong>Country</strong> refers to: France.</li>
           <li><strong>Device</strong> means any device that can access the Service, such as a computer, a cellphone, or a digital tablet.</li>
           <li><strong>Personal Data</strong> is any information that relates to an identified or identifiable individual.</li>
-          <li><strong>Service</strong> refers to the Application or the Website or both.</li>
-          <li><strong>Service Provider</strong> means any natural or legal person who processes the data on behalf of the Company. It refers to third-party companies or individuals employed by the Company to facilitate the Service, to provide the Service on behalf of the Company, to perform services related to the Service, or to assist the Company in analyzing how the Service is used.</li>
+          <li><strong>Service</strong> refers to the Application.</li>
           <li><strong>Usage Data</strong> refers to data collected automatically, either generated by the use of the Service or from the Service infrastructure itself (for example, the duration of a page visit).</li>
-          <li><strong>Website</strong> refers to Hero App Workout, accessible from <a href="https://hero-app-workout.vercel.app/" target="_blank" rel="noopener noreferrer">https://hero-app-workout.vercel.app/</a>.</li>
           <li><strong>You</strong> means the individual accessing or using the Service, or the company, or other legal entity on behalf of which such individual is accessing or using the Service, as applicable.</li>
         </ul>
 
@@ -79,8 +100,9 @@ const PrivacyPolicyPage: React.FC = () => {
         <p>We may update this Privacy Policy periodically and notify You through email or on the Service.</p>
 
         <h2 className="text-2xl font-semibold mt-6 mb-4">Contact Us</h2>
-        <p>If you have any questions about this Privacy Policy, You can contact us:</p>
-        <p>Generated using Free Privacy Policy Generator</p>
+        <p>If you have any questions about this Privacy Policy or our data practices, you can contact us at:</p>
+        <p>Email: pro.julien.thomas@gmail.com</p>
+        <p>Address: 123 Fitness Street, 75001 Paris, France</p>
       </div>
 
       <div className="mt-8">
