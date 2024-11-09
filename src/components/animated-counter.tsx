@@ -10,7 +10,7 @@ import {
   type CounterProps = {
     from: number;
     to: number;
-    type?: "onboarding" | "dashboard";
+    type?: "onboarding" | "main";
   };
   
   function AnimatedCounter({ from, to, type }: CounterProps) {

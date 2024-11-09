@@ -29,16 +29,21 @@ function App() {
   return (
     <div>
       <ErrorBoundary>
-        {/* <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme"> */}
         <Routes>
-          <Route element={<IsNotAuthenticated />}>
-            <Route path="/signup" element={<AuthPage />} />
-            <Route path="/confirm-email" element={<ConfirmEmail />} />
-          </Route>
+          {/* Public Routes */}
           <Route path="/" element={<HomePage />} />
           <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+          
+          {/* Auth Routes */}
+          <Route element={<IsNotAuthenticated />}>
+            <Route path="/signup" element={<AuthPage />} />
+            <Route path="/login" element={<AuthPage />} />
+            <Route path="/confirm-email" element={<ConfirmEmail />} />
+          </Route>
+
+          {/* Protected Routes */}
           <Route element={<IsAuthenticated />}>
-            <Route path="/" element={<MainPage />} />
+            <Route path="/main" element={<MainPage />} />
             <Route path="/history" element={<HistoryPage />} />
             <Route path="/history/exercise/:exerciseId" element={<OneExercise />} />
             <Route path="/history/session/:sessionId" element={<OneSession />} />
@@ -51,12 +56,11 @@ function App() {
             <Route path="/profile/trophy" element={<TrophyPage />} />
             <Route path="/profile/timer" element={<TimerPage />} />
             <Route path="/profile/settings" element={<SettingsPage />} />
-            {/* <Route path="/profile/settings/reset-password" element={<ResetPassword />} /> */}
             <Route path="/profile/program" element={<ProgramPage />} />
           </Route>
+
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
-        {/* </ThemeProvider> */}
       </ErrorBoundary>
     </div>
   )
