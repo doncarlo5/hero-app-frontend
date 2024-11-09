@@ -6,7 +6,7 @@ import ConfirmEmail from "./pages/confirm-page"
 import DoExercisePage from "./pages/do-exercise-page"
 import ErrorBoundary from "./pages/error-boundary"
 import { HistoryPage } from "./pages/history-page"
-import HomePage from "./pages/home-page"
+import MainPage from "./pages/main-page"
 import NewType from "./pages/new-type"
 import NotFoundPage from "./pages/no-found-page"
 import OneExercise from "./pages/one-exercise"
@@ -20,7 +20,7 @@ import StatsPage from "./pages/stats-page"
 import TimerPage from "./pages/timer-page"
 import TrophyPage from "./pages/trophy-page"
 import TypesList from "./pages/types-list"
-import WelcomePage from "./pages/welcome-page"
+import HomePage from "./pages/home-page"
 import IsAuthenticated from "./routing/is-authenticated"
 import IsNotAuthenticated from "./routing/is-not-authenticated"
 import PrivacyPolicyPage from "./pages/privacy-policy-page"
@@ -35,10 +35,10 @@ function App() {
             <Route path="/signup" element={<AuthPage />} />
             <Route path="/confirm-email" element={<ConfirmEmail />} />
           </Route>
-          <Route path="/" element={<WelcomePage />} />
+          <Route path="/" element={<HomePage />} />
           <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
           <Route element={<IsAuthenticated />}>
-            <Route path="/" element={<HomePage />} />
+            <Route path="/" element={<MainPage />} />
             <Route path="/history" element={<HistoryPage />} />
             <Route path="/history/exercise/:exerciseId" element={<OneExercise />} />
             <Route path="/history/session/:sessionId" element={<OneSession />} />
