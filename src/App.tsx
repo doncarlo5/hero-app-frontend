@@ -24,6 +24,7 @@ import HomePage from "./pages/home-page"
 import IsAuthenticated from "./routing/is-authenticated"
 import IsNotAuthenticated from "./routing/is-not-authenticated"
 import PrivacyPolicyPage from "./pages/privacy-policy-page"
+import MoreInfo from './pages/more-info';
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
           {/* Public Routes */}
           <Route path="/" element={<HomePage />} />
           <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+          <Route path="/more-info" element={<MoreInfo />} />
           
           {/* Auth Routes */}
           <Route element={<IsNotAuthenticated />}>

@@ -53,7 +53,7 @@ const BorderRotateButton = () => {
       />
 
       <span className="rounded-full font-medium  dark:bg-zinc-950 dark:bg-opacity-95 bg-zinc-950 px-7 py-2 text-sm text-[#f6f6f6] backdrop-blur-sm">
-        Commencer
+        Start now
       </span>
     </motion.button>
   )
