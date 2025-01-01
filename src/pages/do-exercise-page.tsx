@@ -27,6 +27,7 @@ import { useToast } from "@/components/ui/use-toast"
 import CountDownTimer from "@/components/countdown-timer"
 import { Navbar } from "@/components/navbar"
 import ScreenLockToggle from "@/components/screen-lock-toggle"
+import { cn } from "@/lib/utils"
 
 const DoExercisePage = () => {
   const [oneExerciseType, setOneExerciseType] = useState(null as any)
@@ -302,7 +303,7 @@ const DoExercisePage = () => {
         {oneExerciseType && (
           <form onSubmit={handleSubmit} className="">
             {showPrefillButton && (
-              <div className=" flex gap-2 ">
+              <div className=" flex gap-2">
                 <Button
                   variant={"outline"}
                   type="button"
@@ -324,7 +325,7 @@ const DoExercisePage = () => {
               </div>
             )}
             <div className="flex flex-col items-center justify-center rounded-2xl bg-slate-50 py-4 dark:bg-slate-900 dark:bg-opacity-40 md:text-lg">
-              <div className="flex gap-2">
+              <div className="flex gap-2 w-full items-center justify-center">
                 <div className="flex flex-col gap-1 text-center">
                   <p className="pb-1 text-sm text-gray-500 ">Reps</p>
                   <Input
@@ -535,7 +536,9 @@ const DoExercisePage = () => {
               <button
                 type="button"
                 onClick={() => setAddRep4(!addRep4)}
-                className={`mt-4 w-6/12 rounded-xl ${oneExerciseType.repRange4 ? "hidden" : ""}`}
+                className={cn(`mt-4 w-6/12 rounded-xl`, {
+                  hidden: oneExerciseType.repRange4,
+                })}
               >
                 {addRep4 ? (
                   <div className=" text-xs italic text-gray-400">Réduire d'une série ↑</div>
