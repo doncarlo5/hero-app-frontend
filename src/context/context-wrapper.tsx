@@ -70,6 +70,7 @@ const AuthContextWrapper = ({ children }: WrapperProps) => {
         const response = await fetchApi("/api/auth/verify")
         setUser(response.user)
         setIsLoggedIn(session !== null)
+        redirect("/main")
       } else {
         setIsLoggedIn(false)
         setUser(null)
