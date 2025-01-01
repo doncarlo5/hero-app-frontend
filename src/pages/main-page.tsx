@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { format } from "date-fns"
 import { fr } from "date-fns/locale/fr"
-import { Activity, LucidePlus } from "lucide-react"
+import {  LucidePlus } from "lucide-react"
 import { FaDumbbell, FaTrophy, FaWeightScale } from "react-icons/fa6"
 import { Link } from "react-router-dom"
 
@@ -12,7 +12,6 @@ import { AnimatedCounter } from "@/components/animated-counter"
 import { Navbar } from "@/components/navbar"
 import NewSessionButton from "@/components/new-session-button"
 import OnboardingModal from "@/components/onboarding"
-import SessionChart from "@/components/session-chart"
 import TrophyChart from "@/components/trophy-chart"
 import WeekActivityCarousel from "@/components/week-activity-carousel"
 
