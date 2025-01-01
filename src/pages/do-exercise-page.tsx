@@ -324,10 +324,10 @@ const DoExercisePage = () => {
                 </Button>
               </div>
             )}
-            <div className="flex flex-col items-center justify-center rounded-2xl bg-slate-50 py-4 dark:bg-slate-900 dark:bg-opacity-40 md:text-lg">
-              <div className="flex gap-2 w-full items-center justify-center">
-                <div className="flex flex-col gap-1 text-center">
-                  <p className="pb-1 text-sm text-gray-500 ">Reps</p>
+            <div className="flex flex-col items-center justify-center w-full rounded-2xl bg-slate-50 py-4 dark:bg-slate-900 dark:bg-opacity-40 md:text-lg px-2">
+              <div className="flex w-full justify-between gap-1 px-2">
+                <div className="flex flex-col gap-1 text-center w-[25%]">
+                  <p className="pb-1 text-sm text-gray-500">Reps</p>
                   <Input
                     id="rep1"
                     placeholder={lastExercise?.rep[0]}
@@ -335,7 +335,7 @@ const DoExercisePage = () => {
                     onChange={handleChange}
                     required
                     type="number"
-                    className=" text-md w-12 rounded-xl text-center font-medium [appearance:textfield]  focus:bg-slate-50 focus:shadow-inner [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                    className="text-md h-12 w-full rounded-xl text-center text-2xl font-bold [appearance:textfield] focus:bg-slate-50 focus:shadow-inner [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                   />
                   <Input
                     id="rep2"
@@ -344,7 +344,7 @@ const DoExercisePage = () => {
                     onChange={handleChange}
                     required
                     type="number"
-                    className="text-md w-12  rounded-xl text-center font-medium [appearance:textfield]  focus:bg-slate-50 focus:shadow-inner [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                    className="text-md h-12 w-full rounded-xl text-center text-2xl font-bold [appearance:textfield] focus:bg-slate-50 focus:shadow-inner [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                   />
                   <Input
                     id="rep3"
@@ -353,7 +353,7 @@ const DoExercisePage = () => {
                     onChange={handleChange}
                     required
                     type="number"
-                    className="text-md w-12  rounded-xl text-center font-medium [appearance:textfield]  focus:bg-slate-50 focus:shadow-inner [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                    className="text-md h-12 w-full rounded-xl text-center text-2xl font-bold [appearance:textfield] focus:bg-slate-50 focus:shadow-inner [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                   />
                   {(addRep4 || oneExerciseType.repRange4) && (
                     <Input
@@ -363,12 +363,13 @@ const DoExercisePage = () => {
                       onChange={handleChange}
                       required
                       type="number"
-                      className="text-md w-12  rounded-xl text-center font-medium [appearance:textfield]  focus:bg-slate-50 focus:shadow-inner [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                      className="text-md h-12 w-full rounded-xl text-center text-2xl font-bold [appearance:textfield] focus:bg-slate-50 focus:shadow-inner [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                     />
                   )}
                 </div>
-                <div className="flex flex-col gap-1 text-center">
-                  <p className="pb-1 text-sm text-gray-500 ">KG</p>
+                
+                <div className="flex flex-col gap-1 text-center w-[35%]">
+                  <p className="pb-1 text-sm text-gray-500">KG</p>
                   <Input
                     id="weight1"
                     placeholder={lastExercise?.weight[0]}
@@ -376,7 +377,7 @@ const DoExercisePage = () => {
                     onChange={handleChange}
                     required
                     type="number"
-                    className="text-md w-20 rounded-xl text-center font-medium  [appearance:textfield] focus:bg-slate-50 focus:shadow-inner [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                    className="text-md h-12 w-full rounded-xl text-center text-2xl font-bold [appearance:textfield] focus:bg-slate-50 focus:shadow-inner [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                   />
                   <Input
                     id="weight2"
@@ -385,7 +386,7 @@ const DoExercisePage = () => {
                     onChange={handleChange}
                     required
                     type="number"
-                    className="text-md w-20  rounded-xl text-center font-medium  [appearance:textfield] focus:bg-slate-50 focus:shadow-inner [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                    className="text-md h-12 w-full rounded-xl text-center text-2xl font-bold [appearance:textfield] focus:bg-slate-50 focus:shadow-inner [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                   />
                   <Input
                     id="weight3"
@@ -394,7 +395,7 @@ const DoExercisePage = () => {
                     onChange={handleChange}
                     required
                     type="number"
-                    className="text-md w-20  rounded-xl text-center font-medium  [appearance:textfield] focus:bg-slate-50 focus:shadow-inner [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                    className="text-md h-12 w-full rounded-xl text-center text-2xl font-bold [appearance:textfield] focus:bg-slate-50 focus:shadow-inner [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                   />
                   {(addRep4 || oneExerciseType.repRange4) && (
                     <Input
@@ -404,37 +405,37 @@ const DoExercisePage = () => {
                       onChange={handleChange}
                       required
                       type="number"
-                      className="text-md w-20  rounded-xl text-center font-medium  [appearance:textfield] focus:bg-slate-50 focus:shadow-inner [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                      className="text-md h-12 w-full rounded-xl text-center text-2xl font-bold [appearance:textfield] focus:bg-slate-50 focus:shadow-inner [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                     />
                   )}
                 </div>
-                <div className="flex flex-col gap-1 text-center">
-                  <p className="pb-1 text-sm text-gray-500 ">{`[Range]`}</p>
-                  <p className="text-md flex h-9 w-full items-center justify-center rounded-md bg-transparent px-1 py-1 font-light italic text-gray-700 ">
+
+                <div className="flex flex-col gap-1 text-center w-[20%]">
+                  <p className="pb-1 text-sm text-gray-500">Range</p>
+                  <p className="text-md flex h-12 w-full items-center justify-center rounded-md bg-transparent px-1 font-light text-gray-700">
                     {oneExerciseType?.repRange1}
                   </p>
-
-                  <p className="text-md flex h-9 w-full items-center justify-center rounded-md bg-transparent px-1 py-1 font-light italic text-gray-700 ">
+                  <p className="text-md flex h-12 w-full items-center justify-center rounded-md bg-transparent px-1 font-light text-gray-700">
                     {oneExerciseType?.repRange2}
                   </p>
-                  <p className="text-md flex h-9 w-full items-center justify-center rounded-md bg-transparent px-1 py-1 font-light italic text-gray-700 ">
+                  <p className="text-md flex h-12 w-full items-center justify-center rounded-md bg-transparent px-1 font-light text-gray-700">
                     {oneExerciseType?.repRange3}
                   </p>
                   {(addRep4 || oneExerciseType.repRange4) && (
-                    <p className="text-md flex h-9 w-full items-center justify-center rounded-md bg-transparent px-1 py-1 font-light italic text-gray-700 ">
+                    <p className="text-md flex h-12 w-full items-center justify-center rounded-md bg-transparent px-1 font-light text-gray-700">
                       {oneExerciseType?.repRange4}
                     </p>
                   )}
                 </div>
-                <div className="flex flex-col gap-1 text-center">
-                  <p className="pb-1 text-sm text-gray-500 ">Série</p>
-                  <p className="flex h-9 w-9 items-center justify-center rounded-md bg-slate-200 bg-transparent px-3 py-1 font-mono text-sm text-gray-900 ">
-                    <label className="relative flex cursor-pointer items-center rounded-full " htmlFor="teal">
+
+                <div className="flex flex-col gap-1 text-center w-[20%]">
+                  <p className="pb-1 text-sm text-gray-500">Série</p>
+                  <div className="flex h-12 w-full items-center justify-center rounded-md bg-slate-200 bg-transparent">
+                    <label className="relative flex cursor-pointer items-center rounded-full" htmlFor="set1">
                       <input
-                        placeholder={lastExercise?.rep[0]}
+                        id="set1"
                         type="checkbox"
-                        className="before:content[''] border-blue-gray-200 before:bg-blue-gray-500 peer relative h-7 w-7 cursor-pointer appearance-none rounded-sm border transition-all before:absolute before:left-2/4 before:top-2/4 before:block before:h-8 before:w-8 before:-translate-x-2/4 before:-translate-y-2/4 before:rounded-full before:opacity-0 before:transition-opacity checked:border-teal-700 checked:bg-teal-700 checked:before:bg-teal-700 hover:before:opacity-10"
-                        id="teal"
+                        className="before:content[''] border-blue-gray-200 before:bg-blue-gray-500 peer relative h-8 w-8 cursor-pointer appearance-none rounded-sm border border-dashed transition-all before:absolute before:left-2/4 before:top-2/4 before:block before:h-9 before:w-9 before:-translate-x-2/4 before:-translate-y-2/4 before:rounded-full before:opacity-0 before:transition-opacity checked:border-teal-700 checked:bg-teal-700 checked:before:bg-teal-700"
                       />
                       <span className="pointer-events-none absolute left-2/4 top-2/4 -translate-x-2/4 -translate-y-2/4 text-white opacity-0 transition-opacity peer-checked:opacity-100">
                         <svg
@@ -453,13 +454,13 @@ const DoExercisePage = () => {
                         </svg>
                       </span>
                     </label>
-                  </p>
-                  <p className="flex h-9 w-9 items-center justify-center rounded-md bg-slate-200 bg-transparent px-3 py-1 font-mono text-sm text-gray-900 ">
-                    <label className="relative flex cursor-pointer items-center rounded-full " htmlFor="teal">
+                  </div>
+                  <div className="flex h-12 w-full items-center justify-center rounded-md bg-slate-200 bg-transparent">
+                    <label className="relative flex cursor-pointer items-center rounded-full" htmlFor="set2">
                       <input
+                        id="set2"
                         type="checkbox"
-                        className="before:content[''] border-blue-gray-200 before:bg-blue-gray-500 peer relative h-7 w-7 cursor-pointer appearance-none rounded-sm border transition-all before:absolute before:left-2/4 before:top-2/4 before:block before:h-8 before:w-8 before:-translate-x-2/4 before:-translate-y-2/4 before:rounded-full before:opacity-0 before:transition-opacity checked:border-teal-700 checked:bg-teal-700 checked:before:bg-teal-700 hover:before:opacity-10"
-                        id="teal"
+                        className="before:content[''] border-blue-gray-200 before:bg-blue-gray-500 peer relative h-8 w-8 cursor-pointer appearance-none rounded-sm border border-dashed transition-all before:absolute before:left-2/4 before:top-2/4 before:block before:h-9 before:w-9 before:-translate-x-2/4 before:-translate-y-2/4 before:rounded-full before:opacity-0 before:transition-opacity checked:border-teal-700 checked:bg-teal-700 checked:before:bg-teal-700"
                       />
                       <span className="pointer-events-none absolute left-2/4 top-2/4 -translate-x-2/4 -translate-y-2/4 text-white opacity-0 transition-opacity peer-checked:opacity-100">
                         <svg
@@ -478,13 +479,13 @@ const DoExercisePage = () => {
                         </svg>
                       </span>
                     </label>
-                  </p>
-                  <p className="flex h-9 w-9 items-center justify-center rounded-md bg-slate-200 bg-transparent px-3 py-1 font-mono text-sm text-gray-900 ">
-                    <label className="relative flex cursor-pointer items-center rounded-full " htmlFor="teal">
+                  </div>
+                  <div className="flex h-12 w-full items-center justify-center rounded-md bg-slate-200 bg-transparent">
+                    <label className="relative flex cursor-pointer items-center rounded-full" htmlFor="set3">
                       <input
+                        id="set3"
                         type="checkbox"
-                        className="before:content[''] border-blue-gray-200 before:bg-blue-gray-500 peer relative h-7 w-7 cursor-pointer appearance-none rounded-sm border transition-all before:absolute before:left-2/4 before:top-2/4 before:block before:h-8 before:w-8 before:-translate-x-2/4 before:-translate-y-2/4 before:rounded-full before:opacity-0 before:transition-opacity checked:border-teal-700 checked:bg-teal-700 checked:before:bg-teal-700 hover:before:opacity-10"
-                        id="teal"
+                        className="before:content[''] border-blue-gray-200 before:bg-blue-gray-500 peer relative h-8 w-8 cursor-pointer appearance-none rounded-sm border-dashed border transition-all before:absolute before:left-2/4 before:top-2/4 before:block before:h-9 before:w-9 before:-translate-x-2/4 before:-translate-y-2/4 before:rounded-full before:opacity-0 before:transition-opacity checked:border-teal-700 checked:bg-teal-700 checked:before:bg-teal-700 "
                       />
                       <span className="pointer-events-none absolute left-2/4 top-2/4 -translate-x-2/4 -translate-y-2/4 text-white opacity-0 transition-opacity peer-checked:opacity-100">
                         <svg
@@ -503,14 +504,14 @@ const DoExercisePage = () => {
                         </svg>
                       </span>
                     </label>
-                  </p>
+                  </div>
                   {(addRep4 || oneExerciseType.repRange4) && (
-                    <p className="flex h-9 w-9 items-center justify-center rounded-md bg-slate-200 bg-transparent px-3 py-1 font-mono text-sm text-gray-900 ">
-                      <label className="relative flex cursor-pointer items-center rounded-full " htmlFor="teal">
+                    <div className="flex h-12 w-full items-center justify-center rounded-md bg-slate-200 bg-transparent">
+                      <label className="relative flex cursor-pointer items-center rounded-full" htmlFor="set4">
                         <input
+                          id="set4"
                           type="checkbox"
-                          className="before:content[''] border-blue-gray-200 before:bg-blue-gray-500 peer relative h-7 w-7 cursor-pointer appearance-none rounded-sm border transition-all before:absolute before:left-2/4 before:top-2/4 before:block before:h-8 before:w-8 before:-translate-x-2/4 before:-translate-y-2/4 before:rounded-full before:opacity-0 before:transition-opacity checked:border-teal-700 checked:bg-teal-700 checked:before:bg-teal-700 hover:before:opacity-10"
-                          id="teal"
+                          className="before:content[''] border-blue-gray-200 before:bg-blue-gray-500 peer relative h-8 w-8 cursor-pointer appearance-none rounded-sm border transition-all before:absolute before:left-2/4 before:top-2/4 before:block before:h-9 before:w-9 before:-translate-x-2/4 before:-translate-y-2/4 before:rounded-full before:opacity-0 before:transition-opacity checked:border-teal-700 checked:bg-teal-700 checked:before:bg-teal-700"
                         />
                         <span className="pointer-events-none absolute left-2/4 top-2/4 -translate-x-2/4 -translate-y-2/4 text-white opacity-0 transition-opacity peer-checked:opacity-100">
                           <svg
@@ -529,10 +530,11 @@ const DoExercisePage = () => {
                           </svg>
                         </span>
                       </label>
-                    </p>
+                    </div>
                   )}
                 </div>
               </div>
+              
               <button
                 type="button"
                 onClick={() => setAddRep4(!addRep4)}
