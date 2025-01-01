@@ -95,7 +95,7 @@ export function MainPage() {
             ) : (
               <div className="flex h-20 flex-col justify-between rounded-2xl bg-slate-100 px-3 py-2 shadow-lg dark:bg-slate-900 dark:bg-opacity-80">
                 {lastSession ? (
-                  <h2 className="text-lg font-bold ">Séance précédente</h2>
+                  <h2 className="text-lg font-bold ">Dernière séance</h2>
                 ) : (
                   <h2 className="text-lg font-bold ">Aucune séance</h2>
                 )}
@@ -140,20 +140,7 @@ export function MainPage() {
             <h1 className=" text-2xl font-bold">Progression</h1>
           </div>
           <div className="flex flex-col gap-3 pb-20">
-            {isLoading ? (
-              <div className="flex h-24 animate-pulse flex-col justify-between rounded-2xl bg-slate-100 px-3 py-2 shadow-lg ">
-                <div className="mb-4 h-6 w-24 rounded-full bg-gray-200 "></div>
-                <div className="h-5 w-32 rounded-full bg-gray-200 "></div>
-              </div>
-            ) : (
-              <div className="group col-span-2 flex h-32 w-full flex-col justify-between rounded-2xl bg-slate-100 px-3 py-2 shadow-lg active:translate-y-0.5 active:shadow-inner dark:bg-slate-900 dark:bg-opacity-80">
-                <div className="flex items-center gap-2 text-sm text-slate-600 ">
-                  <Activity color="rgb(71 85 105)" className="" height={17} width={17} strokeWidth={2.5} />
-                  Activité des dernières semaines
-                </div>
-                <SessionChart />
-              </div>
-            )}
+         
             <div className=" flex h-64 gap-3   ">
               <div className=" flex w-1/2 flex-col gap-3 ">
                 {isLoading ? (
