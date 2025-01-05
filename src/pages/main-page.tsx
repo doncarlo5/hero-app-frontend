@@ -87,9 +87,9 @@ export function MainPage() {
           </h1>
           <div className="flex flex-col gap-4 pb-4 ">
             {isLoading ? (
-              <div className="flex h-24 animate-pulse flex-col justify-between rounded-2xl bg-slate-100 px-3 py-2 shadow-lg">
-                <div className="mb-4 h-6 w-24 rounded-full bg-gray-200 "></div>
-                <div className="h-5 w-32 rounded-full bg-gray-200 "></div>
+              <div className="flex h-20 animate-pulse flex-col justify-between rounded-2xl bg-slate-100 px-3 py-2 shadow-lg">
+                <div className="mb-4 h-6 w-24 rounded-full bg-gray-200"></div>
+                <div className="h-5 w-32 rounded-full bg-gray-200"></div>
               </div>
             ) : (
               <div className="flex h-20 flex-col justify-between rounded-2xl bg-slate-100 px-3 py-2 shadow-lg dark:bg-slate-900 dark:bg-opacity-80">
@@ -143,9 +143,9 @@ export function MainPage() {
             <div className=" flex h-64 gap-3   ">
               <div className=" flex w-1/2 flex-col gap-3 ">
                 {isLoading ? (
-                  <div className="flex h-24 animate-pulse flex-col justify-between rounded-2xl bg-slate-100 px-3 py-2 shadow-lg">
-                    <div className="mb-4 h-6 w-24 rounded-full bg-gray-200 "></div>
-                    <div className="h-5 w-32 rounded-full bg-gray-200 "></div>
+                  <div className="flex h-16 animate-pulse flex-col justify-between rounded-2xl bg-slate-100 px-3 py-2 shadow-lg">
+                    <div className="mb-4 h-6 w-24 rounded-full bg-gray-200"></div>
+                    <div className="h-5 w-32 rounded-full bg-gray-200"></div>
                   </div>
                 ) : (
                   <Link
@@ -185,7 +185,7 @@ export function MainPage() {
               </div>
               <div className=" flex w-1/2 flex-col gap-3">
                 {isLoading ? (
-                  <div className="flex h-28 animate-pulse flex-col justify-between rounded-2xl bg-slate-100 px-3 py-2 shadow-lg">
+                  <div className="flex h-40 animate-pulse flex-col justify-between rounded-2xl bg-slate-100 px-3 py-2 shadow-lg">
                     <div className="mb-4 h-6 w-24 rounded-full bg-gray-200 "></div>
                     <div className="h-5 w-32 rounded-full bg-gray-200 "></div>
                   </div>
@@ -206,9 +206,9 @@ export function MainPage() {
                   </Link>
                 )}
                 {isLoading ? (
-                  <div className="flex h-24 animate-pulse flex-col justify-between rounded-2xl bg-slate-100 px-3 py-2 shadow-lg">
-                    <div className="mb-4 h-6 w-24 rounded-full bg-gray-200 "></div>
-                    <div className="h-5 w-32 rounded-full bg-gray-200 "></div>
+                  <div className="flex h-[5.5rem] animate-pulse flex-col justify-between rounded-2xl bg-slate-100 px-3 py-2 shadow-lg">
+                    <div className="mb-4 h-6 w-24 rounded-full bg-gray-200"></div>
+                    <div className="h-5 w-32 rounded-full bg-gray-200"></div>
                   </div>
                 ) : (
                   <Link
