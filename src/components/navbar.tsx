@@ -28,7 +28,7 @@ function Navbar() {
                     (isActive ? activeLink : inactiveLink) +
                     " inline-block w-full justify-center pb-1 pt-2 text-center hover:text-teal-500 focus:text-teal-500"
                   }
-                  to="/welcome"
+                  to="/"
                 >
                   {({ isActive }) => (
                     <>

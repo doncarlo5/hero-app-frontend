@@ -31,13 +31,11 @@ function App() {
     <div>
       <ErrorBoundary>
         <Routes>
-          {/* Public Routes */}
-          <Route path="/" element={<HomePage />} />
-          <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
-          <Route path="/more-info" element={<MoreInfo />} />
-          
           {/* Auth Routes */}
           <Route element={<IsNotAuthenticated />}>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+            <Route path="/more-info" element={<MoreInfo />} />
             <Route path="/signup" element={<AuthPage />} />
             <Route path="/login" element={<AuthPage />} />
             <Route path="/confirm-email" element={<ConfirmEmail />} />

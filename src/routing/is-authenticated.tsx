@@ -16,7 +16,7 @@ const IsAuthenticated = () => {
     )
   }
   if (!isLoggedIn) {
-    return <Navigate to="/welcome" />
+    return <Navigate to="/" />
   }
 
   return <Outlet />

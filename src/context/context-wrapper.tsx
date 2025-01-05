@@ -74,7 +74,7 @@ const AuthContextWrapper = ({ children }: WrapperProps) => {
       } else {
         setIsLoggedIn(false)
         setUser(null)
-        redirect("/welcome")
+        redirect("/")
       }
       setSession(session)
     })
@@ -91,7 +91,7 @@ const AuthContextWrapper = ({ children }: WrapperProps) => {
       setSession(null)
       await supabase.auth.signOut()
       setIsLoggedIn(false)
-      redirect("/welcome")
+      redirect("/")
     } catch (error: any) {
       console.error(error)
     } finally {
