@@ -79,6 +79,14 @@ const WeekActivityCarousel = () => {
             ))}
           </div>
         ))}
+        <div className="flex justify-center mt-4 space-x-2">
+          {[0, 1, 2].map((index) => (
+            <Skeleton 
+              key={index} 
+              className="w-2 h-2 rounded-full"
+            />
+          ))}
+        </div>
       </div>
     )
   }
