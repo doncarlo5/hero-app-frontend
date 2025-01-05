@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { format } from "date-fns"
 import { fr } from "date-fns/locale/fr"
-import {  LucidePlus } from "lucide-react"
+import { LucidePlus } from "lucide-react"
 import { FaDumbbell, FaTrophy, FaWeightScale } from "react-icons/fa6"
 import { Link } from "react-router-dom"
 
@@ -70,7 +70,6 @@ export function MainPage() {
     fetchLastSession()
     fetchAllSessions()
 
-
     if (user && !user.hasSeenOnboarding) {
       setShowOnboarding(true)
     }
@@ -93,14 +92,20 @@ export function MainPage() {
               </div>
             ) : (
               <div className="flex h-20 flex-col justify-between rounded-2xl bg-slate-100 px-3 py-2 shadow-lg dark:bg-slate-900 dark:bg-opacity-80">
-                {lastSession ? (
-                  <h2 className="text-lg font-bold ">Dernière séance</h2>
-                ) : (
-                  <h2 className="text-lg font-bold ">Aucune séance</h2>
-                )}
+                <div className="flex justify-between items-center">
+                  {lastSession ? (
+                    <h2 className="text-sm font-semibold uppercase tracking-tighter text-gray-500 ">Séance précédente</h2>
+                  ) : (
+                    <h2 className="text-sm font-semibold uppercase tracking-tighter text-gray-500 ">Aucune séance</h2>
+                  )}
+                  <Link className=" flex" to="/history">
+                    <span className="jus flex rounded-full bg-gray-500/10 px-3 py-0.5 text-sm font-medium text-gray-800 hover:underline">
+                      Voir plus →
+                    </span>
+                  </Link>
+                </div>
                 <div className="flex items-center justify-between text-slate-600 dark:text-gray-400">
-                  <div className=" flex gap-2">
-                    <p>{lastSession?.date_session && format(new Date(lastSession?.date_session), "dd/MM/yyyy")}</p>
+                  <div className="flex gap-2">
                     {lastSession?.type_session && (
                       <Badge
                         variant={
@@ -120,14 +125,13 @@ export function MainPage() {
                         {lastSession.type_session}
                       </Badge>
                     )}
+                    <p className=" capitalize text-sm">
+                      {lastSession?.date_session &&
+                        format(new Date(lastSession?.date_session), "EEE do MMMM yyyy", { locale: fr })}
+                    </p>
                   </div>
-
-                  <Link className=" flex" to="/history">
-                    <span className="jus flex rounded-full bg-gray-500/10 px-3 py-0.5 text-sm font-medium text-gray-800 hover:underline">
-                      Voir tout →
-                    </span>
-                  </Link>
                 </div>
+               
               </div>
             )}
           </div>
@@ -139,7 +143,6 @@ export function MainPage() {
             <h1 className=" text-2xl font-bold">Progression</h1>
           </div>
           <div className="flex flex-col gap-3 pb-20">
-         
             <div className=" flex h-64 gap-3   ">
               <div className=" flex w-1/2 flex-col gap-3 ">
                 {isLoading ? (
