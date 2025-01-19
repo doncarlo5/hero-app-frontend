@@ -25,6 +25,7 @@ import IsAuthenticated from "./routing/is-authenticated"
 import IsNotAuthenticated from "./routing/is-not-authenticated"
 import PrivacyPolicyPage from "./pages/privacy-policy-page"
 import MoreInfo from './pages/more-info';
+import ResetPassword from "./pages/reset-password"
 
 function App() {
   return (
@@ -56,6 +57,7 @@ function App() {
             <Route path="/profile/trophy" element={<TrophyPage />} />
             <Route path="/profile/timer" element={<TimerPage />} />
             <Route path="/profile/settings" element={<SettingsPage />} />
+            <Route path="/profile/reset-password" element={<ResetPassword />} />
             <Route path="/profile/program" element={<ProgramPage />} />
           </Route>
 

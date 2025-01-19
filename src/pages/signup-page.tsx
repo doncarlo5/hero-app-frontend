@@ -108,7 +108,7 @@ const AuthPage = () => {
     setError("")
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(loginState.email, {
-        redirectTo: "https://hero-app-workout.vercel.app/profile/settings",
+        redirectTo: "https://hero-app.org/profile/reset-password",
       })
       if (error) throw error
       alert("Check your email for the password reset link.")
