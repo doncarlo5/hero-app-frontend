@@ -2,10 +2,23 @@ import { useEffect, useState } from "react"
 import { Accordion, AccordionItem } from "@radix-ui/react-accordion"
 import { ReloadIcon } from "@radix-ui/react-icons"
 import { format } from "date-fns"
-import { Check, ChevronLeft, Edit, HistoryIcon, LoaderIcon, LucideInfo, Stars, X } from "lucide-react"
+import {
+  Check,
+  ChevronLeft,
+  Edit,
+  HistoryIcon,
+  LoaderIcon,
+  LucideInfo,
+  LucidePlay,
+  LucideRotateCcw,
+  Stars,
+  X,
+} from "lucide-react"
+import { CountdownCircleTimer } from "react-countdown-circle-timer"
 import { useNavigate, useParams, useSearchParams } from "react-router-dom"
 
 import fetchApi from "@/lib/api-handler"
+import { cn } from "@/lib/utils"
 import { AccordionContent, AccordionTrigger } from "@/components/ui/accordion"
 import {
   AlertDialog,
@@ -24,10 +37,8 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import { Skeleton } from "@/components/ui/skeleton"
 import { Textarea } from "@/components/ui/textarea"
 import { useToast } from "@/components/ui/use-toast"
-import CountDownTimer from "@/components/countdown-timer"
 import { Navbar } from "@/components/navbar"
 import ScreenLockToggle from "@/components/screen-lock-toggle"
-import { cn } from "@/lib/utils"
 
 const DoExercisePage = () => {
   const [oneExerciseType, setOneExerciseType] = useState(null as any)
@@ -208,7 +219,7 @@ const DoExercisePage = () => {
       <Navbar />
       <main className="container mx-auto mb-16 mt-0 flex h-dvh max-w-md flex-col">
         <div className="flex items-center justify-between py-5">
-          <div className=" flex">
+          <div className="flex items-center">
             <AlertDialog>
               <AlertDialogTrigger asChild>
                 <Button variant="outline" size="icon">
@@ -287,9 +298,8 @@ const DoExercisePage = () => {
             </p>
           </div>
         )}
-        <div className="pt-3">{oneExerciseType && <CountDownTimer exerciseTypeTimer={oneExerciseType.timer} />}</div>
         {oneExerciseType?.advice && (
-          <Accordion type="single" collapsible className="mb-5 rounded-2xl bg-slate-100">
+          <Accordion type="single" collapsible className="mb-5 mt-3 rounded-2xl bg-slate-100">
             <AccordionItem value="advice">
               <AccordionTrigger className="flex h-10 gap-2 px-5 text-left text-gray-500 dark:text-gray-400">
                 <div className="flex items-center gap-2">
@@ -324,9 +334,9 @@ const DoExercisePage = () => {
                 </Button>
               </div>
             )}
-            <div className="flex flex-col items-center justify-center w-full rounded-2xl bg-slate-50 py-4 dark:bg-slate-900 dark:bg-opacity-40 md:text-lg px-2">
+            <div className="flex w-full flex-col items-center justify-center rounded-2xl bg-slate-50 px-2 py-4 dark:bg-slate-900 dark:bg-opacity-40 md:text-lg">
               <div className="flex w-full justify-between gap-1 px-2">
-                <div className="flex flex-col gap-1 text-center w-[25%]">
+                <div className="flex w-[25%] flex-col gap-1 text-center">
                   <p className="pb-1 text-sm text-gray-500">Reps</p>
                   <Input
                     id="rep1"
@@ -367,8 +377,7 @@ const DoExercisePage = () => {
                     />
                   )}
                 </div>
-                
-                <div className="flex flex-col gap-1 text-center w-[35%]">
+                <div className="flex w-[35%] flex-col gap-1 text-center">
                   <p className="pb-1 text-sm text-gray-500">KG</p>
                   <Input
                     id="weight1"
@@ -410,7 +419,7 @@ const DoExercisePage = () => {
                   )}
                 </div>
 
-                <div className="flex flex-col gap-1 text-center w-[20%]">
+                <div className="flex w-[20%] flex-col gap-1 text-center">
                   <p className="pb-1 text-sm text-gray-500">Range</p>
                   <p className="text-md flex h-12 w-full items-center justify-center rounded-md bg-transparent px-1 font-light text-gray-700">
                     {oneExerciseType?.repRange1}
@@ -428,7 +437,7 @@ const DoExercisePage = () => {
                   )}
                 </div>
 
-                <div className="flex flex-col gap-1 text-center w-[20%]">
+                <div className="flex w-[20%] flex-col gap-1 text-center">
                   <p className="pb-1 text-sm text-gray-500">Série</p>
                   <div className="flex h-12 w-full items-center justify-center rounded-md bg-slate-200 bg-transparent">
                     <label className="relative flex cursor-pointer items-center rounded-full" htmlFor="set1">
@@ -485,7 +494,7 @@ const DoExercisePage = () => {
                       <input
                         id="set3"
                         type="checkbox"
-                        className="before:content[''] border-blue-gray-200 before:bg-blue-gray-500 peer relative h-8 w-8 cursor-pointer appearance-none rounded-sm border-dashed border transition-all before:absolute before:left-2/4 before:top-2/4 before:block before:h-9 before:w-9 before:-translate-x-2/4 before:-translate-y-2/4 before:rounded-full before:opacity-0 before:transition-opacity checked:border-teal-700 checked:bg-teal-700 checked:before:bg-teal-700 "
+                        className="before:content[''] border-blue-gray-200 before:bg-blue-gray-500 peer relative h-8 w-8 cursor-pointer appearance-none rounded-sm border border-dashed transition-all before:absolute before:left-2/4 before:top-2/4 before:block before:h-9 before:w-9 before:-translate-x-2/4 before:-translate-y-2/4 before:rounded-full before:opacity-0 before:transition-opacity checked:border-teal-700 checked:bg-teal-700 checked:before:bg-teal-700 "
                       />
                       <span className="pointer-events-none absolute left-2/4 top-2/4 -translate-x-2/4 -translate-y-2/4 text-white opacity-0 transition-opacity peer-checked:opacity-100">
                         <svg
@@ -534,7 +543,7 @@ const DoExercisePage = () => {
                   )}
                 </div>
               </div>
-              
+
               <button
                 type="button"
                 onClick={() => setAddRep4(!addRep4)}
@@ -585,6 +594,14 @@ const DoExercisePage = () => {
               </Accordion>
             </div>
 
+            {/* Fixed countdown timer at bottom */}
+            {oneExerciseType && (
+              <div className="fixed bottom-20 left-0 cursor-pointer">
+                <div className="rounded-lg bg-slate-100 px-3 py-2 shadow-lg dark:bg-slate-800">
+                  <CountDownTimer exerciseTypeTimer={oneExerciseType.timer} />
+                </div>
+              </div>
+            )}
             <div className="fixed bottom-20 right-10 cursor-pointer">
               {isLoading ? (
                 <Button
@@ -606,6 +623,89 @@ const DoExercisePage = () => {
         )}
       </main>
     </>
+  )
+}
+
+function CountDownTimer({ exerciseTypeTimer }: { exerciseTypeTimer: number }) {
+  const [isTimerPlaying, setIsTimerPlaying] = useState(false)
+  const [key, setKey] = useState(0)
+
+  const renderTime = ({ remainingTime }: { remainingTime: number }) => {
+    if (remainingTime === 0) {
+      const ding = new Audio("/ding.mp3")
+      ding.currentTime = 0
+      ding.play()
+      setTimeout(() => {
+        setKey((prevKey) => prevKey + 1)
+      }, 3000)
+      setIsTimerPlaying(false)
+      return (
+        <div className="flex items-center justify-center">
+          <p className="text-sm font-bold text-teal-600">GO!</p>
+        </div>
+      )
+    }
+
+    if (Number.isNaN(remainingTime)) {
+      return (
+        <div className="flex items-center justify-center">
+          <p className="text-xs text-gray-500">--:--</p>
+        </div>
+      )
+    }
+
+    const minutes = Math.floor(remainingTime / 60)
+    const seconds = remainingTime % 60
+    const formattedSeconds = seconds < 10 ? `0${seconds}` : `${seconds}`
+
+    return (
+      <div className="flex items-center justify-center">
+        <p className="text-sm font-semibold">{`${minutes}:${formattedSeconds}`}</p>
+      </div>
+    )
+  }
+
+  const restartFunction = () => {
+    setKey((prevKey) => prevKey + 1)
+    setIsTimerPlaying(false)
+  }
+
+  return (
+    <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2">
+        <CountdownCircleTimer
+          isSmoothColorTransition={true}
+          isGrowing={true}
+          rotation="counterclockwise"
+          key={key}
+          size={50}
+          strokeWidth={4}
+          isPlaying={isTimerPlaying}
+          duration={exerciseTypeTimer}
+          colors={["#0F766E", "#0F766E", "#760f17", "#760f17"]}
+          colorsTime={[7, 5, 2, 0]}
+          onComplete={() => ({ shouldRepeat: false, delay: 1, newInitialRemainingTime: exerciseTypeTimer })}
+        >
+          {renderTime}
+        </CountdownCircleTimer>
+      </div>
+
+      {isTimerPlaying ? (
+        <button
+          className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-teal-700 text-white shadow-sm transition-all hover:shadow-md active:scale-95"
+          onClick={() => restartFunction()}
+        >
+          <LucideRotateCcw className="h-4 w-4" />
+        </button>
+      ) : (
+        <button
+          className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-teal-700 text-white shadow-sm transition-all hover:shadow-md active:scale-95"
+          onClick={() => setIsTimerPlaying(true)}
+        >
+          <LucidePlay className="h-4 w-4" />
+        </button>
+      )}
+    </div>
   )
 }
 
