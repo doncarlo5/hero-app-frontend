@@ -299,7 +299,7 @@ const DoExercisePage = () => {
           </div>
         )}
         {oneExerciseType?.advice && (
-          <Accordion type="single" collapsible className="mb-5 mt-3 rounded-2xl bg-slate-100">
+          <Accordion type="single" collapsible className="mt-3 rounded-2xl bg-slate-100">
             <AccordionItem value="advice">
               <AccordionTrigger className="flex h-10 gap-2 px-5 text-left text-gray-500 dark:text-gray-400">
                 <div className="flex items-center gap-2">
@@ -311,7 +311,7 @@ const DoExercisePage = () => {
           </Accordion>
         )}
         {oneExerciseType && (
-          <form onSubmit={handleSubmit} className="">
+          <form onSubmit={handleSubmit} className="mt-3">
             {showPrefillButton && (
               <div className=" flex gap-2">
                 <Button
