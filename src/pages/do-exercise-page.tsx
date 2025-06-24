@@ -671,7 +671,16 @@ function CountDownTimer({ exerciseTypeTimer }: { exerciseTypeTimer: number }) {
   }
 
   return (
-    <div className="flex items-center gap-3">
+    <div
+      className="flex items-center gap-3"
+      onClick={() => {
+        if (isTimerPlaying) {
+          restartFunction()
+        } else {
+          setIsTimerPlaying(true)
+        }
+      }}
+    >
       <div className="flex items-center gap-2">
         <CountdownCircleTimer
           isSmoothColorTransition={true}
@@ -692,15 +701,15 @@ function CountDownTimer({ exerciseTypeTimer }: { exerciseTypeTimer: number }) {
 
       {isTimerPlaying ? (
         <button
+          type="button"
           className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-teal-700 text-white shadow-sm transition-all hover:shadow-md active:scale-95"
-          onClick={() => restartFunction()}
         >
           <LucideRotateCcw className="h-4 w-4" />
         </button>
       ) : (
         <button
+          type="button"
           className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-teal-700 text-white shadow-sm transition-all hover:shadow-md active:scale-95"
-          onClick={() => setIsTimerPlaying(true)}
         >
           <LucidePlay className="h-4 w-4" />
         </button>
