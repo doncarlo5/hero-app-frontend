@@ -217,7 +217,7 @@ const DoExercisePage = () => {
   return (
     <>
       <Navbar />
-      <main className="container mx-auto mb-16 mt-0 flex h-dvh max-w-md flex-col">
+      <main className="container mx-auto mb-10 mt-0 flex h-dvh max-w-md flex-col">
         <div className="flex items-center justify-between py-5">
           <div className="flex items-center">
             <AlertDialog>
@@ -559,7 +559,7 @@ const DoExercisePage = () => {
               </button>
             </div>
 
-            <div className="pb-14 pt-5 ">
+            <div className="pt-5 ">
               <Accordion
                 type="single"
                 collapsible
