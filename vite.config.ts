@@ -47,8 +47,14 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  // Secure environment variable handling
   define: {
-    "process.env": process.env,
-    ENV_KEY: process.env.ENV_KEY,
+    // Only expose specific environment variables you need
+    "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV),
+    "process.env.ENV_KEY": JSON.stringify(process.env.ENV_KEY),
+    // Add other specific env vars you need here:
+    // 'process.env.VITE_API_URL': JSON.stringify(process.env.VITE_API_URL),
   },
+  // Automatically expose VITE_ prefixed environment variables
+  envPrefix: "VITE_",
 })
