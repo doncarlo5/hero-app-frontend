@@ -12,7 +12,7 @@ import AuthContextWrapper from "./context/context-wrapper.tsx"
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <BrowserRouter>
+    <BrowserRouter future={{ v7_startTransition: true }}>
       <AuthContextWrapper>
         <App />
         <Toaster />
